@@ -1,5 +1,4 @@
 
-
 import os
 import sys
 import json
@@ -10,9 +9,17 @@ import json
 EVAL_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(EVAL_DIR)
 sys.path.insert(0, os.path.join(REPO_ROOT, "Phase01HPC", "ThesisWork"))
+THESIS_SELECTION_PATH = os.path.join(REPO_ROOT, "preparations", "thesisSelection.csv")
 
 import config
 import pandas as pd
+
+
+def load_manifest() -> pd.DataFrame:
+    if not os.path.exists(THESIS_SELECTION_PATH):
+        raise FileNotFoundError(f"{THESIS_SELECTION_PATH} not found. Run thesis_test.py first.")
+    df = pd.read_csv(THESIS_SELECTION_PATH)
+    return df.rename(columns={"task_name": "task_id"})
 
 
 def run_task_id_key(strategy, rephrasing_id, run_id, instance_task_id):
@@ -39,7 +46,7 @@ def load_and_dedupe(filepath: str) -> list:
 
 
 def main():
-    manifest_df = pd.read_csv(config.MANIFEST_PATH)
+    manifest_df = load_manifest()
     model_name = config.get_model_name_from_args().model
     safe_model_name = model_name.replace("/", "_")
 
