@@ -1,0 +1,301 @@
+index,question,answer,year,split
+0,"If a judge reports an attorney for a substantial violation of the Rules of Professional Conduct, can the judge continue to preside over matters involving that attorney during the disciplinary proceeding and within two years after it concludes?",No,2010,train
+1,Does a village justice need to disqualify themselves when a law firm employing the court clerk's non-lawyer child as a paralegal appears in their court?,No,2010,train
+2,"Is a judge required to disclose their former employment relationship when appointing their former law clerk as a referee, assuming the law clerk is otherwise qualified?",No,2010,train
+3,"Is it prohibited for a part-time judge who practices law to apply for certificates of occupancy and building permits on behalf of clients in the village where they preside, even if the application is ministerial?",No,2010,train
+4,"Can a judge appear monthly on a local television news broadcast to answer questions about a predetermined topic relating to the criminal justice system, subject to certain limitations?",Yes,2010,train
+5,Is a judge required to report an attorney to the appropriate Appellate Division of the Supreme Court for disciplinary action if the attorney is not in compliance with Judiciary Law §468-a?,Yes,2010,train
+6,Is a judge required to take appropriate action when a nonresident attorney fails to maintain a physical law office or an actual mailing address in New York State as required by Judiciary Law §470?,Yes,2010,train
+7,"Can a judge appoint a qualified former law clerk to Part 36 positions, except where the case was pending before the judge during the law clerk's term of employment?",Yes,2010,train
+0,Is a judge required to disclose a former law clerk's employment relationship when the former law clerk appears in an adversarial role within one year after his/her employment with the judge ended?,Yes,2010,test
+1,"Can the names of judges who are members of a bar association's board of directors be preceded by the title ""Honorable"" on the bar association's letterhead even though the designation ""Esq."" is not included after the names of lawyers who also are members of the same board of directors?",Yes,2010,test
+2,Should the judge disqualify themselves from a proceeding involving a service provider that employs their spouse as an administrator?,Yes,2010,test
+3,Should a judge disqualify themselves from all matters involving a service provider that rents office space from their family trust?,Yes,2010,test
+4,Can a judge designate the traffic court clerk to advise defendants of any plea agreement the prosecuting assistant district attorney will offer?,No,2010,test
+5,Is the application of a US Supreme Court decision to a judge's plea allocution practices a question of law beyond the Committee's statutory authority?,Yes,2010,test
+6,Can a judge serve as a consultant to a professor for a research project concerning jurors' memories if they follow certain guidelines?,Yes,2010,test
+7,Can a town judge permit the town court clerk to serve as a town election inspector/poll manager if the judge's name appears on the ballot?,Yes,2010,test
+8,Can a judge sign a roster of attorneys supporting a particular candidate for judicial office or express an opinion about the qualifications of a judicial candidate?,No,2010,test
+9,Can a judge convey objective factual information to an attorney in a custody case without advocating for any party?,Yes,2010,test
+10,Is a judge allowed to advocate for a party in a custody case while conveying objective factual information to an attorney?,No,2010,test
+11,Is a town justice permitted to furnish advance copies of the court's criminal calendar to the District Attorney and Public Defender if reasonable requests are complied with?,Yes,2010,test
+12,Can a town justice refuse to comply with reasonable requests for the court's criminal calendar while providing advance copies to the District Attorney and Public Defender?,No,2010,test
+13,Should a judge who is a candidate for judicial office disqualify themselves from presiding in a case involving an attorney from the political party's screening panel?,Yes,2010,test
+14,Can a judge who is a candidate for judicial office preside over a case involving an attorney from the political party's screening panel without disqualification?,No,2010,test
+15,Is a judge required to disqualify themselves from cases involving an attorney they reported for a violation of the Rules of Professional Conduct?,Yes,2010,test
+16,Is a judge required to take appropriate action if there's a substantial likelihood that an attorney has committed a substantial violation of the Rules of Professional Conduct?,Yes,2010,test
+17,Should a village justice insulate the court clerk from any matter involving a law firm that employs the court clerk's non-lawyer child as a paralegal?,Yes,2010,test
+18,Can a part-time village justice mandate that youthful offenders attend a specific defensive driving program without special circumstances creating an appearance of impropriety?,Yes,2010,test
+19,"Can a judge refer defendants to a defensive driving program if their spouse is an instructor, provided that the spouse will not instruct any defendants referred by the judge?",Yes,2010,test
+20,"Must a judge disqualify themselves, subject to remittal, in cases where their spouse testifies as a witness concerning a defendant's participation in a defensive driving program employing the judge's spouse?",Yes,2010,test
+21,"Can a judge preside over a case where their spouse testifies as a witness concerning a defendant's participation in a defensive driving program employing the judge's spouse, without disqualifying themselves?",No,2010,test
+22,Can a judge's partners and associates continue to appear before all other judges of the City Court when the judge is temporarily assigned to serve in the City Court?,Yes,2010,test
+23,Must a judge's partners and associates stop appearing before all other judges of the City Court when the judge is temporarily assigned to serve in the City Court?,No,2010,test
+24,Can a part-time judge accept employment as a process server and provide services in matters that will be heard in his/her court?,No,2010,test
+25,Can a part-time judge accept employment as a process server and provide services in matters that will not be heard in his/her court?,Yes,2010,test
+26,Is a judge allowed to display a slogan adopted by a partisan political party on his/her vehicle?,No,2010,test
+27,Is a judge allowed to display a non-political slogan on his/her vehicle?,Yes,2010,test
+28,Should a judge meet with the Chief of Police and the Commissioner of Public Works to discuss the judge's decisions to dismiss parking tickets?,No,2010,test
+29,Should a judge avoid meeting with the Chief of Police and the Commissioner of Public Works to discuss the judge's decisions to dismiss parking tickets?,Yes,2010,test
+30,Can a full-time judge serve on the Board of Directors of a not-for-profit organization promoting safety standards and administrative reform in the sport of boxing?,Yes,2010,test
+31,Can a full-time judge meet with members of the State Legislature to promote the legislative agenda of a not-for-profit organization he/she serves on?,No,2010,test
+32,Can a judge donate a photograph they created to a not-for-profit organization without being identified as the donor?,Yes,2010,test
+33,Can a judge donate a photograph they created to a not-for-profit organization and allow themselves to be identified as the donor?,No,2010,test
+34,Is it prohibited for a judge to serve on a panel discussing legislative redistricting due to its political nature?,Yes,2010,test
+35,Can a judge serve on a panel discussing legislative redistricting without any concerns about its political nature?,No,2010,test
+36,"Can a judge continue to preside over a case if they believe they can be impartial, despite having prior connections with an attorney or learning about campaign donors?",Yes,2010,test
+37,"Should a judge always disqualify themselves in cases with prior connections to an attorney or knowledge of campaign donors, regardless of their belief in their impartiality?",No,2010,test
+38,Is it prohibited for a judge to accept a leadership position in a not-for-profit organization responsible for increasing membership?,Yes,2010,test
+39,Can a judge accept a leadership position in a not-for-profit organization responsible for increasing membership?,No,2010,test
+40,Is a judge required to report to the Commission on Judicial Conduct if another judge offers to have a police officer destroy a traffic ticket issued to their relative?,Yes,2010,test
+41,Can a judge ignore another judge's offer to have a police officer destroy a traffic ticket issued to their relative without reporting it?,No,2010,test
+42,Should a Town Justice disqualify themselves when their siblings appear in their court or when the Town is a party in a case because a sibling is the Town Supervisor?,Yes,2010,test
+43,Is it acceptable for a Town Justice not to disqualify themselves when their siblings appear in their court or when the Town is a party in a case because a sibling is the Town Supervisor?,No,2010,test
+44,Is it prohibited for a judge who is a member or officer of a house of worship to personally solicit contributions by preaching a sermon on tithing?,Yes,2010,test
+45,Can a judge who is a member or officer of a house of worship personally solicit contributions by preaching a sermon on tithing?,No,2010,test
+46,"Can a part-time judge who practices law apply for certificates of occupancy and building permits on behalf of clients in the village where they preside, as long as the application is ministerial and not discretionary?",Yes,2010,test
+47,Is it acceptable for a judge who believes they can be fair and impartial to preside when the court clerk testifies about the defendant's proof of compliance with a condition of their sentence?,Yes,2010,test
+48,Must a judge who believes they can be fair and impartial recuse themselves when the court clerk testifies about the defendant's proof of compliance with a condition of their sentence?,No,2010,test
+49,Can a judge preside over a tax certiorari case even if they reside in the town or school district where the tax refund is sought?,Yes,2010,test
+50,Is a judge disqualified from a tax certiorari case if they reside in the town or school district where the tax refund is sought?,No,2010,test
+51,Can a judge write a column for a bar association's newsletter about evidentiary issues related to a red light camera program?,Yes,2010,test
+52,Is a judge allowed to express personal opinions about the red light camera program in the bar association's newsletter?,No,2010,test
+53,Can a village court clerk serve as a clerk for the same village and as a receptionist for the village police department?,No,2010,test
+54,Is a village justice allowed to have the Village Clerk assist the village court clerk in verifying court bank deposits?,Yes,2010,test
+55,Is a judge required to determine if disqualification is necessary due to a relationship with a former colleague?,Yes,2010,test
+56,Can a judge ignore their relationship with a former colleague when deciding on disqualification?,No,2010,test
+57,Can a Support Magistrate speak as a private citizen at public hearings about natural gas drilling in their county?,Yes,2010,test
+58,Is a Support Magistrate allowed to use official stationery when writing to elected officials about natural gas drilling?,No,2010,test
+59,Should a part-time town justice disclose a recent funeral service provided to an attorney appearing in their court?,Yes,2010,test
+60,Can a part-time town justice avoid disqualification when a self-represented party is involved during the two-year period?,No,2010,test
+61,Is a part-time judge disqualified from cases involving an attorney to whom they rent office space?,Yes,2010,test
+62,Can a part-time judge preside over a case involving an attorney renting office space from the judge without disqualification?,No,2010,test
+63,Can a part-time judge who owns a consulting company provide consulting services to village officials in a neighboring county regarding establishing a village court?,Yes,2010,test
+64,Can a part-time judge who owns a consulting company provide consulting services to village officials in the same county regarding establishing a village court?,No,2010,test
+65,Can a judge nominate a probation department employee for an award acknowledging significant assistance in court administration?,Yes,2010,test
+66,Can a judge nominate a probation department employee for an award acknowledging personal achievements unrelated to court administration?,No,2010,test
+67,Must a judge disqualify themselves from cases involving their spouse's attorney when their spouse is considering making a claim against a municipality for personal injuries?,Yes,2010,test
+68,Can a judge continue to preside over cases involving their spouse's attorney when their spouse is considering making a claim against a municipality for personal injuries?,No,2010,test
+69,Can a part-time town justice serve as a character reference for a friend applying for a pistol permit?,No,2010,test
+70,Can a part-time town justice serve as a character reference for a friend applying for a job unrelated to firearms?,Yes,2010,test
+71,Can a full-time judge teach a law school clinic related to legislation on racially motivated crimes?,Yes,2023,test
+72,Is it allowed for a full-time judge to discuss a possible TV show involving the criminal justice system with producers?,Yes,2023,test
+73,Can a part-time judge work at a child advocacy center in a different county and serve as treasurer of a volunteer fire department?,Yes,2023,test
+74,Can a part-time town justice serve as a part-time assistant conflict defender in the same county as their court?,Yes,2023,test
+75,Is it unethical for a court to provide a simplified form informing defendants of all their options in Vehicle and Traffic Law violations cases?,No,2023,test
+76,Is the Advisory Committee on Judicial Ethics able to resolve legal or administrative questions?,No,2023,test
+77,Is a judge ordinarily disqualified from all matters involving the police department where their sibling is the Police Chief?,Yes,2022,test
+78,"When a judge is disqualified from all matters involving the police department where their sibling is the Police Chief, is the disqualification be subject to remittal if the judge's sibling is unlikely to personally appear in the courtroom and remains permanently absent?",Yes,2022,test
+79,Can a judge preside over a trial-ready case involving the police department if a police officer is unlikely to be called in the matter and the judge does not decide any issues concerning the conduct or credibility of the police?,Yes,2022,test
+80,"Is a judge disqualified from a trial-ready case involving the police department if a police officer is called as a witness, even if their sibling is unlikely to personally appear in the courtroom and remains permanently absent?",No,2022,test
+81,Can a full-time judge participate in a group organized by the Governor's office and the Department of Motor Vehicles to propose simpler verbiage and more logical organization for the Vehicle and Traffic Law?,Yes,2022,test
+82,Is a full-time judge allowed to be compensated for work performed on behalf of the group that proposes simpler verbiage and more logical organization for the Vehicle and Traffic Law?,No,2022,test
+83,"Must a judge disclose their former marital relationship with a law enforcement officer who issued the accusatory instrument for a Vehicle and Traffic Law charge, even if any financial obligations between the judge and their ex-spouse have been discharged?",Yes,2022,test
+84,Is a full-time judge required to report their mortgage interest income to the clerk of the court under Section 100.4(H)(2)?,No,2022,test
+85,Is a candidate for elective judicial office allowed to provide free notary services to the public to promote their campaign?,No,2022,test
+86,Must a part-time non-attorney judge resign from the board of directors of a property owners association in another county if the association may take delinquent owners to small claims court to recover back dues owed?,No,2022,test
+87,"Is a judicial candidate or their campaign committee allowed to post photographs on social media of the candidate together with sitting judges at a public or professional event, if the photograph was published with the consent of the judges and there is no verbiage that indicates an endorsement?",Yes,2022,test
+88,"Can the Committee address legal/administrative issues relating to the court system's vaccination policies, such as whether a judge may delay vaccination beyond the deadline after denial of their exemption request and use various categories of leave during the judge's chosen delay period?",No,2022,test
+89,"Can a judge communicate their opposition to court administrators deeming them ""unfit for service"" if they do not comply with vaccination policies, provided that the communication comports with the dignity of judicial office and eschews personal attacks on government officials?",Yes,2022,test
+90,"Can a full-time judge who previously served as a supervising ALJ and Chief ALJ with the Board of Parole Revocation Bureau preside over the criminal matters of defendants for whom a revocation proceeding was commenced after the judge's tenure, provided the judge can be fair and impartial?",Yes,2022,test
+91,Can a full-time judge who previously served as a supervising ALJ and Chief ALJ with the Board of Parole Revocation Bureau preside over the criminal matters of individuals for whom a revocation proceeding was commenced or pending during the judge's tenure?,No,2022,test
+92,"Can a full-time judge share their observations of agency operations and procedures used when removing children from their homes with the head of a children's services agency, subject to certain limitations?",Yes,2022,test
+93,"Can a part-time judge serve as an applications systems analyst for the university police of a private, not-for-profit university in another county?",Yes,2022,test
+94,May a full-time judge volunteer as a rescue diver for a county’s water rescue/scuba team?,Yes,2022,test
+95,Can a new full-time judge make a modest donation to an animal shelter on behalf of a former client?,Yes,2022,test
+96,Must a new full-time judge file a disclosure with the court clerk under 22 NYCRR 100.4(H) for income earned before assuming the bench?,No,2022,test
+97,Can a new full-time judge give another judge an artwork created by a former client?,Yes,2022,test
+98,Can a part-time judge serve as a deputy district executive in the same judicial district?,Yes,2022,test
+99,May a JHO direct the attorneys to investigate whether an apparent variance in installation presents a potential safety issue?,No,2022,test
+100,Can a part-time town justice serve as the chief administrative law judge for a town code administrative bureau in the same town?,Yes,2022,test
+101,Can a judge donate their remaining unexpended campaign funds to a not-for-profit entity that operates a childcare program?,Yes,2022,test
+102,Can a town judge accompany town board members and/or engineers to visit property owners and provide information about a project that benefits the judge’s outside employer?,No,2022,test
+103,"Can a judge be advertised as the ""run leader"" for the bar association's free run/walk?",No,2022,test
+104,Can a judge lead the bar association's free run/walk unannounced?,Yes,2022,test
+105,Can a part-time judge engage in consulting services on workplace violence prevention strategies outside the county they preside in?,Yes,2022,test
+106,Can a part-time judge serve on a selection committee organized by the sheriff's office to interview and select current corrections officers and supervisors for promotion opportunities?,No,2022,test
+107,Must a judge disqualify themselves from matters involving the law firm partners and associates of an attorney who testified on the judge's behalf in a disciplinary proceeding?,Yes,2022,test
+108,Does a judge who reports another judge's alleged misconduct to an administrative judge have further ethical obligations?,No,2022,test
+109,Can a judge's law clerk assist the judge with any election-related matters during a general election when the judge is on-call?,No,2022,test
+110,"Must a judge report another judge who publicly praised a law enforcement agency for ""solving"" a crime, if they know the arrested individual will likely be brought before the other judge for proceedings?",Yes,2022,test
+111,Can a part-time attorney judge advertise their law practice on a building owned by a local business that frequently appears before the judge?,No,2022,test
+112,Can a part-time town or village justice also serve as a Deputy Chief of the Veterans Affairs Police Department?,No,2022,test
+113,Can a judge who previously served as the District Attorney preside over a parole recognizance hearing concerning a parolee or releasee who had originally been convicted and sentenced during the judge's former tenure as the District Attorney?,No,2022,test
+114,Can a new full-time judge liquidate the remaining inventory from a prior business activity on their personal eBay account without reporting profits over $150 as compensation for an extra-judicial activity?,No,2022,test
+115,Can a new town judge agree to pay a successor attorney a portion of the original retainer for a nearly completed matter that originated in the town court?,Yes,2022,test
+116,Would it be proper for the constable who serves as the administrator and apparent head of the town constabulary to provide court security for the town court?,No,2022,test
+117,Must a full-time judge amend past Section 100.4(H)(2) reports to report net rental income in excess of $150 received in the most recent calendar year?,No,2022,test
+118,Is it unduly burdensome to require a full-time judge to amend past Section 100.4(H)(2) reports?,Yes,2022,test
+119,Must a judge report an attorney who made deliberate misrepresentations to their client?,Yes,2022,test
+120,Is a judge disqualified in all matters involving an attorney who made deliberate misrepresentations to their client?,Yes,2022,test
+121,Can a judge attend an annual fund-raising gala equally benefitting Citizens Union and Citizens Union Foundation as a guest of the judge's partner?,Yes,2022,test
+122,Is a court attorney-referee disqualified from a small claims case involving parties who were once colleagues of the referee?,No,2022,test
+123,Can an Alternative Dispute Resolution Coordinator who holds a court attorney-referee title engage in political activity if they do not perform quasi-judicial functions?,No,2022,test
+124,Must a part-time town justice disqualify from any case involving an inmate to whom they rendered pastoral care or assistance?,Yes,2022,test
+125,Can a part-time town justice work as an “asset protection specialist” for a large retail chain?,No,2022,test
+126,Can a judicial candidate allow a political party committee to solicit campaign contributions for them instead of forming a campaign committee?,No,2022,test
+127,Can a judge chair a bar association subcommittee that aims to improve racial equity in the Unified Court System?,Yes,2022,test
+128,"If an attorney from the law firm where a judge's non-attorney child works appears in the judge's court, is the judge disqualified?",Yes,2022,test
+129,"If an attorney from the law firm where a judge's non-attorney child works appears in the judge's court, is the judge allowed to appoint attorneys from the same law firm to fiduciary positions?",No,2022,test
+130,Can a town justice who is also a court clerk in family court preside over a justice court criminal case involving a defendant who is also a party in a family court action involving similar allegations and the town justice previously heard allegations or testimony pertaining to that case in family court?,No,2022,test
+131,"Can a judge preside in matters involving the ex-spouse of their fifth-degree relative, even if the judge previously recused themselves during the relative's marriage?",Yes,2022,test
+132,Can a part-time judge who also serves as a deputy town attorney assist the town police department in seeking Extreme Risk Protection Orders in their role as town attorney?,No,2022,test
+133,Can a part-time town justice be employed part-time as a community school liaison with the county sheriff's office simultaneously?,No,2022,test
+134,Can a judge permit the court clerk to compile information for the sheriff's office about defendants who have missed court appearances?,No,2022,test
+135,Can a judge permit the court clerk to sign a supporting deposition prepared by the sheriff’s office concerning a defendant’s missed court appearances?,Yes,2022,test
+136,It has been 1.75 years since a judge attended the wedding of an attorney who regularly appears before the judge. Does the judge have to disclose the attendance still if the attorney appears before the judge now?,Yes,2022,test
+137,Can a judge attend the wedding of an attorney who regularly appears in their court but is not on trial before them now?,Yes,2022,test
+138,Can a part-time judge serve as a volunteer ombudsman under the New York State Long Term Care Ombudsman Program?,Yes,2022,test
+139,Can a judge decline service on a grand jury panel if many assistant district attorneys appear before them?,No,2022,test
+140,It has been 5 years since a judge attended the wedding of an attorney who regularly appears before the judge. Does the judge have to disclose the attendance still if the attorney appears before the judge now?,No,2022,test
+141,Can a judge attend the wedding of an attorney who regularly appears in their court and is on trial before them now?,No,2022,test
+142,Can a judge preside in a case if they have served as a grand juror in that case?,No,2022,test
+143,"Can a judge serve on a bar association's board of directors, even if another board member is a judicial candidate and the subject of unfavorable media attention?",Yes,2022,test
+144,Can a judge take appropriate action to address disruptions of the court's docket by an attorney who is uncooperative and disrespectful towards the court and staff?,Yes,2022,test
+145,Is it ethical for a judge to recommend a specific defense to an unrepresented tenant in a landlord-tenant case?,No,2022,test
+146,"Is a town justice obligated to take action if they receive correspondence from their co-judge’s election opponent with accusations against the co-judge, but have no first-hand knowledge of any misconduct?",No,2022,test
+147,Can a judicial candidate appoint their campaign treasurer as their principal law clerk if certain conditions are met?,Yes,2022,test
+148,Can a full-time judge serve on the executive or governing body of their church while there is a pending Child Victims Act claim against the church?,No,2022,test
+149,Should a judge recuse from a small claims case if they might potentially learn about another judge's missteps in another case?,No,2022,test
+150,Is the inquiring judge in the best position to determine if another judge has violated the Rules Governing Judicial Conduct?,Yes,2022,test
+151,"Can questions about past conduct, legal issues, conduct of another judge or interpretation of another judge's rulings be responded to?",No,2022,test
+152,Must a judge insulate their law clerk from cases in which the law clerk had any involvement as an attorney?,Yes,2022,test
+153,Should a judge make full disclosure in all matters where the law firm of their law clerk appears?,Yes,2022,test
+154,Can a judge seeking election or re-election record and post videos on their personal social media accounts for the purpose of connecting with the public during the applicable window period?,Yes,2022,test
+155,"A judge who is seeking election or re-election to judicial office may, during the applicable window period, record and post short videos on their personal social media accounts for the purpose of connecting with the public to highlight the judge’s qualifications for judicial office and provide educational content on alternate dispute resolution and mediation. Must a judge remove their videos from all social media accounts at the end of the window period?",Yes,2022,test
+156,"Can a full-time judge accept a $10,000 honorarium to serve as a mentor-in-residence at a SUNY/CUNY college?",Yes,2022,test
+157,Are questions about whether a judge can take part in mentor-in-residence activities during regularly scheduled court hours administrative?,Yes,2022,test
+158,Can a new full-time judge complete their service as a referee in foreclosure if the remaining tasks are ministerial and do not involve legal work?,Yes,2022,test
+159,"Where the remaining tasks are essentially ministerial and do not involve legal work, a new full-time judge may complete their service as a referee in foreclosure, pursuant to a court appointment that was made before the judge assumed the bench. Can a judge conduct closings after January 1st, hold proceeds in escrow and seek a court order regarding disposition of unresolved monies in an escrow account if necessary?",Yes,2022,test
+160,"Can a new full-time judge dispose of wills prepared while an attorney, as permitted by law?",Yes,2022,test
+161,"Can a new full-time judge raise funds from friends, neighbors, or acquaintances for their judicial office?",No,2022,test
+162,Can a new full-time judge be reimbursed for expenses incurred after assuming the bench while handling a matter as an attorney?,No,2022,test
+163,Can a new full-time judge maintain a mailbox at their prior office address?,Yes,2022,test
+164,Can a judge serve on a bar association committee established to address mandated representation?,Yes,2022,test
+165,Can a judge participate in a custody case if their confidential secretary has connections to both parties through marriage?,Yes,2022,test
+166,Does a party have the right to object to a judge's participation in a custody case?,Yes,2022,test
+167,Does a judge have to disqualify from a custody case if their confidential secretary has connections to both parties through marriage?,No,2022,test
+168,Can a judge participate in a public demonstration against gun violence?,No,2022,test
+169,Can a judge purchase a sponsor-level ticket to a bar association's fund-raising dinner?,Yes,2022,test
+170,Can a village justice who is a lawyer represent the village mayor in providing legal advice and negotiations in the dissolution of the mayor's marriage?,Yes,2022,test
+171,Is it mandatory for a judge to disqualify themselves if a client they previously worked with appears before them on the same case?,Yes,2022,test
+172,Can a full-time judge respond to private inquiries from no-fault insurance arbitrators on specific cases?,No,2022,test
+173,Does a judge have to disqualify themselves if their first-degree relative is employed by a non-party real estate company that does business with one party in the litigation?,No,2022,test
+174,Can an appellate judge who successfully sought to vacate a vexatious lien filed by a disgruntled litigant against their real property preside over appeals from other decisions or orders rendered by the lower court judge who granted the petition to vacate?,Yes,2022,test
+175,Does an appellate judge need to recuse themselves from appeals involving orders or decisions issued by the Surrogate overseeing an uncontested estate proceeding where the judge is the uncompensated administrator and sole beneficiary?,No,2022,test
+176,Can a judge perform the remaining duties required to finalize a settlement if the former client has consulted with an attorney or refused to do so?,No,2022,test
+177,Is a judge allowed to participate in a not-for-profit entity’s “backpack program” which provides a personalized gift to each adoptee and/or adoptive parent following a finalized adoption?,Yes,2022,test
+178,"Is a judge permanently disqualified from cases in which the judge participated in any way as an attorney, whether in a personal or supervisory capacity?",Yes,2022,test
+179,Is a judge disqualified from an Article 78 proceeding in which a media outlet seeks to compel a law enforcement agency to disclose certain information about an inmate pursuant to the Freedom of Information Law if the judge’s attorney spouse sent a preservation letter to the same agency on an unrelated matter?,No,2022,test
+180,Can a full-time judge accept an invitation from an overseas not-for-profit charitable foundation to speak at an annual conference on a matter concerning the legal system?,Yes,2022,test
+181,"Can a trial court judge preside over cases involving an investment bank that employs a law student for a judicial internship while the student is also employed part-time by the bank, as long as the judge discloses the student's relationship with the bank and insulates the student from those cases?",Yes,2022,test
+182,"Does a part-time town justice who is also a full-time superior court law clerk need to disclose in matters involving a law firm that previously represented the judge in a divorce case, if more than two years have passed since the attorney-client relationship completely terminated, including payment of legal fees?",No,2022,test
+183,Can a village justice who serves without compensation also serve as a judge of the supreme court or a judge of the district court?,No,2022,test
+184,Is a housing court judge who is a shareholder and proprietary lessee in a cooperative apartment building disqualified from presiding in matters where the building’s board of directors has hired a new management company that manages many other properties located in the jurisdiction of the judge’s court?,No,2022,test
+185,Can a full-time judge provide legal advice to a former client and their new counsel during a meeting regarding records of a former representation?,No,2022,test
+186,Is it within the jurisdiction of this Committee to decide if a judge should conduct an inquiry into a potential conflict of interest arising from the prosecution of a criminal defense attorney?,No,2022,test
+187,Is a full-time judge permanently disqualified from cases where they participated as an attorney in a not-for-profit labor union’s legal services office?,Yes,2022,test
+188,Can a full-time judge preside over cases where a litigant is represented by a not-for-profit labor union’s legal services office?,Yes,2022,test
+189,Can a full-time judge serve as a member of the board of directors for the New York Civil Liberties Union?,No,2022,test
+190,"Can a judge preside in matters involving other attorneys of the same legal services provider where their first-degree relative is an entry-level staff attorney with a not-for-profit legal services provider, in a division or unit that has absolutely no involvement in the kinds of matters that come before the judge’s court, as long as the judge is satisfied their relative has had, and is likely to have, absolutely no involvement with the case?",Yes,2022,test
+191,"Can a new full-time judge continue to negotiate with their former law firm regarding the disposition of a limited liability company in which they both own a 50% interest, as long as negotiations are in good faith by both sides and the judge continues to take no active role in management of the building or operation of the business?",Yes,2022,test
+192,Can a full-time judge personally participate in fund-raising or grant applications or provide legal advice while serving as the president of a local YMCA and serving on its multi-task capital project committee?,No,2022,test
+193,"Can a full-time judge list their name and position together with other board members on the organization's website and fund-raising invitations, while serving as the chair of the board of directors of a local YMCA, unless the formatting reasonably creates an impression for fund-raising purposes that the directors, collectively and/or individually, are personally soliciting funds?",Yes,2022,test
+194,Can an associate village justice simultaneously serve as deputy clerk/treasurer for the village?,No,2022,test
+195,Can an associate village justice serve as a deputy registrar of vital statistics for the town?,Yes,2022,test
+196,Can a judge observe court sessions over which other judges preside for educational purposes?,Yes,2022,test
+197,Can a full-time judge preside over cases involving an insurance company for which the judge had previously served as in-house counsel once a year has elapsed since the end of the relationship?,No,2022,test
+198,Is a judge required to take further action if they are not certain that the alleged conduct of an attorney violates the Rules of Professional Conduct?,No,2022,test
+199,Is a judge required to investigate the timing of another judge's prior recusal in a criminal case?,No,2022,test
+200,Can a judge forward ex parte correspondence from an inmate to the Conviction Integrity Unit if it claims the conviction was obtained through perjured police testimony?,No,2022,test
+201,Must a judge disqualify themselves if an application seeking to vacate a conviction is eventually filed and assigned to the judge after receiving ex parte correspondence from an inmate claiming that the conviction was obtained through perjured police testimony?,No,2022,test
+202,Can a part-time judge serve as an assistant attorney general handling petitions for civil management of recidivist sex offenders under the Sex Offender Management and Treatment Act?,No,2022,test
+203,Is it permissible for a full-time judge to remain on the board of directors of a bar foundation while two officers of the foundation also serve on the bar association's 29-member judicial rating committee that will be rating the judge as a candidate for re-election?,Yes,2022,test
+204,Can an administrative judge authorize a court-sponsored committee or commission to file an amicus curiae brief?,No,2022,test
+205,"Can a judicial candidate permit their spouse to serve on their campaign committee as treasurer or assistant treasurer, if they believe their spouse will act responsibly and follow the law and ethical rules?",Yes,2022,test
+206,Can a judge-elect permit the Corporation Counsel to administer their oath of office if they will preside in many cases involving that city?,No,2022,test
+207,Does a judge's social relationship with the Corporation Counsel require disclosure or disqualification when the assistant corporation counsel or other subordinates appear before the judge?,No,2022,test
+208,"Can a neutral use courthouse space only for the free initial session if a court's ADR program provides for a free initial session with an approved outside neutral/mediator, optionally followed by privately-paid sessions if desired?",Yes,2022,test
+209,Must a judge disclose or recuse themselves from a proceeding if an attorney in the matter is their neighbor and has supported a non-controversial residential zoning variance sought by the judge?,No,2022,test
+210,Can a part-time town justice who is also employed full-time by a private employer respond to another town's request for public input on its zoning laws which prohibit that employer's operations without referencing their judicial title or status?,Yes,2022,test
+211,"Can a judge who is experiencing apparent acts of retaliation from a self-identified ""sovereign citizen"" litigant write to the county clerk on judicial stationery to request authentication of lien/judgment filings prior to recording?",Yes,2022,test
+212,Is a judge required to take further action after admonishing an attorney on the record for an inappropriate attempt at humor referencing the client's ethnicity or national origin?,No,2022,test
+213,Can a full-time judge who previously served on a town's zoning board preside in matters involving the zoning board that were not pending during their tenure on the board?,Yes,2022,test
+214,Can a part-time village justice serve on the board of the New York Bicycling Coalition?,No,2022,test
+215,Can a part-time village justice serve as chair of a village traffic and safety committee?,Yes,2022,test
+216,Can a part-time village justice serve on the New York Coalition for Transportation Safety?,Yes,2022,test
+217,Can a judge personally inquire whether a prospective appointee is available to accept assignment in a particular case if the Alleged Incapacitated Person is indigent?,Yes,2022,test
+218,Can a judge direct court staff to make an inquiry on their behalf to check whether a prospective appointee is available to accept assignment in a particular case?,Yes,2022,test
+219,Can a judge serve as master of ceremonies at a non-fund-raising retirement picnic for a religious minister?,Yes,2022,test
+220,Can a town justice permit a court clerk to accept outside employment as a matron with the town police department that regularly appears in the justice’s court?,No,2022,test
+221,Can a judge appoint their personal financial manager to a fiduciary position?,No,2022,test
+222,Can a judicial candidate use a significant amount of campaign funds for a pre-thank you party?,No,2022,test
+223,Is a judicial candidate obligated to serve in a non-judicial office if they are nominated by their political party?,No,2022,test
+224,Can a town or village justice acquiesce in municipal actions that are likely to interfere with court operations or that will compromise the independence of judicial office?,No,2022,test
+225,"Can we address legal or administrative questions related to the allocation of authority to select, hire, assign and supervise various non-judicial personnel to work in the local justice courts, or whether a municipality may establish an appointive administrative judge position to handle certain matters?",No,2022,test
+226,"Can a judicial candidate use a de minimis amount of campaign funds for a modest and reasonable “pre-thank you” party for campaign committee members, as a kick-off event for the campaign?",Yes,2022,test
+227,Must a full-time judge report rental income under Section 100.4(H)(2) if they net less than $150 in a calendar year from it?,No,2022,test
+228,Can a part-time judge who owns and rents real property report rental income under Section 100.4(H)(2)?,Yes,2022,test
+229,Is it required for a judge to report the name of the payor as “Airbnb” when renting their property through the platform?,No,2022,test
+230,Is a judge allowed to identify a payor tenant by first initial and last name when renting residential real estate within the State of New York?,Yes,2022,test
+231,Must a judge report attorney-defendants to the grievance committee if they have no personal knowledge that the defendants impermissibly contacted represented plaintiffs?,No,2022,test
+232,Can the Committee address the application and enforcement of the Office of Court Administration’s work schedule policies to non-judicial court personnel?,No,2022,test
+233,"Is it appropriate for a part-time lawyer judge to make an unnecessary, voluntary disclosure that they once presided in a criminal case involving the full-time judge’s administrative secretary when appearing before the full-time judge on behalf of a client?",No,2022,test
+234,"Where the judge rents the property through Airbnb, can the judge report the name of the payor as “Airbnb.”?",Yes,2022,test
+235,Can a part-time town justice serve as an administrative law judge for a town code administrative bureau in the same town?,Yes,2022,test
+236,Can a judge provide a character reference for a friend's bank account application overseas?,Yes,2022,test
+237,Can a judge present an educational program on family offense petitions to a sheriff's office?,Yes,2022,test
+238,Can a full-time criminal court judge who presides in a problem-solving court observe the entity's programming for individuals who have completed all court mandates but voluntarily return to the agency for additional services?,Yes,2022,test
+239,"Must a full-time judge report fiduciary commissions earned as co-executor of an estate before assuming the bench, to the clerk of the court?",No,2022,test
+240,Can a judge speak at a free community celebration of Pride month?,Yes,2022,test
+241,Is it permissible for a judge to write a letter of congratulations to the judge’s parent to be read at a political fund-raiser?,No,2022,test
+242,Can a part-time judge serve as the chairperson in a school board election?,No,2022,test
+243,"Is a judge required to disclose or disqualify in matters involving a local law firm after their college student grandchild, who was previously a temporary intern at the firm with only clerical duties, has completed their internship?",No,2022,test
+244,"Can a judge perform in a rock band’s annual benefit concert, even if their name and judicial status will be omitted from advertisements?",No,2022,test
+245,Can a judge in a problem-solving court write a letter attesting to the importance of a criminal defendant’s court-related employment at their request?,No,2022,test
+246,Can a judge preside over litigation involving a large national retail chain where their non-lawyer relative has an entry-level management position at one store in the chain?,Yes,2022,test
+247,Can a town justice serve as village attorney for a village wholly encompassed within the town where they preside and also continue as town justice where the town court would be expected to hear all cases arising out of the village?,No,2021,test
+248,"Is it permissible for a town justice to continue as both town justice and village attorney for a village that is wholly encompassed within the town, where the town court is expected to hear all cases arising out of the village?",No,2021,test
+249,Can a judge conceal the true basis of their ruling if they believe that the statutory obligation to provide a reason for discretionary recusal is unconstitutional?,No,2021,test
+250,Is it permissible for a judge to act in accordance with a legal determination made by the judge on the record if they believe that the statutory obligation to provide a reason for discretionary recusal is unconstitutional?,Yes,2021,test
+251,Should a judge vacate their decision in a criminal case where the defendant was their student several decades ago and they remain friendly acquaintances?,No,2021,test
+252,Does a judge have an ethical obligation to vacate their decision in a criminal case merely because the defendant was their student several decades ago and they remain friendly acquaintances?,No,2021,test
+253,Can a judge preside in a criminal case that has been transferred to drug treatment court if they entered a single appearance as the prosecutor in the underlying criminal case?,No,2021,test
+254,Is it permissible for a judge to preside in a criminal case that has been transferred to drug treatment court if they entered a single appearance as the prosecutor in the underlying criminal case?,No,2021,test
+255,Can a judge who had some minimal prior involvement as an attorney preside over a criminal case?,No,2021,test
+256,Can a judge who prosecuted a prior conviction that is an element of a felony offense preside over a criminal case?,No,2021,test
+257,Can a judge require a party or attorney to use a gender pronoun they do not prefer?,No,2021,test
+258,Do the Rules Governing Judicial Conduct prohibit two part-time lawyer judges from representing two potentially adverse parties in a proceeding before a full-time judge in another court?,No,2021,test
+259,Must a town justice whose spouse is the mayor of a village within the town recuse themselves from cases where village employees will appear?,No,2021,test
+260,Is a town justice whose spouse is the mayor of a village within the town subject to remittal in matters where the village is a named party?,Yes,2021,test
+261,"Must a judge recuse themselves from cases involving the village police department if their spouse serves as a police commissioner but has no day-to-day administrative, supervisory, or law enforcement responsibilities?",No,2021,test
+262,"Can a judge issue a notice to the bar to solicit participation by potential amici curiae, provided it is legally appropriate and consistent with applicable limitations on judicial speech and conduct?",Yes,2021,test
+263,Is it ethically permissible for a court clerk to use the court’s staff and database to request a “long form information” from an arresting agency to support the issuance of an arrest warrant?,No,2021,test
+264,"Must a judge disqualify from all cases involving a former opposing counsel, even though the judge had criticized the opposing counsel's conduct in a letter to the tribunal, provided the judge can be fair and impartial?",No,2021,test
+265,Is it within this Committee's jurisdiction to determine whether a judge may unilaterally substitute the owner/registrant for the operator of an alleged overweight vehicle or if all interested parties need to request or consent to the substitution?,No,2021,test
+266,Can a judge participate in a COVID-19 study conducted by a hospital and receive compensation?,Yes,2021,test
+267,Can a town justice represent the town in collective bargaining negotiations with the union representing the town’s highway department personnel?,Yes,2021,test
+268,Must a town justice disqualify themselves in all matters where the town is a party if they represented the town in collective bargaining negotiations with the union representing the town’s highway department personnel?,Yes,2021,test
+269,Must a judge disqualify themselves when accusatory instruments from a county-wide vehicle and traffic law camera enforcement program come before the judge if they were previously involved in its implementation on behalf of the charging agency?,No,2021,test
+270,"Can a part-time town justice serve as ""Judge Advocate"" for the American Legion?",Yes,2021,test
+271,Can a judge disclose their preferred gender pronouns in their email signature block and during a virtual proceeding in which they preside?,Yes,2021,test
+272,"Can a full-time judge attend a law firm's online ""launch party"" hosted by an attorney and law firm who do not appear before the judge?",Yes,2021,test
+273,"Can a family court judge accept an appointment to the Judicial Leadership Council of the National Court Appointed Special Advocate/Guardian Ad Litem Association for Children and permit the organization to ""promote"" the judge on social media and its website?",No,2021,test
+274,"If a judge regularly assigns a particular attorney as 18-B counsel or attorney for the child in a large number of cases, can the judge approve the attorney's payment vouchers if the judge hires that attorney's life partner as the judge's personal secretary?",No,2021,test
+275,"If hiring the secretary would significantly interfere with the judge's performance of judicial duties, should the judge hire the secretary?",No,2021,test
+276,Can a judge write a book review for a legal textbook and retain the reviewed book in their personal library?,Yes,2021,test
+277,"Can this Committee address whether a judge may, in the exercise of discretion, reduce or waive certain Vehicle and Traffic Law surcharges regardless of a defendant's ability to pay?",No,2021,test
+278,"Can a judge preside in matters involving their former campaign manager after the two-year period has ended and without disclosure, as long as they can be fair and impartial?",Yes,2021,test
+279,Can a judge preside over unrelated matters where an attorney who provided brief and preliminary legal advice to the judge's law clerk's child appears without disclosure or insulation of the law clerk?,Yes,2021,test
+280,Is a full-time court attorney-referee who receives a commission of over $150 for serving as executor of a family member’s estate required to report it to the clerk of the court?,Yes,2021,test
+281,"Can a full-time judge serve as a ""fire officer"" or ""trustee"" for a not-for-profit volunteer fire department if the position does not involve peace officer or police officer status, investigative responsibilities or working with law enforcement, or fund-raising?",Yes,2021,test
+282,"Can a judge attend a political party's caucus to nominate candidates and allow eligible party members to vote on whether to nominate the judge for an elective nonjudicial office without resigning from judicial office, as long as their interest is not announced in advance?",Yes,2021,test
+283,Is the window period for an individual seeking election to Supreme Court nine months before the earlier of the date of formal nomination by convention or the date of a recognized party-sponsored caucus or committee meeting within the candidate's judicial district for the purpose of discussing or considering nominations of delegates to the judicial nominating convention?,Yes,2021,test
+284,Can a full-time judge serve on an ad hoc interview committee for a public school district?,Yes,2021,test
+285,Can a new full-time judge engage in activities to wind down their prior law practice and collect previously earned legal fees?,Yes,2021,test
+286,Is it allowed for a judicial candidate to enter into a contract with a law firm agreeing to recuse in certain matters if elected?,No,2021,test
+287,Is it permissible for the inquirer to share ethics opinions with counsel?,Yes,2021,test
+288,Can a part-time lawyer judge who was assigned as a special prosecutor before assuming the bench accept legal fees and disbursements for prosecutorial work performed before assuming the bench?,Yes,2021,test
+289,Can a part-time lawyer judge ordinarily appear before another part-time lawyer judge in the same county?,No,2021,test
+290,Can a practicing part-time lawyer judge represent a client before any judge of that court?,No,2021,test
+291,Is it permissible for a village justice to send a mailing to village residents detailing the court's jurisdiction and types of cases heard in the village court?,Yes,2021,test

@@ -1,0 +1,6 @@
+category,task_name,test_size,n_unique_labels,unique_label_ratio
+interpretation,unfair_tos,3813,9,0.0024
+issue-spotting,learned_hands_education,56,2,0.0357
+rhetorical-understanding,oral_argument_question_purpose,312,7,0.0224
+rule-application_conclusion,abercrombie,95,5,0.0526
+rule-recall,citation_prediction_classification,108,2,0.0185

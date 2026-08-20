@@ -1,0 +1,101 @@
+index,answer,text,split
+0,generic,"The mark ""Ivory"" for a product made of elephant tusks.",train
+1,descriptive,"The mark ""Tasty"" for bread.",train
+2,suggestive,"The mark ""Caress"" for body soap.",train
+3,arbitrary,"The mark ""Virgin"" for wireless communications.",train
+4,fanciful,"The mark ""Aswelly"" for a taxi service.",train
+0,generic,The mark “Salt” for packages of sodium chloride.,test
+1,generic,"The mark ""Aspirin"" for inflammation medicine.",test
+2,generic,"The mark ""Telephone"" for a portable device you can use to call people.",test
+3,generic,"The mark ""Food"" for a restaurant.",test
+4,generic,"The mark ""Kerosene"" for packages of flammable liquids used to start fires.",test
+5,generic,"The mark ""Mask"" for cloth that you wear on your face to filter air.",test
+6,generic,"The mark ""Gun"" for a firearm.",test
+7,generic,"The mark ""H2O"" for bottled water.",test
+8,generic,"The mark ""Watch"" for an Apple smartwatch.",test
+9,generic,"The mark ""Monitor"" for a digital display.",test
+10,generic,"The mark ""Car"" for a line of automobiles.",test
+11,generic,"The mark ""Popcorn"" for microwavable snacks.",test
+12,generic,"The mark ""Pen"" for writing implements which use ink.",test
+13,generic,"The mark ""Diamond"" for precious stones.",test
+14,generic,"The mark ""Cutlery"" for eating utencils.",test
+15,generic,"The mark ""Fruit"" for apples.",test
+16,generic,"The mark ""Pictures"" for a photography service.",test
+17,generic,"The mark ""Cables"" for electronic wires.",test
+18,generic,"The mark ""Tape"" for adhesive materials.",test
+19,descriptive,The mark “Sharp” for a television.,test
+20,descriptive,"The mark ""Trim"" for nail clippers.",test
+21,descriptive,"The mark ""Fresh"" for car deodorizer.",test
+22,descriptive,"The mark ""Cold and Creamy"" for ice cream desserts.",test
+23,descriptive,"The mark ""International Business Machines"" for a computer manufacturer.",test
+24,descriptive,"The mark ""Sharp"" for televisions.",test
+25,descriptive,"The mark ""Holiday Inn"" for hotel services.",test
+26,descriptive,"The mark ""Soft"" for pillows.",test
+27,descriptive,"The mark ""Smooth"" for keyboards.",test
+28,descriptive,"The mark ""Bright"" for desk lamps.",test
+29,descriptive,"The mark ""Compact"" for wallets.",test
+30,descriptive,"The mark ""Speedy"" for a bus service.",test
+31,descriptive,"The mark ""Best Washing"" for a laundromat.",test
+32,descriptive,"The mark ""Kold and Kreamy"" for milkshakes.",test
+33,descriptive,"The mark ""American Airlines"" for an air based transporation service.",test
+34,descriptive,"The mark ""QuickClean"" for towels.",test
+35,descriptive,"The mark ""Party Time!"" for an event planning service.",test
+36,descriptive,"The mark ""Unique Haircuts"" for a hair salon.",test
+37,descriptive,"The mark ""Coastal Winery"" for varietal wines.",test
+38,suggestive,"The mark ""Chicken of the Sea"" for canned fish.",test
+39,suggestive,"The mark ""Coppertone"" for suntan oil.",test
+40,suggestive,"The mark ""Jaguar"" for cars.",test
+41,suggestive,"The mark ""Airbus"" for an airplane manufacturer.",test
+42,arbitrary,"The mark ""Old Crow"" for whiskey.",test
+43,suggestive,"The mark ""Microsoft"" for small computers.",test
+44,suggestive,"The mark ""Netflix"" for an online streaming service.",test
+45,suggestive,"The mark ""Greyhound"" for a high speed bus service.",test
+46,suggestive,"The mark ""Citibank"" for urban financial services.",test
+47,suggestive,"The mark ""KitchenAid"" for baking appliances.",test
+48,suggestive,"The mark ""Quick Green"" for grass seed.",test
+49,suggestive,"The mark ""Public Eye"" for a weekly tabloid publication.",test
+50,suggestive,"The mark ""CarMax"" for a used car dealership.",test
+51,suggestive,"The mark ""Equine Technologies"" for horse hoof pads.",test
+52,suggestive,"The mark ""Penguin Appliances"" for air conditioning manufacturer.",test
+53,suggestive,"The mark ""7-Eleven"" for a convenience store that opens at 7am and closes at 11pm.",test
+54,suggestive,"The mark ""Seventeen"" for magazines targeted at teenagers.",test
+55,suggestive,"The mark ""Roach Motel"" for insect traps.",test
+56,suggestive,"The mark ""Orange Crush"" for fruit flavored soda.",test
+57,arbitrary,"The mark ""Apple"" for a computer manufacturer.",test
+58,arbitrary,"The mark ""Dove"" for chocolate.",test
+59,arbitrary,"The mark ""Lotus"" for software.",test
+60,arbitrary,"The mark ""Sun"" for computers.",test
+61,arbitrary,"The mark ""Camel"" for cigarettes.",test
+62,arbitrary,"The mark ""Coach"" for luxury accessories.",test
+63,arbitrary,"The mark ""Shell"" for gas stations.",test
+64,suggestive,"The mark ""Cheetah"" for a web browser.",test
+65,arbitrary,"The mark ""Oxygen"" for a line of pillows.",test
+66,arbitrary,"The mark ""Daisy"" for a sports car.",test
+67,arbitrary,"The mark ""Whirlpool"" for an oven.",test
+68,arbitrary,"The mark ""Penguin"" for a bus service.",test
+69,arbitrary,"The mark ""Amazon"" for an online shopping service.",test
+70,arbitrary,"The mark ""Sahara"" for an ice cream seller.",test
+71,arbitrary,"The mark ""Shark"" for a custom t-shirt maker.",test
+72,arbitrary,"The mark ""GreenBull"" for formal wear.",test
+73,arbitrary,"The mark ""Cheetah"" for a brand of wallets.",test
+74,arbitrary,"The mark ""TidePool"" for treehouse manufacturing company.",test
+75,arbitrary,"The mark ""Fever"" for washing detergent.",test
+76,fanciful,"The mark ""Madak"" for a printing company.",test
+77,fanciful,"The mark ""Yuteal"" for cleaning wipes.",test
+78,fanciful,"The mark ""Reloto"" for soda.",test
+79,fanciful,"The mark ""Wohold"" for gasoline.",test
+80,fanciful,The mark “Balto” for a television streaming service.,test
+81,fanciful,"The mark ""Whatpor"" for an online shopping service.",test
+82,fanciful,"The mark ""Moodle"" for an internet search engine.",test
+83,fanciful,"The mark ""Yoddles"" for a chocolate candy.",test
+84,fanciful,"The mark ""Heullga"" for a line of waterbottles.",test
+85,fanciful,"The mark ""Kalp"" for a consulting services company.",test
+86,fanciful,"The mark ""Imprion"" for a line of sports drinks.",test
+87,fanciful,"The mark ""Oamp"" for baseball bats.",test
+88,fanciful,"The mark ""Nekmit"" for a line of wedding rings.",test
+89,fanciful,"The mark ""Membles"" for a literature oriented magazine.",test
+90,fanciful,"The mark ""Sast"" for salad dressing.",test
+91,fanciful,"The mark ""Antilds"" for plant seeds.",test
+92,fanciful,"The mark ""Lanbe"" for custom wallets.",test
+93,fanciful,"The mark ""Vit"" for a video conferencing service.",test
+94,fanciful,"The mark ""Ceath"" for waterguns.",test

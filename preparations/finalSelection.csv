@@ -1,0 +1,16 @@
+category,task_name,test_size,n_unique_labels,unique_label_ratio
+interpretation,unfair_tos,3813,9,0.0024
+interpretation,maud_cor_standard_(superior_offer),100,8,0.08
+interpretation,maud_fiduciary_exception__board_determination_standard,179,8,0.0447
+issue-spotting,learned_hands_education,56,2,0.0357
+issue-spotting,learned_hands_benefits,66,2,0.0303
+issue-spotting,learned_hands_immigration,134,2,0.0149
+rhetorical-understanding,oral_argument_question_purpose,312,7,0.0224
+rhetorical-understanding,function_of_decision_section,367,7,0.0191
+rhetorical-understanding,scalr,571,5,0.0088
+rule-application_conclusion,abercrombie,95,5,0.0526
+rule-application_conclusion,telemarketing_sales_rule,47,2,0.0426
+rule-application_conclusion,personal_jurisdiction,50,2,0.04
+rule-recall,citation_prediction_classification,108,2,0.0185
+rule-recall,nys_judicial_ethics,292,2,0.0068
+rule-recall,international_citizenship_questions,9306,2,0.0002

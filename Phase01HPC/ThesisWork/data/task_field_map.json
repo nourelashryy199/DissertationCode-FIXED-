@@ -1,0 +1,7 @@
+{
+  "unfair_tos": {"context": "text", "question": null},
+  "learned_hands_education": {"context": "text", "question": null},
+  "oral_argument_question_purpose": {"context": "text", "question": "question"},
+  "abercrombie": {"context": "text", "question": null},
+  "citation_prediction_classification": {"context": "text", "question": null}
+}
