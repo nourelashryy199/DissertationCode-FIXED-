@@ -1,33 +1,22 @@
 #!/bin/bash
-# ============================================================
-# phase_0/slurm/smoke_test.sbatch
-# Quick GPU job for smoke_test_generation.py — 3 generations
-# total, should finish in well under 5 minutes of actual compute.
-#
-# FILL IN the #SBATCH lines marked TODO below by copying the
-# matching lines from your existing
-# phase_1_hpc/slurm/run_stage_a_qwen7b.sbatch — partition,
-# account, and module-load lines are cluster-account-specific
-# and shouldn't be guessed here.
-# ============================================================
-
 #SBATCH --job-name=smoke_test
+#SBATCH --partition=gpu
+#SBATCH --gres=gpu:a100:1
 #SBATCH --time=00:15:00
-#SBATCH --nodes=1
-#SBATCH --gpus=1
+#SBATCH --mem=32G
 #SBATCH --output=smoke_test_%j.out
 #SBATCH --error=smoke_test_%j.err
-# TODO: --partition=<copy from run_stage_a_qwen7b.sbatch>
-# TODO: --account=<copy from run_stage_a_qwen7b.sbatch>
-# TODO: --mem=<copy from run_stage_a_qwen7b.sbatch>
 
-# TODO: copy your module load / conda activate / venv activate
-# lines here, exactly as in run_stage_a_qwen7b.sbatch
+PYTHON=/users/msp25noe/.conda/envs/dissertation_env/bin/python3
 
-export DISSERTATION_ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")/../phase_1_hpc
-# ^ resolves to the phase_1_hpc/ directory regardless of where
-#   this job is submitted from — adjust if your repo layout
-#   differs from phase_0/ and phase_1_hpc/ as siblings.
+$PYTHON --version
+$PYTHON -c "import sys; assert sys.version_info >= (3, 10), f'Python too old: {sys.version}'"
 
-cd "$(dirname "$(readlink -f "$0")")/../scripts"
-python smoke_test_generation.py --model Qwen/Qwen2.5-7B-Instruct
+export DISSERTATION_ROOT=/users/msp25noe/Thesis_Code/DissertationCode-FIXED-/Phase01HPC/ThesisWork
+export HF_HOME=/mnt/parscratch/users/$USER/hf_cache
+
+cd /users/msp25noe/Thesis_Code/DissertationCode-FIXED-/Phase00Testing/scripts
+
+echo "Starting smoke_test_generation.py at $(date)"
+$PYTHON smoke_test_generation.py --model Qwen/Qwen2.5-7B-Instruct
+echo "Finished at $(date)"
