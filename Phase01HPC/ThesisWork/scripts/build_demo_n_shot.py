@@ -43,21 +43,66 @@ def pick_demos_at_k(train_pool, embeddings, k):
     returns the k demonstrations closest to their respective centroids.
     For k=1, this is just the single instance closest to the overall
     centroid of all embeddings (k-means with one cluster is trivial).
+
+    FALLBACK: if a task's training data contains near-duplicate or
+    identical instances (their embeddings end up virtually identical),
+    k-means can collapse and return FEWER than k distinct clusters —
+    leaving one or more requested clusters with zero members. Rather
+    than crash (the original behavior), any empty cluster is filled by
+    picking whichever not-yet-selected training instance is farthest
+    (most diverse) from the demonstrations already chosen — preserving
+    the goal of diverse representative examples even when the data
+    itself doesn't cleanly separate into k groups. This is a genuine,
+    disclosable data-quality limitation for a task in the Methodology,
+    not a silent fudge — it only activates when true clustering fails.
     """
     if k == 1:
         centroid = embeddings.mean(axis=0)
         dists = np.linalg.norm(embeddings - centroid, axis=1)
         indices = [int(np.argmin(dists))]
-    else:
-        kmeans = KMeans(n_clusters=k, random_state=config.CLUSTERING_RANDOM_STATE, n_init=10)
-        cluster_labels = kmeans.fit_predict(embeddings)
-        indices = []
-        for cluster_id in range(k):
-            member_idxs = np.where(cluster_labels == cluster_id)[0]
-            cluster_embeddings = embeddings[member_idxs]
-            centroid = kmeans.cluster_centers_[cluster_id]
-            dists = np.linalg.norm(cluster_embeddings - centroid, axis=1)
-            indices.append(int(member_idxs[np.argmin(dists)]))
+        return indices
+
+    kmeans = KMeans(n_clusters=k, random_state=config.CLUSTERING_RANDOM_STATE, n_init=10)
+    cluster_labels = kmeans.fit_predict(embeddings)
+    indices = []
+    used = set()
+    degenerate_fallback_used = False
+
+    for cluster_id in range(k):
+        member_idxs = np.where(cluster_labels == cluster_id)[0]
+
+        if len(member_idxs) == 0:
+            # Degenerate cluster (k-means found fewer than k distinct
+            # groups) — fall back to the farthest not-yet-chosen point
+            # from what's already selected, to preserve diversity intent.
+            degenerate_fallback_used = True
+            remaining = [i for i in range(len(embeddings)) if i not in used]
+            if not remaining:
+                break  # train pool smaller than k — can't fill further
+            if indices:
+                chosen_embeds = embeddings[indices]
+                dists_to_chosen = np.array([
+                    np.min(np.linalg.norm(embeddings[i] - chosen_embeds, axis=1))
+                    for i in remaining
+                ])
+                pick = remaining[int(np.argmax(dists_to_chosen))]
+            else:
+                pick = remaining[0]
+            indices.append(pick)
+            used.add(pick)
+            continue
+
+        cluster_embeddings = embeddings[member_idxs]
+        centroid = kmeans.cluster_centers_[cluster_id]
+        dists = np.linalg.norm(cluster_embeddings - centroid, axis=1)
+        chosen = int(member_idxs[np.argmin(dists)])
+        indices.append(chosen)
+        used.add(chosen)
+
+    if degenerate_fallback_used:
+        print(f"    NOTE: k={k} clustering was degenerate for this task (fewer than {k} "
+              f"distinct clusters found, likely near-duplicate training instances) — "
+              f"diversity-based fallback was used to fill the gap.")
 
     return indices
 
