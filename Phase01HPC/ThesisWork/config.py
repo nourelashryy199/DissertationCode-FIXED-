@@ -108,8 +108,7 @@ CLUSTERING_RANDOM_STATE = 42 #a fixed random seed for reproducibility of cluster
 HPC_ROOT = os.environ.get("DISSERTATION_ROOT", os.getcwd())
 #reads the DISSERTATION_ROOT environment variable (if set) to determine the root directory for all data and output paths. If not set, defaults to the current working directory.
 DATA_DIR = os.path.join(HPC_ROOT, "data", "legalbench_csv")
-EVAL_POOLS_DIR = os.path.join(HPC_ROOT, "data", "eval_pools")
-MANIFEST_PATH = os.path.join(HPC_ROOT, "data", "manifest.csv")
+EVAL_POOLS_DIR = os.path.join(HPC_ROOT, "eval_pools")
 DEMO_DIR = os.path.join(HPC_ROOT, "demonstrations")
 RAW_GEN_DIR = os.path.join(HPC_ROOT, "outputs", "raw_generations")
 PARSED_DIR = os.path.join(HPC_ROOT, "outputs", "parsed_predictions")
