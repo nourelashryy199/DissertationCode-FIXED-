@@ -70,15 +70,18 @@ def add_normalized_fit_scores(fit_scores: pd.DataFrame) -> pd.DataFrame:
     can inflate raw fit_score to large magnitudes that are correct
     but hard to compare intuitively across categories.
     """
-    def minmax(group):
-        lo, hi = group["fit_score"].min(), group["fit_score"].max()
+    def minmax_normalize(s):
+        lo, hi = s.min(), s.max()
         span = hi - lo
-        group["fit_score_normalized"] = (
-            (group["fit_score"] - lo) / span if span > 1e-9 else 0.5
-        )
-        return group
+        if span > 1e-9:
+            return (s - lo) / span
+        return pd.Series(0.5, index=s.index)
 
-    return fit_scores.groupby("category", group_keys=False).apply(minmax, include_groups=False)
+    fit_scores = fit_scores.copy()
+    fit_scores["fit_score_normalized"] = (
+        fit_scores.groupby("category")["fit_score"].transform(minmax_normalize)
+    )
+    return fit_scores
 
 def identify_champions(fit_scores: pd.DataFrame) -> pd.Series:
     """For each category, the strategy with the highest Fit Score."""
