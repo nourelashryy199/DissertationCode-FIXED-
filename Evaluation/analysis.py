@@ -78,7 +78,7 @@ def add_normalized_fit_scores(fit_scores: pd.DataFrame) -> pd.DataFrame:
         )
         return group
 
-    return fit_scores.groupby("category", group_keys=False).apply(minmax)
+    return fit_scores.groupby("category", group_keys=False).apply(minmax, include_groups=False)
 
 def identify_champions(fit_scores: pd.DataFrame) -> pd.Series:
     """For each category, the strategy with the highest Fit Score."""
