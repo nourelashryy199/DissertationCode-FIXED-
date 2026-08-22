@@ -1,0 +1,12 @@
+[
+  {
+    "context": "The mark \"Tasty\" for bread.",
+    "question": "",
+    "label": "descriptive"
+  },
+  {
+    "context": "The mark \"Virgin\" for wireless communications.",
+    "question": "",
+    "label": "arbitrary"
+  }
+]

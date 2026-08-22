@@ -1,0 +1,12 @@
+[
+  {
+    "context": "",
+    "question": "So, counsel, we've spoken a little bit about how Colorado has handled this compelled speech question differently with respect to different messages, some that it prefers, others that it dislikes. I'm curious how other states have dealt with this conundrum besides Colorado and how you -- which ones of those you think we should take account of.",
+    "label": "Background"
+  },
+  {
+    "context": "",
+    "question": "Is that -- do you understand that to be part of the stipulations or not?",
+    "label": "Clarification"
+  }
+]
