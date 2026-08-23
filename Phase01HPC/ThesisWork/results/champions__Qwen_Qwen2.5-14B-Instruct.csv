@@ -1,0 +1,6 @@
+category,strategy
+interpretation,few_shot_2
+issue-spotting,role_based
+rhetorical-understanding,few_shot_3
+rule-application_conclusion,role_based
+rule-recall,few_shot_3
