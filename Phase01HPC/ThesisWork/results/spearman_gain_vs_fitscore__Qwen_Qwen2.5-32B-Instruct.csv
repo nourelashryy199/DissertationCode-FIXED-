@@ -1,0 +1,6 @@
+category,spearman_rho,p_value,gain_champion,fit_score_champion,champion_changed
+interpretation,0.9560439560439561,3.365097276351456e-07,few_shot_3,few_shot_2,True
+issue-spotting,0.6143273999520582,0.025489854606615642,creac,creac,False
+rhetorical-understanding,0.9883720930232558,2.3860214769256256e-10,few_shot_3,few_shot_3,False
+rule-application_conclusion,0.9175824175824175,9.906225317564678e-06,cot,cot,False
+rule-recall,0.9285714285714285,4.607427269933694e-06,structured,role_based,True

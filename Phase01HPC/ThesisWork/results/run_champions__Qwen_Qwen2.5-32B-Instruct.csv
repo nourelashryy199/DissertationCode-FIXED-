@@ -1,0 +1,6 @@
+category,strategy
+interpretation,few_shot_2
+issue-spotting,creac
+rhetorical-understanding,few_shot_3
+rule-application_conclusion,cot
+rule-recall,role_based
