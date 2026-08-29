@@ -1,0 +1,6 @@
+category,Qwen/Qwen2.5-7B-Instruct,Qwen/Qwen2.5-14B-Instruct,Qwen/Qwen2.5-32B-Instruct,all_models_agree
+interpretation,few_shot_2,few_shot_3,few_shot_2,False
+issue-spotting,structured,role_based,creac,False
+rhetorical-understanding,one_shot,few_shot_3,few_shot_3,False
+rule-application_conclusion,structured,role_based,cot,False
+rule-recall,few_shot_2,few_shot_3,structured,False
