@@ -176,7 +176,32 @@ def run_generic_vs_framework_tests(dfs: dict) -> pd.DataFrame:
 
     return pd.DataFrame(rows)
 
+# ============================================================
+# CHAMPION COMPARISON TABLE (RQ1/RQ3: category x model, showing
+# each model's Joint Fit Score champion side by side, so cross-model
+# champion stability can be read at a glance without manually
+# cross-referencing three separate joint_champions__*.csv files)
+# ============================================================
 
+def build_champion_comparison_table() -> pd.DataFrame:
+    rows = {}
+    for model_name in MODELS:
+        safe_name = model_name.replace("/", "_")
+        path = os.path.join(config.RESULTS_DIR, f"joint_champions__{safe_name}.csv")
+        if not os.path.exists(path):
+            print(f"WARNING: {path} not found — run analysis.py for {model_name} first. "
+                  f"Skipping this model in the champion comparison table.")
+            continue
+        champions = pd.read_csv(path, index_col=0).iloc[:, 0]
+        rows[model_name] = champions
+
+    table = pd.DataFrame(rows)
+    table.index.name = "category"
+
+    if table.shape[1] > 1:
+        table["all_models_agree"] = table.apply(lambda row: row.nunique() == 1, axis=1)
+
+    return table
 def main():
     dfs = {}
     for model_name in MODELS:
@@ -208,6 +233,12 @@ def main():
     gvf_path = os.path.join(config.RESULTS_DIR, "generic_vs_framework_significance.csv")
     generic_vs_framework.to_csv(gvf_path, index=False)
     print(f"Saved: {gvf_path}")
+    print("\n=== Champion Comparison: Joint Fit Score champion per category, per model (RQ1/RQ3) ===")
+    champion_comparison = build_champion_comparison_table()
+    print(champion_comparison.to_string())
+    champion_comparison_path = os.path.join(config.RESULTS_DIR, "joint_champion_comparison_across_models.csv")
+    champion_comparison.to_csv(champion_comparison_path)
+    print(f"Saved: {champion_comparison_path}")
 
 
 if __name__ == "__main__":

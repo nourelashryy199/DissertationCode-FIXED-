@@ -249,7 +249,37 @@ def compute_spearman_gain_vs_fitscore(fit_scores: pd.DataFrame) -> pd.DataFrame:
         })
     return pd.DataFrame(rows)
 
+# ============================================================
+# CHAMPION DETAIL TABLE (RQ1: for each category's Joint Fit Score
+# champion, show its Run/Rephrasing/Joint scores side by side with
+# its ANOVA variance-source breakdown, so this doesn't need to be
+# manually assembled from four separate CSVs every time)
+# ============================================================
 
+def build_champion_detail_table(joint_champions, run_fit_scores, rephrasing_fit_scores,
+                                  joint_fit_scores, anova_table) -> pd.DataFrame:
+    rows = []
+    for category, strategy in joint_champions.items():
+        run_row = run_fit_scores[(run_fit_scores["category"] == category) &
+                                   (run_fit_scores["strategy"] == strategy)]
+        rephrasing_row = rephrasing_fit_scores[(rephrasing_fit_scores["category"] == category) &
+                                                 (rephrasing_fit_scores["strategy"] == strategy)]
+        joint_row = joint_fit_scores[(joint_fit_scores["category"] == category) &
+                                       (joint_fit_scores["strategy"] == strategy)]
+        anova_row = anova_table[(anova_table["category"] == category) &
+                                  (anova_table["strategy"] == strategy)]
+
+        rows.append({
+            "category": category,
+            "champion_strategy": strategy,
+            "run_fit_score": run_row["fit_score"].iloc[0] if len(run_row) else np.nan,
+            "rephrasing_fit_score": rephrasing_row["fit_score"].iloc[0] if len(rephrasing_row) else np.nan,
+            "joint_fit_score": joint_row["fit_score"].iloc[0] if len(joint_row) else np.nan,
+            "pct_variance_rephrasing": anova_row["pct_variance_rephrasing"].iloc[0] if len(anova_row) else np.nan,
+            "pct_variance_run": anova_row["pct_variance_run"].iloc[0] if len(anova_row) else np.nan,
+            "pct_variance_interaction": anova_row["pct_variance_interaction"].iloc[0] if len(anova_row) else np.nan,
+        })
+    return pd.DataFrame(rows)
 # ============================================================
 # MAIN
 # ============================================================
@@ -336,6 +366,13 @@ def main():
           .to_string(index=False))
     anova_table.to_csv(os.path.join(config.RESULTS_DIR, f"anova_decomposition__{safe_model_name}.csv"), index=False)
 
+        # ---------- CHAMPION DETAIL TABLE (RQ1) ----------
+    champion_detail = build_champion_detail_table(
+        joint_champions, run_fit_scores, rephrasing_fit_scores, joint_fit_scores, anova_table
+    )
+    print("\n=== Champion Detail: Run/Rephrasing/Joint Fit Score + ANOVA breakdown, per category's champion ===")
+    print(champion_detail.to_string(index=False))
+    champion_detail.to_csv(os.path.join(config.RESULTS_DIR, f"champion_detail__{safe_model_name}.csv"), index=False)
     # ---------- STRATEGY DISPERSION ----------
     dispersion, per_strategy_acc_for_dispersion = compute_strategy_dispersion(df)
     print("\n=== Strategy Dispersion (per category, across all 13 strategies) ===")
