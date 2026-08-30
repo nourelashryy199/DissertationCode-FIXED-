@@ -325,6 +325,25 @@ def main():
         ax.set_ylabel("Spearman's rho")
         plt.xticks(rotation=30, ha="right")
         savefig(fig, "bar_spearman_gain_vs_fitscore", safe_model_name)
+            # ============================================================
+    # NEW: Champion margin — is the win decisive or "effectively tied"
+    # with the runner-up? (RQ1, McNemar's test vs runner-up)
+    # ============================================================
+    margin_path = os.path.join(config.RESULTS_DIR, f"champion_margin__{safe_model_name}.csv")
+    margin = try_read_csv(margin_path)
+    if margin is not None:
+        margin = margin.set_index("category").reindex(category_order).reset_index()
+        margin = margin.dropna(subset=["p_value"])
+        fig, ax = plt.subplots(figsize=(10, 5))
+        colors = ["#55A868" if tied else "#C44E52" for tied in margin["effectively_tied"]]
+        bars = ax.bar(margin["category"], margin["p_value"], color=colors)
+        ax.axhline(0.05, color="black", linewidth=0.8, linestyle="--", label="p = 0.05 threshold")
+        ax.set_title(f"Champion vs. Runner-Up: McNemar's Test p-value, per Category ({model_name})\n"
+                     f"(Green = effectively tied with runner-up; Red = champion wins decisively)")
+        ax.set_ylabel("p-value")
+        ax.legend()
+        plt.xticks(rotation=30, ha="right")
+        savefig(fig, "bar_champion_margin_significance", safe_model_name)
 
     print("\nAll visualizations generated.")
 
