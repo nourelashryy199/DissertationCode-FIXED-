@@ -1,0 +1,6 @@
+category,champion_changed,gain_champion,fit_score_champion,fit_score_gap_if_stuck_with_gain_champion
+interpretation,True,few_shot_3,few_shot_2,4.809635415114831
+issue-spotting,False,role_based,role_based,0.0
+rhetorical-understanding,False,few_shot_3,few_shot_3,0.0
+rule-application_conclusion,False,role_based,role_based,0.0
+rule-recall,False,few_shot_3,few_shot_3,0.0

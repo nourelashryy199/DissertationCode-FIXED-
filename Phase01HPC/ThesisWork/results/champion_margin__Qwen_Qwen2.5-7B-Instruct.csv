@@ -1,0 +1,6 @@
+category,champion_strategy,champion_score_normalized,runner_up_strategy,runner_up_score_normalized,champion_correct_runner_wrong,champion_wrong_runner_correct,p_value,method,effectively_tied
+interpretation,few_shot_2,1.0,role_based,0.9994943832940159,42,54,0.2615722360139462,chi_square_corrected,True
+issue-spotting,structured,1.0,creac,0.8206426977504572,14,7,0.18924713134765625,exact_binomial,True
+rhetorical-understanding,one_shot,1.0,few_shot_2,0.9825990983883806,24,25,1.0,chi_square_corrected,True
+rule-application_conclusion,structured,1.0,cot,0.9594014518898862,77,80,0.8731824897080598,chi_square_corrected,True
+rule-recall,few_shot_2,1.0,creac,0.7027150300423077,90,87,0.8805048920668491,chi_square_corrected,True
