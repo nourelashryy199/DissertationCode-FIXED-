@@ -202,6 +202,44 @@ def build_champion_comparison_table() -> pd.DataFrame:
         table["all_models_agree"] = table.apply(lambda row: row.nunique() == 1, axis=1)
 
     return table
+
+# ============================================================
+# POOLED DISPERSION VS PENALTY CORRELATION (RQ2: same check as
+# analysis.py's per-model version, but pooled across all three
+# models -- n=15 category-model pairs instead of n=5, giving more
+# statistical power to the "does Dispersion predict Transfer
+# Penalty cost" question)
+# ============================================================
+
+def compute_pooled_dispersion_penalty_correlation() -> dict:
+    rows = []
+    for model_name in MODELS:
+        safe_name = model_name.replace("/", "_")
+        dispersion_path = os.path.join(config.RESULTS_DIR, f"strategy_dispersion__{safe_name}.csv")
+        risk_path = os.path.join(config.RESULTS_DIR, f"joint_risk_summary__{safe_name}.csv")
+        if not os.path.exists(dispersion_path) or not os.path.exists(risk_path):
+            print(f"WARNING: dispersion or risk summary missing for {model_name} — "
+                  f"skipping in pooled correlation. Run analysis.py for this model first.")
+            continue
+        dispersion = pd.read_csv(dispersion_path)
+        risk = pd.read_csv(risk_path, index_col=0)
+        merged = dispersion.set_index("category").join(risk, how="inner")
+        merged["model"] = model_name
+        rows.append(merged)
+
+    if len(rows) == 0:
+        return {"n": 0, "pearson_r": np.nan, "pearson_p": np.nan,
+                "spearman_rho": np.nan, "spearman_p": np.nan}
+
+    pooled = pd.concat(rows)
+    pearson_r, pearson_p = scipy_stats.pearsonr(pooled["strategy_dispersion"], pooled["mean_penalty"])
+    spearman_rho, spearman_p = scipy_stats.spearmanr(pooled["strategy_dispersion"], pooled["mean_penalty"])
+
+    return {
+        "n": len(pooled),
+        "pearson_r": pearson_r, "pearson_p": pearson_p,
+        "spearman_rho": spearman_rho, "spearman_p": spearman_p,
+    }
 def main():
     dfs = {}
     for model_name in MODELS:
@@ -239,6 +277,13 @@ def main():
     champion_comparison_path = os.path.join(config.RESULTS_DIR, "joint_champion_comparison_across_models.csv")
     champion_comparison.to_csv(champion_comparison_path)
     print(f"Saved: {champion_comparison_path}")
+    print("\n=== Pooled Dispersion vs Transfer Penalty Correlation (across all 3 models, n=15) (RQ2) ===")
+    pooled_corr = compute_pooled_dispersion_penalty_correlation()
+    print(pooled_corr)
+    pd.DataFrame([pooled_corr]).to_csv(
+        os.path.join(config.RESULTS_DIR, "pooled_dispersion_penalty_correlation.csv"), index=False
+    )
+    print(f"Saved: {os.path.join(config.RESULTS_DIR, 'pooled_dispersion_penalty_correlation.csv')}")
 
 
 if __name__ == "__main__":

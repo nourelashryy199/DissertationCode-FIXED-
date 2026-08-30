@@ -344,6 +344,45 @@ def main():
         ax.legend()
         plt.xticks(rotation=30, ha="right")
         savefig(fig, "bar_champion_margin_significance", safe_model_name)
+            # ============================================================
+    # NEW: Importer vs Exporter risk — which categories are
+    # dangerous to import a strategy INTO, and which categories'
+    # champions cause damage when exported elsewhere? (RQ2)
+    # ============================================================
+    importer_path = os.path.join(config.RESULTS_DIR, f"joint_risk_summary__{safe_model_name}.csv")
+    exporter_path = os.path.join(config.RESULTS_DIR, f"joint_exporter_risk__{safe_model_name}.csv")
+    importer_risk = try_read_csv(importer_path, index_col=0)
+    exporter_risk = try_read_csv(exporter_path, index_col=0)
+    if importer_risk is not None and exporter_risk is not None:
+        combined = pd.DataFrame({
+            "Importer Risk (mean penalty received)": importer_risk["mean_penalty"],
+            "Exporter Risk (mean penalty caused)": exporter_risk["mean_penalty_caused"],
+        }).reindex(category_order)
+        fig, ax = plt.subplots(figsize=(11, 6))
+        combined.plot(kind="bar", ax=ax, color=["#C44E52", "#4C72B0"])
+        ax.set_title(f"Importer vs. Exporter Risk, per Category ({model_name})\n"
+                     f"(Importer = risk of receiving a foreign strategy; Exporter = risk this category's own champion causes elsewhere)")
+        ax.set_ylabel("Mean Joint Transfer Penalty")
+        ax.legend(loc="upper right")
+        plt.xticks(rotation=30, ha="right")
+        savefig(fig, "bar_importer_exporter_risk", safe_model_name)
+
+    # ============================================================
+    # NEW: Strategy Dispersion vs. Transfer Penalty scatter — does
+    # dispersion predict how costly a wrong strategy import is? (RQ2)
+    # ============================================================
+    dispersion_check = try_read_csv(dispersion_path)
+    if dispersion_check is not None and importer_risk is not None:
+        merged = dispersion_check.set_index("category").join(importer_risk, how="inner")
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.scatter(merged["strategy_dispersion"], merged["mean_penalty"], s=80, color="#4C72B0")
+        for cat, row in merged.iterrows():
+            ax.annotate(cat, (row["strategy_dispersion"], row["mean_penalty"]),
+                        textcoords="offset points", xytext=(5, 5), fontsize=8)
+        ax.set_xlabel("Strategy Dispersion")
+        ax.set_ylabel("Mean Joint Transfer Penalty (Importer Risk)")
+        ax.set_title(f"Strategy Dispersion vs. Transfer Penalty, per Category ({model_name})")
+        savefig(fig, "scatter_dispersion_vs_penalty", safe_model_name)
 
     print("\nAll visualizations generated.")
 

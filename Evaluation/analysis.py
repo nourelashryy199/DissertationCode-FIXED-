@@ -371,6 +371,65 @@ def compute_consistency_value(fit_scores: pd.DataFrame, spearman_results: pd.Dat
         })
     return pd.DataFrame(rows)
 
+# ============================================================
+# EXPORTER RISK (RQ2: which category's champion strategy, when
+# exported elsewhere, tends to cause the most damage? Row-wise
+# mean of the off-diagonal penalty matrix — the mirror image of
+# compute_risk_summary's column-wise, importer-focused version)
+# ============================================================
+
+def compute_exporter_risk(penalty_matrix: pd.DataFrame) -> pd.DataFrame:
+    off_diagonal = penalty_matrix.copy()
+    np.fill_diagonal(off_diagonal.values, np.nan)
+    return pd.DataFrame({
+        "mean_penalty_caused": off_diagonal.mean(axis=1),
+        "std_penalty_caused": off_diagonal.std(axis=1),
+    })
+
+
+# ============================================================
+# TRANSFER ASYMMETRY (RQ2: is Penalty(i->j) the same as
+# Penalty(j->i)? Paired comparison for every category pair.)
+# ============================================================
+
+def compute_transfer_asymmetry(penalty_matrix: pd.DataFrame) -> pd.DataFrame:
+    categories = list(penalty_matrix.index)
+    rows = []
+    for idx_i, i in enumerate(categories):
+        for j in categories[idx_i + 1:]:
+            penalty_ij = penalty_matrix.loc[i, j]
+            penalty_ji = penalty_matrix.loc[j, i]
+            if pd.isna(penalty_ij) or pd.isna(penalty_ji):
+                continue
+            rows.append({
+                "category_i": i, "category_j": j,
+                "penalty_i_to_j": penalty_ij, "penalty_j_to_i": penalty_ji,
+                "asymmetry": abs(penalty_ij - penalty_ji),
+                "more_costly_direction": f"{i}->{j}" if penalty_ij > penalty_ji else f"{j}->{i}",
+            })
+    return pd.DataFrame(rows)
+
+
+# ============================================================
+# DISPERSION VS PENALTY CORRELATION (RQ2: does Strategy Dispersion
+# predict how costly a wrong strategy import is for that category?
+# n=5 per model; a pooled, higher-power version across all three
+# models lives in cross_model_significance.py.)
+# ============================================================
+
+def compute_dispersion_penalty_correlation(dispersion: pd.DataFrame, risk_summary: pd.DataFrame) -> dict:
+    merged = dispersion.set_index("category").join(risk_summary, how="inner")
+    if len(merged) < 3:
+        return {"n": len(merged), "pearson_r": np.nan, "pearson_p": np.nan,
+                "spearman_rho": np.nan, "spearman_p": np.nan}
+    pearson_r, pearson_p = scipy_stats.pearsonr(merged["strategy_dispersion"], merged["mean_penalty"])
+    spearman_rho, spearman_p = scipy_stats.spearmanr(merged["strategy_dispersion"], merged["mean_penalty"])
+    return {
+        "n": len(merged),
+        "pearson_r": pearson_r, "pearson_p": pearson_p,
+        "spearman_rho": spearman_rho, "spearman_p": spearman_p,
+    }
+
 def main():
     model_name = config.get_model_name_from_args().model
     safe_model_name = model_name.replace("/", "_")
@@ -437,9 +496,7 @@ def main():
     print("\n=== Joint Fit Score: Category Champions ===")
     print(joint_champions)
     print("\n=== Joint Transfer Penalty Matrix ===")
-    print(joint_penalty.round(3))
-
-    joint_fit_scores.to_csv(os.path.join(config.RESULTS_DIR, f"joint_fit_scores__{safe_model_name}.csv"), index=False)
+    print(joint_penalty.round(3))    joint_fit_scores.to_csv(os.path.join(config.RESULTS_DIR, f"joint_fit_scores__{safe_model_name}.csv"), index=False)
     joint_champions.to_csv(os.path.join(config.RESULTS_DIR, f"joint_champions__{safe_model_name}.csv"))
     joint_penalty.to_csv(os.path.join(config.RESULTS_DIR, f"joint_transfer_penalty__{safe_model_name}.csv"))
     joint_penalty_norm.to_csv(os.path.join(config.RESULTS_DIR, f"joint_transfer_penalty_normalized__{safe_model_name}.csv"))
@@ -453,18 +510,39 @@ def main():
           .to_string(index=False))
     anova_table.to_csv(os.path.join(config.RESULTS_DIR, f"anova_decomposition__{safe_model_name}.csv"), index=False)
 
-        # ---------- CHAMPION DETAIL TABLE (RQ1) ----------
+    # ---------- CHAMPION DETAIL TABLE (RQ1) ----------
     champion_detail = build_champion_detail_table(
         joint_champions, run_fit_scores, rephrasing_fit_scores, joint_fit_scores, anova_table
     )
     print("\n=== Champion Detail: Run/Rephrasing/Joint Fit Score + ANOVA breakdown, per category's champion ===")
     print(champion_detail.to_string(index=False))
     champion_detail.to_csv(os.path.join(config.RESULTS_DIR, f"champion_detail__{safe_model_name}.csv"), index=False)
+
     # ---------- STRATEGY DISPERSION ----------
     dispersion, per_strategy_acc_for_dispersion = compute_strategy_dispersion(df)
     print("\n=== Strategy Dispersion (per category, across all 13 strategies) ===")
     print(dispersion.to_string(index=False))
     dispersion.to_csv(os.path.join(config.RESULTS_DIR, f"strategy_dispersion__{safe_model_name}.csv"), index=False)
+
+    # ---------- EXPORTER RISK (RQ2) ----------
+    joint_exporter_risk = compute_exporter_risk(joint_penalty)
+    print("\n=== Joint Exporter Risk (mean penalty caused when this category's champion is exported) ===")
+    print(joint_exporter_risk.round(3))
+    joint_exporter_risk.to_csv(os.path.join(config.RESULTS_DIR, f"joint_exporter_risk__{safe_model_name}.csv"))
+
+    # ---------- TRANSFER ASYMMETRY (RQ2) ----------
+    joint_asymmetry = compute_transfer_asymmetry(joint_penalty)
+    print("\n=== Joint Transfer Asymmetry: Penalty(i->j) vs Penalty(j->i) ===")
+    print(joint_asymmetry.to_string(index=False))
+    joint_asymmetry.to_csv(os.path.join(config.RESULTS_DIR, f"joint_transfer_asymmetry__{safe_model_name}.csv"), index=False)
+
+    # ---------- DISPERSION VS PENALTY CORRELATION (RQ2) ----------
+    dispersion_penalty_corr = compute_dispersion_penalty_correlation(dispersion, joint_risk)
+    print("\n=== Dispersion vs Joint Transfer Penalty Correlation ===")
+    print(dispersion_penalty_corr)
+    pd.DataFrame([dispersion_penalty_corr]).to_csv(
+        os.path.join(config.RESULTS_DIR, f"dispersion_penalty_correlation__{safe_model_name}.csv"), index=False
+    )
 
     # ---------- SPEARMAN: does dividing by variance change the champion? (RQ1) ----------
     spearman_results = compute_spearman_gain_vs_fitscore(run_fit_scores)
@@ -472,7 +550,7 @@ def main():
     print(spearman_results.to_string(index=False))
     spearman_results.to_csv(os.path.join(config.RESULTS_DIR, f"spearman_gain_vs_fitscore__{safe_model_name}.csv"), index=False)
 
-        # ---------- CHAMPION MARGIN: is the win decisive or "basically tied"? (RQ1) ----------
+    # ---------- CHAMPION MARGIN: is the win decisive or "basically tied"? (RQ1) ----------
     champion_margin = compute_champion_margin(joint_fit_scores, df)
     print("\n=== Champion Margin: gap over runner-up, per category (Joint Fit Score, normalized) ===")
     print(champion_margin.to_string(index=False))
