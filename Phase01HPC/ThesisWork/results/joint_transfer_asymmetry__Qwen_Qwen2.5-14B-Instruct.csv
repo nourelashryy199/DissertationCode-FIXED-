@@ -1,0 +1,11 @@
+category_i,category_j,penalty_i_to_j,penalty_j_to_i,asymmetry,more_costly_direction
+interpretation,issue-spotting,1.6706192973456464,0.7168707835924957,0.9537485137531507,interpretation->issue-spotting
+interpretation,rhetorical-understanding,0.0,0.0,0.0,rhetorical-understanding->interpretation
+interpretation,rule-application_conclusion,2.716221140855162,0.7168707835924957,1.9993503572626665,interpretation->rule-application_conclusion
+interpretation,rule-recall,0.0,0.0,0.0,rule-recall->interpretation
+issue-spotting,rhetorical-understanding,7.397386993827675,1.6706192973456464,5.726767696482029,issue-spotting->rhetorical-understanding
+issue-spotting,rule-application_conclusion,0.0,0.0,0.0,rule-application_conclusion->issue-spotting
+issue-spotting,rule-recall,0.3284430927214323,1.6706192973456464,1.342176204624214,rule-recall->issue-spotting
+rhetorical-understanding,rule-application_conclusion,2.716221140855162,7.397386993827675,4.681165852972513,rule-application_conclusion->rhetorical-understanding
+rhetorical-understanding,rule-recall,0.0,0.0,0.0,rule-recall->rhetorical-understanding
+rule-application_conclusion,rule-recall,0.3284430927214323,2.716221140855162,2.38777804813373,rule-recall->rule-application_conclusion
