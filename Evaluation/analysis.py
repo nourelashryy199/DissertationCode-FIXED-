@@ -283,6 +283,93 @@ def build_champion_detail_table(joint_champions, run_fit_scores, rephrasing_fit_
 # ============================================================
 # MAIN
 # ============================================================
+# ============================================================
+# CHAMPION MARGIN (quantifies "basically tied" — the gap between
+# the winning strategy and the runner-up, per category, at the
+# Joint Fit Score level)
+# ============================================================
+
+def mcnemar_test(n_a_correct_b_wrong: int, n_a_wrong_b_correct: int):
+    """Same adaptive McNemar's test as cross_model_significance.py, reused
+    here to compare a champion against its runner-up WITHIN one model."""
+    b, c = n_a_correct_b_wrong, n_a_wrong_b_correct
+    n_discordant = b + c
+    if n_discordant == 0:
+        return None, 1.0, "no_discordant_pairs"
+    if n_discordant < 25:
+        result = scipy_stats.binomtest(min(b, c), n_discordant, 0.5, alternative="two-sided")
+        return None, result.pvalue, "exact_binomial"
+    chi2 = ((abs(b - c) - 1) ** 2) / n_discordant
+    p_val = scipy_stats.chi2.sf(chi2, df=1)
+    return chi2, p_val, "chi_square_corrected"
+
+
+def compute_champion_margin(joint_fit_scores: pd.DataFrame, df: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for category, group in joint_fit_scores.groupby("category"):
+        ranked = group.sort_values("fit_score_normalized", ascending=False).reset_index(drop=True)
+        champion = ranked.loc[0, "strategy"]
+        runner_up = ranked.loc[1, "strategy"] if len(ranked) > 1 else None
+
+        if runner_up is None:
+            rows.append({"category": category, "champion_strategy": champion,
+                         "runner_up_strategy": None, "p_value": np.nan,
+                         "effectively_tied": None})
+            continue
+
+        champ_data = df[(df["category"] == category) & (df["strategy"] == champion)]
+        runner_data = df[(df["category"] == category) & (df["strategy"] == runner_up)]
+        merged = champ_data[["task_id", "rephrasing_id", "run_id", "is_correct"]].merge(
+            runner_data[["task_id", "rephrasing_id", "run_id", "is_correct"]],
+            on=["task_id", "rephrasing_id", "run_id"], suffixes=("_champ", "_runner")
+        )
+        b_count = ((merged["is_correct_champ"]) & (~merged["is_correct_runner"])).sum()
+        c_count = ((~merged["is_correct_champ"]) & (merged["is_correct_runner"])).sum()
+        _, p_val, method = mcnemar_test(b_count, c_count)
+
+        rows.append({
+            "category": category,
+            "champion_strategy": champion,
+            "champion_score_normalized": ranked.loc[0, "fit_score_normalized"],
+            "runner_up_strategy": runner_up,
+            "runner_up_score_normalized": ranked.loc[1, "fit_score_normalized"],
+            "champion_correct_runner_wrong": b_count,
+            "champion_wrong_runner_correct": c_count,
+            "p_value": p_val,
+            "method": method,
+            "effectively_tied": p_val >= 0.05,
+        })
+    return pd.DataFrame(rows)
+
+
+# ============================================================
+# COST OF NOT SWITCHING (quantifies whether accounting for
+# consistency, i.e. using Fit Score instead of raw gain, actually
+# matters in practice — the size of the reliability gap between
+# the two candidate champions when they differ)
+# ============================================================
+
+def compute_consistency_value(fit_scores: pd.DataFrame, spearman_results: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for _, row in spearman_results.iterrows():
+        category = row["category"]
+        gain_champ = row["gain_champion"]
+        fit_champ = row["fit_score_champion"]
+        cat_scores = fit_scores[fit_scores["category"] == category].set_index("strategy")
+        if row["champion_changed"]:
+            fit_score_of_gain_champ = cat_scores.loc[gain_champ, "fit_score"] if gain_champ in cat_scores.index else np.nan
+            fit_score_of_fit_champ = cat_scores.loc[fit_champ, "fit_score"] if fit_champ in cat_scores.index else np.nan
+            gap = fit_score_of_fit_champ - fit_score_of_gain_champ
+        else:
+            gap = 0.0
+        rows.append({
+            "category": category,
+            "champion_changed": row["champion_changed"],
+            "gain_champion": gain_champ,
+            "fit_score_champion": fit_champ,
+            "fit_score_gap_if_stuck_with_gain_champion": gap,
+        })
+    return pd.DataFrame(rows)
 
 def main():
     model_name = config.get_model_name_from_args().model
@@ -384,6 +471,18 @@ def main():
     print("\n=== Spearman: Raw Gain Ranking vs Run Fit Score Ranking (per category) ===")
     print(spearman_results.to_string(index=False))
     spearman_results.to_csv(os.path.join(config.RESULTS_DIR, f"spearman_gain_vs_fitscore__{safe_model_name}.csv"), index=False)
+
+        # ---------- CHAMPION MARGIN: is the win decisive or "basically tied"? (RQ1) ----------
+    champion_margin = compute_champion_margin(joint_fit_scores, df)
+    print("\n=== Champion Margin: gap over runner-up, per category (Joint Fit Score, normalized) ===")
+    print(champion_margin.to_string(index=False))
+    champion_margin.to_csv(os.path.join(config.RESULTS_DIR, f"champion_margin__{safe_model_name}.csv"), index=False)
+
+    # ---------- CONSISTENCY VALUE: does accounting for consistency change anything meaningfully? (RQ1) ----------
+    consistency_value = compute_consistency_value(run_fit_scores, spearman_results)
+    print("\n=== Consistency Value: Fit Score gap when champion changes (Run Fit Score) ===")
+    print(consistency_value.to_string(index=False))
+    consistency_value.to_csv(os.path.join(config.RESULTS_DIR, f"consistency_value__{safe_model_name}.csv"), index=False)
 
     print(f"\nAll results saved to {config.RESULTS_DIR}")
     print("\nNOTE: McNemar's test (cross-model statistical significance, RQ3/RQ4) is NOT "
