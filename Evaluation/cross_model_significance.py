@@ -1,6 +1,11 @@
 import os
 import sys
 from itertools import combinations
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set_theme(style="whitegrid")
 
 EVAL_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(EVAL_DIR)
@@ -240,6 +245,40 @@ def compute_pooled_dispersion_penalty_correlation() -> dict:
         "pearson_r": pearson_r, "pearson_p": pearson_p,
         "spearman_rho": spearman_rho, "spearman_p": spearman_p,
     }
+# ============================================================
+# DISPERSION COMPARISON TABLE (RQ3: does a category's reliability
+# profile, not just its champion, change across model scale? One
+# row per category, one Dispersion column per model.)
+# ============================================================
+
+def build_dispersion_comparison_table() -> pd.DataFrame:
+    rows = {}
+    for model_name in MODELS:
+        safe_name = model_name.replace("/", "_")
+        path = os.path.join(config.RESULTS_DIR, f"strategy_dispersion__{safe_name}.csv")
+        if not os.path.exists(path):
+            print(f"WARNING: {path} not found — run analysis.py for {model_name} first. "
+                  f"Skipping this model in the dispersion comparison table.")
+            continue
+        dispersion = pd.read_csv(path).set_index("category")["strategy_dispersion"]
+        rows[model_name] = dispersion
+
+    table = pd.DataFrame(rows)
+    table.index.name = "category"
+    return table
+
+
+# ============================================================
+# MEAN DISPERSION PER MODEL (RQ3: is there a consistent direction
+# to reliability change with scale -- do bigger models become more
+# or less forgiving on average, across all 5 categories?)
+# ============================================================
+
+def compute_mean_dispersion_per_model(dispersion_table: pd.DataFrame) -> pd.DataFrame:
+    return pd.DataFrame({
+        "mean_strategy_dispersion": dispersion_table.mean(axis=0),
+        "std_strategy_dispersion": dispersion_table.std(axis=0),
+    })
 def main():
     dfs = {}
     for model_name in MODELS:
@@ -277,6 +316,32 @@ def main():
     champion_comparison_path = os.path.join(config.RESULTS_DIR, "joint_champion_comparison_across_models.csv")
     champion_comparison.to_csv(champion_comparison_path)
     print(f"Saved: {champion_comparison_path}")
+    print("\n=== Strategy Dispersion Comparison: per category, per model (RQ3) ===")
+    dispersion_comparison = build_dispersion_comparison_table()
+    print(dispersion_comparison.to_string())
+    dispersion_comparison_path = os.path.join(config.RESULTS_DIR, "dispersion_comparison_across_models.csv")
+    dispersion_comparison.to_csv(dispersion_comparison_path)
+    print(f"Saved: {dispersion_comparison_path}")
+
+    print("\n=== Mean Strategy Dispersion per Model, averaged across all categories (RQ3) ===")
+    mean_dispersion = compute_mean_dispersion_per_model(dispersion_comparison)
+    print(mean_dispersion.round(4))
+    mean_dispersion_path = os.path.join(config.RESULTS_DIR, "mean_dispersion_per_model.csv")
+    mean_dispersion.to_csv(mean_dispersion_path)
+    print(f"Saved: {mean_dispersion_path}")
+
+    if dispersion_comparison.shape[1] > 1:
+        os.makedirs(config.FIGURES_DIR, exist_ok=True)
+        fig, ax = plt.subplots(figsize=(11, 6))
+        dispersion_comparison.reindex(config.CATEGORIES).plot(kind="bar", ax=ax)
+        ax.set_title("Strategy Dispersion per Category, Across Model Scale")
+        ax.set_ylabel("Strategy Dispersion")
+        ax.legend(title="Model", bbox_to_anchor=(1.02, 1), loc="upper left")
+        plt.xticks(rotation=30, ha="right")
+        fig_path = os.path.join(config.FIGURES_DIR, "bar_dispersion_comparison_across_models.png")
+        fig.savefig(fig_path, dpi=150, bbox_inches="tight")
+        plt.close(fig)
+        print(f"Saved: {fig_path}")
     print("\n=== Pooled Dispersion vs Transfer Penalty Correlation (across all 3 models, n=15) (RQ2) ===")
     pooled_corr = compute_pooled_dispersion_penalty_correlation()
     print(pooled_corr)
