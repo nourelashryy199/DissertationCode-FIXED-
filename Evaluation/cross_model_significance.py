@@ -279,6 +279,17 @@ def compute_mean_dispersion_per_model(dispersion_table: pd.DataFrame) -> pd.Data
         "mean_strategy_dispersion": dispersion_table.mean(axis=0),
         "std_strategy_dispersion": dispersion_table.std(axis=0),
     })
+# ============================================================
+# GENERIC VS FRAMEWORK: PER-CATEGORY, CROSS-MODEL PIVOT (RQ4:
+# does the generic-vs-framework accuracy gap hold consistently
+# across categories and scale, or does it shrink/grow/reverse?)
+# ============================================================
+
+def build_generic_vs_framework_pivot(generic_vs_framework: pd.DataFrame) -> pd.DataFrame:
+    per_category = generic_vs_framework[generic_vs_framework["category"] != "__OVERALL__"]
+    pivot = per_category.pivot(index="category", columns="model", values="accuracy_diff_generic_minus_framework")
+    pivot = pivot.reindex(config.CATEGORIES)
+    return pivot
 def main():
     dfs = {}
     for model_name in MODELS:
@@ -310,6 +321,42 @@ def main():
     gvf_path = os.path.join(config.RESULTS_DIR, "generic_vs_framework_significance.csv")
     generic_vs_framework.to_csv(gvf_path, index=False)
     print(f"Saved: {gvf_path}")
+    print("\n=== Generic vs. Framework Accuracy Gap: per category, across model scale (RQ4) ===")
+    gvf_pivot = build_generic_vs_framework_pivot(generic_vs_framework)
+    print(gvf_pivot.round(4).to_string())
+    gvf_pivot_path = os.path.join(config.RESULTS_DIR, "generic_vs_framework_gap_across_models.csv")
+    gvf_pivot.to_csv(gvf_pivot_path)
+    print(f"Saved: {gvf_pivot_path}")
+
+    os.makedirs(config.FIGURES_DIR, exist_ok=True)
+
+    fig, ax = plt.subplots(figsize=(11, 6))
+    gvf_pivot.plot(kind="bar", ax=ax)
+    ax.axhline(0, color="black", linewidth=0.8)
+    ax.set_title("Generic minus Framework Accuracy, per Category, Across Model Scale\n"
+                 "(Positive = generic strategies win; Negative = framework strategies win)")
+    ax.set_ylabel("Accuracy Difference (Generic - Framework)")
+    ax.legend(title="Model", bbox_to_anchor=(1.02, 1), loc="upper left")
+    plt.xticks(rotation=30, ha="right")
+    fig_path1 = os.path.join(config.FIGURES_DIR, "bar_generic_vs_framework_gap_by_category.png")
+    fig.savefig(fig_path1, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    print(f"Saved: {fig_path1}")
+
+    overall = generic_vs_framework[generic_vs_framework["category"] == "__OVERALL__"]
+    overall = overall[overall["model"] != "__ALL_MODELS_POOLED__"] if "model" in overall.columns else overall
+    overall_summary = overall.set_index("model")[["generic_accuracy", "framework_accuracy"]]
+
+    fig, ax = plt.subplots(figsize=(9, 6))
+    overall_summary.plot(kind="bar", ax=ax, color=["#4C72B0", "#C44E52"])
+    ax.set_title("Generic vs. Framework Accuracy, Overall per Model")
+    ax.set_ylabel("Accuracy")
+    ax.legend(["Generic", "Legal Framework"])
+    plt.xticks(rotation=20, ha="right")
+    fig_path2 = os.path.join(config.FIGURES_DIR, "bar_generic_vs_framework_overall_by_model.png")
+    fig.savefig(fig_path2, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    print(f"Saved: {fig_path2}")
     print("\n=== Champion Comparison: Joint Fit Score champion per category, per model (RQ1/RQ3) ===")
     champion_comparison = build_champion_comparison_table()
     print(champion_comparison.to_string())
