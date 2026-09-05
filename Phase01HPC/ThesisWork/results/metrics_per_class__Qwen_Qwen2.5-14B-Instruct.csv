@@ -1,131 +1,287 @@
 category,strategy,label,precision,recall,f1,support
-interpretation,cleo,contract by using,0.0,0.0,0.0,9.0
-interpretation,cleo,other,1.0,0.0025252525252525255,0.005037783375314861,396.0
-interpretation,cot,contract by using,0.0,0.0,0.0,9.0
-interpretation,cot,other,1.0,0.33585858585858586,0.502835538752363,396.0
-interpretation,crac,contract by using,0.0,0.0,0.0,9.0
-interpretation,crac,other,0.0,0.0,0.0,396.0
-interpretation,creac,contract by using,0.0,0.0,0.0,9.0
-interpretation,creac,other,0.0,0.0,0.0,396.0
-interpretation,few_shot_2,contract by using,0.0,0.0,0.0,9.0
-interpretation,few_shot_2,other,0.9958333333333333,0.6035353535353535,0.7515723270440252,396.0
-interpretation,few_shot_3,contract by using,0.0,0.0,0.0,9.0
-interpretation,few_shot_3,other,0.9964539007092199,0.7095959595959596,0.8289085545722714,396.0
-interpretation,irac,contract by using,0.0,0.0,0.0,9.0
-interpretation,irac,other,0.0,0.0,0.0,396.0
-interpretation,ireac,contract by using,0.0,0.0,0.0,9.0
-interpretation,ireac,other,0.0,0.0,0.0,396.0
-interpretation,one_shot,contract by using,0.0,0.0,0.0,9.0
-interpretation,one_shot,other,0.9868995633187773,0.5707070707070707,0.7232,396.0
-interpretation,role_based,contract by using,0.0,0.0,0.0,9.0
-interpretation,role_based,other,1.0,0.45707070707070707,0.6273830155979203,396.0
-interpretation,structured,contract by using,0.0,0.0,0.0,9.0
-interpretation,structured,other,1.0,0.26515151515151514,0.41916167664670656,396.0
-interpretation,treacc,contract by using,0.0,0.0,0.0,9.0
-interpretation,treacc,other,0.0,0.0,0.0,396.0
-interpretation,zero_shot,contract by using,0.0,0.0,0.0,9.0
-interpretation,zero_shot,other,1.0,0.45454545454545453,0.625,396.0
-issue-spotting,cleo,no,0.44808743169398907,0.5359477124183006,0.4880952380952381,153.0
-issue-spotting,cleo,yes,0.6857142857142857,0.5714285714285714,0.6233766233766234,252.0
-issue-spotting,cot,no,0.43601895734597157,0.6013071895424836,0.5054945054945055,153.0
-issue-spotting,cot,yes,0.6825396825396826,0.5119047619047619,0.5850340136054422,252.0
-issue-spotting,crac,no,0.418848167539267,0.5228758169934641,0.46511627906976744,153.0
-issue-spotting,crac,yes,0.6650943396226415,0.5595238095238095,0.6077586206896551,252.0
-issue-spotting,creac,no,0.42346938775510207,0.5424836601307189,0.47564469914040114,153.0
-issue-spotting,creac,yes,0.6634146341463415,0.5396825396825397,0.5951859956236324,252.0
-issue-spotting,few_shot_2,no,0.423728813559322,0.6535947712418301,0.5141388174807198,153.0
-issue-spotting,few_shot_2,yes,0.6845238095238095,0.45634920634920634,0.5476190476190477,252.0
-issue-spotting,few_shot_3,no,0.4375,0.5947712418300654,0.5041551246537396,153.0
-issue-spotting,few_shot_3,yes,0.6852791878172588,0.5357142857142857,0.6013363028953229,252.0
-issue-spotting,irac,no,0.42777777777777776,0.5032679738562091,0.4624624624624625,153.0
-issue-spotting,irac,yes,0.6581632653061225,0.5119047619047619,0.5758928571428571,252.0
-issue-spotting,ireac,no,0.4502923976608187,0.5032679738562091,0.47530864197530864,153.0
-issue-spotting,ireac,yes,0.6903553299492385,0.5396825396825397,0.6057906458797327,252.0
-issue-spotting,one_shot,no,0.4305555555555556,0.6078431372549019,0.5040650406504065,153.0
-issue-spotting,one_shot,yes,0.6825396825396826,0.5119047619047619,0.5850340136054422,252.0
-issue-spotting,role_based,no,0.4558139534883721,0.6405228758169934,0.532608695652174,153.0
-issue-spotting,role_based,yes,0.7105263157894737,0.5357142857142857,0.6108597285067874,252.0
-issue-spotting,structured,no,0.4541284403669725,0.6470588235294118,0.5336927223719676,153.0
-issue-spotting,structured,yes,0.7112299465240641,0.5277777777777778,0.6059225512528473,252.0
-issue-spotting,treacc,no,0.44,0.43137254901960786,0.43564356435643564,153.0
-issue-spotting,treacc,yes,0.6690647482014388,0.36904761904761907,0.47570332480818417,252.0
-issue-spotting,zero_shot,no,0.4433497536945813,0.5882352941176471,0.5056179775280899,153.0
-issue-spotting,zero_shot,yes,0.6881188118811881,0.5515873015873016,0.6123348017621145,252.0
-rhetorical-understanding,cleo,background,0.0,0.0,0.0,405.0
-rhetorical-understanding,cot,background,1.0,0.022222222222222223,0.043478260869565216,405.0
-rhetorical-understanding,crac,background,0.0,0.0,0.0,405.0
-rhetorical-understanding,creac,background,0.0,0.0,0.0,405.0
-rhetorical-understanding,few_shot_2,background,1.0,0.02962962962962963,0.05755395683453238,405.0
-rhetorical-understanding,few_shot_3,background,1.0,0.1037037037037037,0.18791946308724833,405.0
-rhetorical-understanding,irac,background,0.0,0.0,0.0,405.0
-rhetorical-understanding,ireac,background,0.0,0.0,0.0,405.0
-rhetorical-understanding,one_shot,background,1.0,0.1580246913580247,0.27292110874200426,405.0
-rhetorical-understanding,role_based,background,1.0,0.05432098765432099,0.10304449648711944,405.0
-rhetorical-understanding,structured,background,1.0,0.024691358024691357,0.04819277108433735,405.0
-rhetorical-understanding,treacc,background,0.0,0.0,0.0,405.0
-rhetorical-understanding,zero_shot,background,1.0,0.024691358024691357,0.04819277108433735,405.0
-rule-application_conclusion,cleo,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,cleo,descriptive,0.3191489361702128,0.08771929824561403,0.13761467889908258,171.0
-rule-application_conclusion,cleo,generic,0.48936170212765956,0.13450292397660818,0.21100917431192662,171.0
-rule-application_conclusion,cleo,suggestive,0.1310344827586207,0.35185185185185186,0.19095477386934673,54.0
-rule-application_conclusion,cot,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,cot,descriptive,0.18840579710144928,0.07602339181286549,0.10833333333333334,171.0
-rule-application_conclusion,cot,generic,0.5128205128205128,0.11695906432748537,0.19047619047619047,171.0
-rule-application_conclusion,cot,suggestive,0.18045112781954886,0.4444444444444444,0.25668449197860965,54.0
-rule-application_conclusion,crac,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,crac,descriptive,0.09090909090909091,0.005847953216374269,0.01098901098901099,171.0
-rule-application_conclusion,crac,generic,0.54,0.15789473684210525,0.24434389140271492,171.0
-rule-application_conclusion,crac,suggestive,0.13011152416356878,0.6481481481481481,0.21671826625386997,54.0
-rule-application_conclusion,creac,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,creac,descriptive,0.2222222222222222,0.023391812865497075,0.042328042328042326,171.0
-rule-application_conclusion,creac,generic,0.5490196078431373,0.16374269005847952,0.25225225225225223,171.0
-rule-application_conclusion,creac,suggestive,0.13503649635036497,0.6851851851851852,0.22560975609756098,54.0
-rule-application_conclusion,few_shot_2,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,few_shot_2,descriptive,0.29545454545454547,0.07602339181286549,0.12093023255813953,171.0
-rule-application_conclusion,few_shot_2,generic,0.5853658536585366,0.14035087719298245,0.22641509433962265,171.0
-rule-application_conclusion,few_shot_2,suggestive,0.15527950310559005,0.46296296296296297,0.23255813953488372,54.0
-rule-application_conclusion,few_shot_3,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,few_shot_3,descriptive,0.19444444444444445,0.04093567251461988,0.06763285024154589,171.0
-rule-application_conclusion,few_shot_3,generic,0.5897435897435898,0.13450292397660818,0.21904761904761905,171.0
-rule-application_conclusion,few_shot_3,suggestive,0.1794871794871795,0.6481481481481481,0.28112449799196787,54.0
-rule-application_conclusion,irac,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,irac,descriptive,0.25862068965517243,0.08771929824561403,0.13100436681222707,171.0
-rule-application_conclusion,irac,generic,0.5555555555555556,0.11695906432748537,0.1932367149758454,171.0
-rule-application_conclusion,irac,suggestive,0.2,0.37037037037037035,0.2597402597402597,54.0
-rule-application_conclusion,ireac,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,ireac,descriptive,0.3220338983050847,0.1111111111111111,0.16521739130434782,171.0
-rule-application_conclusion,ireac,generic,0.7142857142857143,0.11695906432748537,0.20100502512562815,171.0
-rule-application_conclusion,ireac,suggestive,0.14285714285714285,0.2222222222222222,0.17391304347826086,54.0
-rule-application_conclusion,one_shot,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,one_shot,descriptive,0.3125,0.08771929824561403,0.136986301369863,171.0
-rule-application_conclusion,one_shot,generic,0.5208333333333334,0.14619883040935672,0.228310502283105,171.0
-rule-application_conclusion,one_shot,suggestive,0.1482889733840304,0.7222222222222222,0.24605678233438485,54.0
-rule-application_conclusion,role_based,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,role_based,descriptive,0.3333333333333333,0.1695906432748538,0.2248062015503876,171.0
-rule-application_conclusion,role_based,generic,0.5454545454545454,0.14035087719298245,0.22325581395348837,171.0
-rule-application_conclusion,role_based,suggestive,0.10144927536231885,0.12962962962962962,0.11382113821138211,54.0
-rule-application_conclusion,structured,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,structured,descriptive,0.34328358208955223,0.13450292397660818,0.19327731092436976,171.0
-rule-application_conclusion,structured,generic,0.5526315789473685,0.12280701754385964,0.20095693779904306,171.0
-rule-application_conclusion,structured,suggestive,0.09375,0.16666666666666666,0.12,54.0
-rule-application_conclusion,treacc,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,treacc,descriptive,0.28,0.04093567251461988,0.07142857142857142,171.0
-rule-application_conclusion,treacc,generic,0.5454545454545454,0.03508771929824561,0.06593406593406594,171.0
-rule-application_conclusion,treacc,suggestive,0.2,0.07407407407407407,0.10810810810810811,54.0
-rule-application_conclusion,zero_shot,arbitrary,0.0,0.0,0.0,9.0
-rule-application_conclusion,zero_shot,descriptive,0.3157894736842105,0.14035087719298245,0.19433198380566802,171.0
-rule-application_conclusion,zero_shot,generic,0.54,0.15789473684210525,0.24434389140271492,171.0
-rule-application_conclusion,zero_shot,suggestive,0.17467248908296942,0.7407407407407407,0.2826855123674912,54.0
-rule-recall,cleo,yes,1.0,0.8148148148148148,0.8979591836734694,405.0
-rule-recall,cot,yes,1.0,0.38765432098765434,0.5587188612099644,405.0
-rule-recall,crac,yes,1.0,0.7111111111111111,0.8311688311688312,405.0
-rule-recall,creac,yes,1.0,0.6024691358024692,0.7519260400616333,405.0
-rule-recall,few_shot_2,yes,1.0,0.2123456790123457,0.35030549898167007,405.0
-rule-recall,few_shot_3,yes,1.0,0.16790123456790124,0.28752642706131076,405.0
-rule-recall,irac,yes,1.0,0.8740740740740741,0.932806324110672,405.0
-rule-recall,ireac,yes,1.0,0.8518518518518519,0.92,405.0
-rule-recall,one_shot,yes,1.0,0.41975308641975306,0.591304347826087,405.0
-rule-recall,role_based,yes,1.0,0.20246913580246914,0.33675564681724846,405.0
-rule-recall,structured,yes,1.0,0.03209876543209877,0.06220095693779904,405.0
-rule-recall,treacc,yes,1.0,0.7950617283950617,0.8858321870701513,405.0
-rule-recall,zero_shot,yes,1.0,0.17530864197530865,0.29831932773109243,405.0
+interpretation,cleo,arbitration,0.0,0.0,0.0,9.0
+interpretation,cleo,choice of law,0.0,0.0,0.0,9.0
+interpretation,cleo,content removal,0.0,0.0,0.0,18.0
+interpretation,cleo,limitation of liability,0.0,0.0,0.0,27.0
+interpretation,cleo,other,1.0,0.0031746031746031746,0.006329113924050633,315.0
+interpretation,cleo,unilateral change,0.0,0.0,0.0,18.0
+interpretation,cleo,unilateral termination,0.0,0.0,0.0,9.0
+interpretation,cot,arbitration,0.11428571428571428,0.4444444444444444,0.18181818181818182,9.0
+interpretation,cot,choice of law,0.47058823529411764,0.8888888888888888,0.6153846153846154,9.0
+interpretation,cot,content removal,1.0,0.4444444444444444,0.6153846153846154,18.0
+interpretation,cot,limitation of liability,0.5526315789473685,0.7777777777777778,0.6461538461538462,27.0
+interpretation,cot,other,0.9774436090225563,0.4126984126984127,0.5803571428571429,315.0
+interpretation,cot,unilateral change,0.45714285714285713,0.8888888888888888,0.6037735849056604,18.0
+interpretation,cot,unilateral termination,0.28,0.7777777777777778,0.4117647058823529,9.0
+interpretation,crac,arbitration,0.0,0.0,0.0,9.0
+interpretation,crac,choice of law,0.0,0.0,0.0,9.0
+interpretation,crac,content removal,0.0,0.0,0.0,18.0
+interpretation,crac,limitation of liability,0.0,0.0,0.0,27.0
+interpretation,crac,other,0.0,0.0,0.0,315.0
+interpretation,crac,unilateral change,0.0,0.0,0.0,18.0
+interpretation,crac,unilateral termination,0.0,0.0,0.0,9.0
+interpretation,creac,arbitration,0.0,0.0,0.0,9.0
+interpretation,creac,choice of law,0.0,0.0,0.0,9.0
+interpretation,creac,content removal,0.0,0.0,0.0,18.0
+interpretation,creac,limitation of liability,0.0,0.0,0.0,27.0
+interpretation,creac,other,0.0,0.0,0.0,315.0
+interpretation,creac,unilateral change,0.0,0.0,0.0,18.0
+interpretation,creac,unilateral termination,0.0,0.0,0.0,9.0
+interpretation,few_shot_2,arbitration,0.05263157894736842,0.1111111111111111,0.07142857142857142,9.0
+interpretation,few_shot_2,choice of law,0.3,0.3333333333333333,0.3157894736842105,9.0
+interpretation,few_shot_2,content removal,1.0,0.3333333333333333,0.5,18.0
+interpretation,few_shot_2,limitation of liability,0.5714285714285714,0.7407407407407407,0.6451612903225806,27.0
+interpretation,few_shot_2,other,0.8833333333333333,0.6730158730158731,0.7639639639639639,315.0
+interpretation,few_shot_2,unilateral change,0.8421052631578947,0.8888888888888888,0.8648648648648649,18.0
+interpretation,few_shot_2,unilateral termination,0.125,0.1111111111111111,0.11764705882352941,9.0
+interpretation,few_shot_3,arbitration,0.0,0.0,0.0,9.0
+interpretation,few_shot_3,choice of law,0.375,0.3333333333333333,0.35294117647058826,9.0
+interpretation,few_shot_3,content removal,1.0,0.2222222222222222,0.36363636363636365,18.0
+interpretation,few_shot_3,limitation of liability,0.5333333333333333,0.5925925925925926,0.5614035087719298,27.0
+interpretation,few_shot_3,other,0.8439716312056738,0.7555555555555555,0.7973199329983249,315.0
+interpretation,few_shot_3,unilateral change,0.9333333333333333,0.7777777777777778,0.8484848484848485,18.0
+interpretation,few_shot_3,unilateral termination,0.0,0.0,0.0,9.0
+interpretation,irac,arbitration,0.0,0.0,0.0,9.0
+interpretation,irac,choice of law,0.0,0.0,0.0,9.0
+interpretation,irac,content removal,0.0,0.0,0.0,18.0
+interpretation,irac,limitation of liability,0.0,0.0,0.0,27.0
+interpretation,irac,other,0.0,0.0,0.0,315.0
+interpretation,irac,unilateral change,0.0,0.0,0.0,18.0
+interpretation,irac,unilateral termination,0.0,0.0,0.0,9.0
+interpretation,ireac,arbitration,0.0,0.0,0.0,9.0
+interpretation,ireac,choice of law,0.0,0.0,0.0,9.0
+interpretation,ireac,content removal,0.0,0.0,0.0,18.0
+interpretation,ireac,limitation of liability,0.0,0.0,0.0,27.0
+interpretation,ireac,other,0.0,0.0,0.0,315.0
+interpretation,ireac,unilateral change,0.0,0.0,0.0,18.0
+interpretation,ireac,unilateral termination,0.0,0.0,0.0,9.0
+interpretation,one_shot,arbitration,0.03225806451612903,0.1111111111111111,0.05,9.0
+interpretation,one_shot,choice of law,0.23076923076923078,0.3333333333333333,0.2727272727272727,9.0
+interpretation,one_shot,content removal,1.0,0.4444444444444444,0.6153846153846154,18.0
+interpretation,one_shot,limitation of liability,0.47368421052631576,0.6666666666666666,0.5538461538461539,27.0
+interpretation,one_shot,other,0.8951965065502183,0.6507936507936508,0.7536764705882353,315.0
+interpretation,one_shot,unilateral change,0.6923076923076923,1.0,0.8181818181818182,18.0
+interpretation,one_shot,unilateral termination,0.36363636363636365,0.4444444444444444,0.4,9.0
+interpretation,role_based,arbitration,0.08928571428571429,0.5555555555555556,0.15384615384615385,9.0
+interpretation,role_based,choice of law,0.42105263157894735,0.8888888888888888,0.5714285714285714,9.0
+interpretation,role_based,content removal,0.8888888888888888,0.4444444444444444,0.5925925925925926,18.0
+interpretation,role_based,limitation of liability,0.5208333333333334,0.9259259259259259,0.6666666666666666,27.0
+interpretation,role_based,other,0.9834254143646409,0.5650793650793651,0.717741935483871,315.0
+interpretation,role_based,unilateral change,0.5454545454545454,1.0,0.7058823529411765,18.0
+interpretation,role_based,unilateral termination,0.3,1.0,0.46153846153846156,9.0
+interpretation,structured,arbitration,0.0,0.0,0.0,9.0
+interpretation,structured,choice of law,0.4117647058823529,0.7777777777777778,0.5384615384615384,9.0
+interpretation,structured,content removal,0.75,0.3333333333333333,0.46153846153846156,18.0
+interpretation,structured,limitation of liability,0.3333333333333333,0.8888888888888888,0.48484848484848486,27.0
+interpretation,structured,other,0.9142857142857143,0.3047619047619048,0.45714285714285713,315.0
+interpretation,structured,unilateral change,0.24242424242424243,0.8888888888888888,0.38095238095238093,18.0
+interpretation,structured,unilateral termination,0.21875,0.7777777777777778,0.34146341463414637,9.0
+interpretation,treacc,arbitration,0.0,0.0,0.0,9.0
+interpretation,treacc,choice of law,0.0,0.0,0.0,9.0
+interpretation,treacc,content removal,0.0,0.0,0.0,18.0
+interpretation,treacc,limitation of liability,0.0,0.0,0.0,27.0
+interpretation,treacc,other,0.0,0.0,0.0,315.0
+interpretation,treacc,unilateral change,0.0,0.0,0.0,18.0
+interpretation,treacc,unilateral termination,0.0,0.0,0.0,9.0
+interpretation,zero_shot,arbitration,0.057692307692307696,0.3333333333333333,0.09836065573770492,9.0
+interpretation,zero_shot,choice of law,0.47058823529411764,0.8888888888888888,0.6153846153846154,9.0
+interpretation,zero_shot,content removal,1.0,0.3888888888888889,0.56,18.0
+interpretation,zero_shot,limitation of liability,0.4406779661016949,0.9629629629629629,0.6046511627906976,27.0
+interpretation,zero_shot,other,0.9722222222222222,0.5555555555555556,0.7070707070707071,315.0
+interpretation,zero_shot,unilateral change,0.6,1.0,0.75,18.0
+interpretation,zero_shot,unilateral termination,0.27586206896551724,0.8888888888888888,0.42105263157894735,9.0
+issue-spotting,cleo,no,0.9781420765027322,0.8287037037037037,0.8972431077694235,216.0
+issue-spotting,cleo,yes,0.8523809523809524,0.9470899470899471,0.8972431077694235,189.0
+issue-spotting,cot,no,0.9383886255924171,0.9166666666666666,0.927400468384075,216.0
+issue-spotting,cot,yes,0.91005291005291,0.91005291005291,0.91005291005291,189.0
+issue-spotting,crac,no,0.9633507853403142,0.8518518518518519,0.9041769041769042,216.0
+issue-spotting,crac,yes,0.8584905660377359,0.9629629629629629,0.9077306733167082,189.0
+issue-spotting,creac,no,0.9540816326530612,0.8657407407407407,0.9077669902912622,216.0
+issue-spotting,creac,yes,0.8585365853658536,0.9312169312169312,0.8934010152284264,189.0
+issue-spotting,few_shot_2,no,0.8728813559322034,0.9537037037037037,0.911504424778761,216.0
+issue-spotting,few_shot_2,yes,0.9464285714285714,0.8412698412698413,0.8907563025210085,189.0
+issue-spotting,few_shot_3,no,0.9278846153846154,0.8935185185185185,0.910377358490566,216.0
+issue-spotting,few_shot_3,yes,0.883248730964467,0.9206349206349206,0.9015544041450777,189.0
+issue-spotting,irac,no,0.9555555555555556,0.7962962962962963,0.8686868686868687,216.0
+issue-spotting,irac,yes,0.8520408163265306,0.8835978835978836,0.8675324675324675,189.0
+issue-spotting,ireac,no,0.9649122807017544,0.7638888888888888,0.8527131782945736,216.0
+issue-spotting,ireac,yes,0.8629441624365483,0.8994708994708994,0.8808290155440415,189.0
+issue-spotting,one_shot,no,0.9166666666666666,0.9166666666666666,0.9166666666666666,216.0
+issue-spotting,one_shot,yes,0.9047619047619048,0.9047619047619048,0.9047619047619048,189.0
+issue-spotting,role_based,no,0.9348837209302325,0.9305555555555556,0.9327146171693735,216.0
+issue-spotting,role_based,yes,0.9210526315789473,0.9259259259259259,0.9234828496042217,189.0
+issue-spotting,structured,no,0.9174311926605505,0.9259259259259259,0.9216589861751152,216.0
+issue-spotting,structured,yes,0.9144385026737968,0.9047619047619048,0.9095744680851063,189.0
+issue-spotting,treacc,no,0.98,0.6805555555555556,0.8032786885245902,216.0
+issue-spotting,treacc,yes,0.8633093525179856,0.6349206349206349,0.7317073170731707,189.0
+issue-spotting,zero_shot,no,0.9556650246305419,0.8981481481481481,0.9260143198090692,216.0
+issue-spotting,zero_shot,yes,0.8910891089108911,0.9523809523809523,0.9207161125319693,189.0
+rhetorical-understanding,cleo,background,0.0,0.0,0.0,72.0
+rhetorical-understanding,cleo,clarification,0.0,0.0,0.0,45.0
+rhetorical-understanding,cleo,criticism,0.0,0.0,0.0,63.0
+rhetorical-understanding,cleo,humor,0.0,0.0,0.0,36.0
+rhetorical-understanding,cleo,implications,0.0,0.0,0.0,162.0
+rhetorical-understanding,cleo,support,0.0,0.0,0.0,27.0
+rhetorical-understanding,cot,background,0.1111111111111111,0.013888888888888888,0.024691358024691357,72.0
+rhetorical-understanding,cot,clarification,0.14150943396226415,0.6666666666666666,0.23346303501945526,45.0
+rhetorical-understanding,cot,criticism,0.32432432432432434,0.19047619047619047,0.24,63.0
+rhetorical-understanding,cot,humor,1.0,0.19444444444444445,0.32558139534883723,36.0
+rhetorical-understanding,cot,implications,0.4842105263157895,0.2839506172839506,0.35797665369649806,162.0
+rhetorical-understanding,cot,support,0.23529411764705882,0.14814814814814814,0.18181818181818182,27.0
+rhetorical-understanding,crac,background,0.0,0.0,0.0,72.0
+rhetorical-understanding,crac,clarification,0.0,0.0,0.0,45.0
+rhetorical-understanding,crac,criticism,0.0,0.0,0.0,63.0
+rhetorical-understanding,crac,humor,0.0,0.0,0.0,36.0
+rhetorical-understanding,crac,implications,0.0,0.0,0.0,162.0
+rhetorical-understanding,crac,support,0.0,0.0,0.0,27.0
+rhetorical-understanding,creac,background,0.0,0.0,0.0,72.0
+rhetorical-understanding,creac,clarification,0.0,0.0,0.0,45.0
+rhetorical-understanding,creac,criticism,0.0,0.0,0.0,63.0
+rhetorical-understanding,creac,humor,0.0,0.0,0.0,36.0
+rhetorical-understanding,creac,implications,0.0,0.0,0.0,162.0
+rhetorical-understanding,creac,support,0.0,0.0,0.0,27.0
+rhetorical-understanding,few_shot_2,background,0.75,0.125,0.21428571428571427,72.0
+rhetorical-understanding,few_shot_2,clarification,0.08,0.35555555555555557,0.1306122448979592,45.0
+rhetorical-understanding,few_shot_2,criticism,0.48936170212765956,0.7301587301587301,0.5859872611464968,63.0
+rhetorical-understanding,few_shot_2,humor,1.0,0.5,0.6666666666666666,36.0
+rhetorical-understanding,few_shot_2,implications,0.43283582089552236,0.17901234567901234,0.25327510917030566,162.0
+rhetorical-understanding,few_shot_2,support,0.6428571428571429,0.3333333333333333,0.43902439024390244,27.0
+rhetorical-understanding,few_shot_3,background,0.5,0.2916666666666667,0.3684210526315789,72.0
+rhetorical-understanding,few_shot_3,clarification,0.1103448275862069,0.35555555555555557,0.16842105263157894,45.0
+rhetorical-understanding,few_shot_3,criticism,0.5844155844155844,0.7142857142857143,0.6428571428571429,63.0
+rhetorical-understanding,few_shot_3,humor,0.75,0.5,0.6,36.0
+rhetorical-understanding,few_shot_3,implications,0.5473684210526316,0.32098765432098764,0.4046692607003891,162.0
+rhetorical-understanding,few_shot_3,support,0.45,0.3333333333333333,0.3829787234042553,27.0
+rhetorical-understanding,irac,background,0.0,0.0,0.0,72.0
+rhetorical-understanding,irac,clarification,0.0,0.0,0.0,45.0
+rhetorical-understanding,irac,criticism,0.0,0.0,0.0,63.0
+rhetorical-understanding,irac,humor,0.0,0.0,0.0,36.0
+rhetorical-understanding,irac,implications,0.0,0.0,0.0,162.0
+rhetorical-understanding,irac,support,0.0,0.0,0.0,27.0
+rhetorical-understanding,ireac,background,0.0,0.0,0.0,72.0
+rhetorical-understanding,ireac,clarification,0.0,0.0,0.0,45.0
+rhetorical-understanding,ireac,criticism,0.0,0.0,0.0,63.0
+rhetorical-understanding,ireac,humor,0.0,0.0,0.0,36.0
+rhetorical-understanding,ireac,implications,0.0,0.0,0.0,162.0
+rhetorical-understanding,ireac,support,0.0,0.0,0.0,27.0
+rhetorical-understanding,one_shot,background,0.390625,0.3472222222222222,0.36764705882352944,72.0
+rhetorical-understanding,one_shot,clarification,0.15555555555555556,0.9333333333333333,0.26666666666666666,45.0
+rhetorical-understanding,one_shot,criticism,0.5272727272727272,0.4603174603174603,0.4915254237288136,63.0
+rhetorical-understanding,one_shot,humor,1.0,0.25,0.4,36.0
+rhetorical-understanding,one_shot,implications,1.0,0.037037037037037035,0.07142857142857142,162.0
+rhetorical-understanding,one_shot,support,1.0,0.037037037037037035,0.07142857142857142,27.0
+rhetorical-understanding,role_based,background,0.13636363636363635,0.041666666666666664,0.06382978723404255,72.0
+rhetorical-understanding,role_based,clarification,0.12612612612612611,0.6222222222222222,0.20973782771535582,45.0
+rhetorical-understanding,role_based,criticism,0.23684210526315788,0.14285714285714285,0.1782178217821782,63.0
+rhetorical-understanding,role_based,humor,1.0,0.25,0.4,36.0
+rhetorical-understanding,role_based,implications,0.4891304347826087,0.2777777777777778,0.3543307086614173,162.0
+rhetorical-understanding,role_based,support,0.1111111111111111,0.037037037037037035,0.05555555555555555,27.0
+rhetorical-understanding,structured,background,0.4,0.05555555555555555,0.0975609756097561,72.0
+rhetorical-understanding,structured,clarification,0.11926605504587157,0.5777777777777777,0.19771863117870722,45.0
+rhetorical-understanding,structured,criticism,0.41379310344827586,0.19047619047619047,0.2608695652173913,63.0
+rhetorical-understanding,structured,humor,0.75,0.25,0.375,36.0
+rhetorical-understanding,structured,implications,0.5841584158415841,0.36419753086419754,0.44866920152091255,162.0
+rhetorical-understanding,structured,support,0.06896551724137931,0.07407407407407407,0.07142857142857142,27.0
+rhetorical-understanding,treacc,background,0.0,0.0,0.0,72.0
+rhetorical-understanding,treacc,clarification,0.0,0.0,0.0,45.0
+rhetorical-understanding,treacc,criticism,0.0,0.0,0.0,63.0
+rhetorical-understanding,treacc,humor,0.0,0.0,0.0,36.0
+rhetorical-understanding,treacc,implications,0.0,0.0,0.0,162.0
+rhetorical-understanding,treacc,support,0.0,0.0,0.0,27.0
+rhetorical-understanding,zero_shot,background,0.0,0.0,0.0,72.0
+rhetorical-understanding,zero_shot,clarification,0.1111111111111111,0.6444444444444445,0.1895424836601307,45.0
+rhetorical-understanding,zero_shot,criticism,0.3111111111111111,0.2222222222222222,0.25925925925925924,63.0
+rhetorical-understanding,zero_shot,humor,1.0,0.25,0.4,36.0
+rhetorical-understanding,zero_shot,implications,0.559322033898305,0.2037037037037037,0.2986425339366516,162.0
+rhetorical-understanding,zero_shot,support,0.0,0.0,0.0,27.0
+rule-application_conclusion,cleo,arbitrary,0.4657534246575342,0.3148148148148148,0.3756906077348066,108.0
+rule-application_conclusion,cleo,descriptive,0.723404255319149,0.4722222222222222,0.5714285714285714,72.0
+rule-application_conclusion,cleo,fanciful,0.4888888888888889,0.3055555555555556,0.37606837606837606,72.0
+rule-application_conclusion,cleo,generic,0.9148936170212766,0.7962962962962963,0.8514851485148515,54.0
+rule-application_conclusion,cleo,suggestive,0.2689655172413793,0.3939393939393939,0.319672131147541,99.0
+rule-application_conclusion,cot,arbitrary,0.7419354838709677,0.42592592592592593,0.5411764705882353,108.0
+rule-application_conclusion,cot,descriptive,0.6521739130434783,0.625,0.6382978723404256,72.0
+rule-application_conclusion,cot,fanciful,0.7948717948717948,0.8611111111111112,0.8266666666666667,72.0
+rule-application_conclusion,cot,generic,1.0,0.7222222222222222,0.8387096774193549,54.0
+rule-application_conclusion,cot,suggestive,0.45864661654135336,0.6161616161616161,0.5258620689655172,99.0
+rule-application_conclusion,crac,arbitrary,0.4166666666666667,0.09259259259259259,0.15151515151515152,108.0
+rule-application_conclusion,crac,descriptive,1.0,0.1527777777777778,0.26506024096385544,72.0
+rule-application_conclusion,crac,fanciful,0.5,0.125,0.2,72.0
+rule-application_conclusion,crac,generic,0.92,0.8518518518518519,0.8846153846153846,54.0
+rule-application_conclusion,crac,suggestive,0.2825278810408922,0.7676767676767676,0.41304347826086957,99.0
+rule-application_conclusion,creac,arbitrary,0.42857142857142855,0.05555555555555555,0.09836065573770492,108.0
+rule-application_conclusion,creac,descriptive,0.7222222222222222,0.18055555555555555,0.28888888888888886,72.0
+rule-application_conclusion,creac,fanciful,0.16666666666666666,0.027777777777777776,0.047619047619047616,72.0
+rule-application_conclusion,creac,generic,0.8627450980392157,0.8148148148148148,0.8380952380952381,54.0
+rule-application_conclusion,creac,suggestive,0.291970802919708,0.8080808080808081,0.4289544235924933,99.0
+rule-application_conclusion,few_shot_2,arbitrary,0.5045871559633027,0.5092592592592593,0.5069124423963134,108.0
+rule-application_conclusion,few_shot_2,descriptive,0.7045454545454546,0.4305555555555556,0.5344827586206896,72.0
+rule-application_conclusion,few_shot_2,fanciful,0.6382978723404256,0.4166666666666667,0.5042016806722689,72.0
+rule-application_conclusion,few_shot_2,generic,1.0,0.7592592592592593,0.8631578947368421,54.0
+rule-application_conclusion,few_shot_2,suggestive,0.40372670807453415,0.6565656565656566,0.5,99.0
+rule-application_conclusion,few_shot_3,arbitrary,0.35294117647058826,0.3333333333333333,0.34285714285714286,108.0
+rule-application_conclusion,few_shot_3,descriptive,0.8055555555555556,0.4027777777777778,0.5370370370370371,72.0
+rule-application_conclusion,few_shot_3,fanciful,0.65625,0.2916666666666667,0.40384615384615385,72.0
+rule-application_conclusion,few_shot_3,generic,1.0,0.7222222222222222,0.8387096774193549,54.0
+rule-application_conclusion,few_shot_3,suggestive,0.40512820512820513,0.797979797979798,0.5374149659863946,99.0
+rule-application_conclusion,irac,arbitrary,0.5714285714285714,0.3333333333333333,0.42105263157894735,108.0
+rule-application_conclusion,irac,descriptive,0.6379310344827587,0.5138888888888888,0.5692307692307692,72.0
+rule-application_conclusion,irac,fanciful,0.723404255319149,0.4722222222222222,0.5714285714285714,72.0
+rule-application_conclusion,irac,generic,1.0,0.6666666666666666,0.8,54.0
+rule-application_conclusion,irac,suggestive,0.4,0.40404040404040403,0.4020100502512563,99.0
+rule-application_conclusion,ireac,arbitrary,0.5952380952380952,0.23148148148148148,0.3333333333333333,108.0
+rule-application_conclusion,ireac,descriptive,0.6271186440677966,0.5138888888888888,0.5648854961832062,72.0
+rule-application_conclusion,ireac,fanciful,0.7105263157894737,0.375,0.4909090909090909,72.0
+rule-application_conclusion,ireac,generic,1.0,0.5185185185185185,0.6829268292682927,54.0
+rule-application_conclusion,ireac,suggestive,0.4880952380952381,0.41414141414141414,0.44808743169398907,99.0
+rule-application_conclusion,one_shot,arbitrary,0.09523809523809523,0.018518518518518517,0.031007751937984496,108.0
+rule-application_conclusion,one_shot,descriptive,0.8541666666666666,0.5694444444444444,0.6833333333333333,72.0
+rule-application_conclusion,one_shot,fanciful,0.8571428571428571,0.25,0.3870967741935484,72.0
+rule-application_conclusion,one_shot,generic,1.0,0.8888888888888888,0.9411764705882353,54.0
+rule-application_conclusion,one_shot,suggestive,0.34980988593155893,0.9292929292929293,0.5082872928176796,99.0
+rule-application_conclusion,role_based,arbitrary,0.6637168141592921,0.6944444444444444,0.6787330316742082,108.0
+rule-application_conclusion,role_based,descriptive,0.6666666666666666,0.8055555555555556,0.7295597484276729,72.0
+rule-application_conclusion,role_based,fanciful,0.651685393258427,0.8055555555555556,0.7204968944099379,72.0
+rule-application_conclusion,role_based,generic,1.0,0.8148148148148148,0.8979591836734694,54.0
+rule-application_conclusion,role_based,suggestive,0.5072463768115942,0.35353535353535354,0.4166666666666667,99.0
+rule-application_conclusion,structured,arbitrary,0.6588235294117647,0.5185185185185185,0.5803108808290155,108.0
+rule-application_conclusion,structured,descriptive,0.7164179104477612,0.6666666666666666,0.6906474820143885,72.0
+rule-application_conclusion,structured,fanciful,0.5384615384615384,0.875,0.6666666666666666,72.0
+rule-application_conclusion,structured,generic,1.0,0.7037037037037037,0.8260869565217391,54.0
+rule-application_conclusion,structured,suggestive,0.34375,0.3333333333333333,0.3384615384615385,99.0
+rule-application_conclusion,treacc,arbitrary,0.4666666666666667,0.06481481481481481,0.11382113821138211,108.0
+rule-application_conclusion,treacc,descriptive,0.64,0.2222222222222222,0.32989690721649484,72.0
+rule-application_conclusion,treacc,fanciful,0.875,0.09722222222222222,0.175,72.0
+rule-application_conclusion,treacc,generic,1.0,0.2037037037037037,0.3384615384615385,54.0
+rule-application_conclusion,treacc,suggestive,0.35,0.0707070707070707,0.11764705882352941,99.0
+rule-application_conclusion,zero_shot,arbitrary,0.25,0.027777777777777776,0.05,108.0
+rule-application_conclusion,zero_shot,descriptive,0.4868421052631579,0.5138888888888888,0.5,72.0
+rule-application_conclusion,zero_shot,fanciful,0.9375,0.4166666666666667,0.5769230769230769,72.0
+rule-application_conclusion,zero_shot,generic,0.96,0.8888888888888888,0.9230769230769231,54.0
+rule-application_conclusion,zero_shot,suggestive,0.34934497816593885,0.8080808080808081,0.4878048780487805,99.0
+rule-recall,cleo,no,0.48,0.15384615384615385,0.23300970873786409,234.0
+rule-recall,cleo,yes,0.4,0.7719298245614035,0.5269461077844312,171.0
+rule-recall,cot,no,0.5766129032258065,0.6111111111111112,0.5933609958506224,234.0
+rule-recall,cot,yes,0.42038216560509556,0.38596491228070173,0.4024390243902439,171.0
+rule-recall,crac,no,0.6810344827586207,0.33760683760683763,0.4514285714285714,234.0
+rule-recall,crac,yes,0.4652777777777778,0.783625730994152,0.5838779956427015,171.0
+rule-recall,creac,no,0.7215189873417721,0.48717948717948717,0.5816326530612245,234.0
+rule-recall,creac,yes,0.5163934426229508,0.7368421052631579,0.6072289156626506,171.0
+rule-recall,few_shot_2,no,0.5893416927899686,0.8034188034188035,0.6799276672694394,234.0
+rule-recall,few_shot_2,yes,0.46511627906976744,0.23391812865497075,0.311284046692607,171.0
+rule-recall,few_shot_3,no,0.6083086053412463,0.8760683760683761,0.7180385288966725,234.0
+rule-recall,few_shot_3,yes,0.5735294117647058,0.22807017543859648,0.3263598326359833,171.0
+rule-recall,irac,no,0.6666666666666666,0.1452991452991453,0.23859649122807017,234.0
+rule-recall,irac,yes,0.4350282485875706,0.9005847953216374,0.5866666666666667,171.0
+rule-recall,ireac,no,0.6666666666666666,0.1623931623931624,0.2611683848797251,234.0
+rule-recall,ireac,yes,0.4405797101449275,0.8888888888888888,0.5891472868217055,171.0
+rule-recall,one_shot,no,0.6212765957446809,0.6239316239316239,0.6226012793176973,234.0
+rule-recall,one_shot,yes,0.4823529411764706,0.47953216374269003,0.4809384164222874,171.0
+rule-recall,role_based,no,0.6055900621118012,0.8333333333333334,0.7014388489208633,234.0
+rule-recall,role_based,yes,0.5365853658536586,0.2573099415204678,0.34782608695652173,171.0
+rule-recall,structured,no,0.5809018567639257,0.9358974358974359,0.7168576104746317,234.0
+rule-recall,structured,yes,0.46153846153846156,0.03508771929824561,0.06521739130434782,171.0
+rule-recall,treacc,no,0.673469387755102,0.14102564102564102,0.2332155477031802,234.0
+rule-recall,treacc,yes,0.4409937888198758,0.8304093567251462,0.5760649087221096,171.0
+rule-recall,zero_shot,no,0.6017964071856288,0.8589743589743589,0.7077464788732394,234.0
+rule-recall,zero_shot,yes,0.5352112676056338,0.2222222222222222,0.3140495867768595,171.0
