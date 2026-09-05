@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import random
 
 EVAL_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(EVAL_DIR)
@@ -11,12 +12,17 @@ import pandas as pd
 from sklearn.metrics import f1_score, precision_recall_fscore_support
 
 
-def load_eval_pool_labels():
+def load_eval_pool_labels(sample_size=None):
     """
     Builds a lookup {(task_name, instance_idx): true_label} from every
-    eval_pools/{task}_eval.json file. Ground truth was never written back
-    into the raw generation records at generation time (only used transiently
-    to compute is_correct), so it must be recovered from the eval pools.
+    eval_pools/{task}_eval.json file.
+
+    CRITICAL: results_generation.py shuffles each pool with a fixed seed
+    before slicing to sample_size and enumerating, so a generation's
+    task_id index (e.g. "abercrombie_0") refers to a position in the
+    SHUFFLED pool, not the raw eval_pools/*.json file order. This function
+    must replicate that exact same shuffle before numbering, or every
+    true_label lookup will point at the wrong instance.
     """
     labels = {}
     for fname in os.listdir(config.EVAL_POOLS_DIR):
@@ -25,19 +31,25 @@ def load_eval_pool_labels():
         task_name = fname[: -len("_eval.json")]
         with open(os.path.join(config.EVAL_POOLS_DIR, fname)) as f:
             pool = json.load(f)
+
+        if sample_size:
+            pool = pool.copy()
+            random.Random(config.CLUSTERING_RANDOM_STATE).shuffle(pool)
+            pool = pool[:sample_size]
+
         for idx, row in enumerate(pool):
             labels[(task_name, idx)] = str(row.get("answer", ""))
     return labels
 
 
-def attach_true_labels(df: pd.DataFrame) -> pd.DataFrame:
+def attach_true_labels(df: pd.DataFrame, sample_size=None) -> pd.DataFrame:
     """
     task_id in generation records is instance-specific, e.g. "abercrombie_23"
     (task name + instance index). Split on the LAST underscore, not the
     first, since some task names (e.g. citation_prediction_classification)
     contain underscores themselves.
     """
-    label_lookup = load_eval_pool_labels()
+    label_lookup = load_eval_pool_labels(sample_size)
 
     def lookup(task_id: str):
         task_name, idx_str = task_id.rsplit("_", 1)
@@ -83,7 +95,9 @@ def macro_f1(group: pd.DataFrame) -> float:
 
 
 def main():
-    model_name = config.get_model_name_from_args().model
+    args = config.get_model_name_from_args()
+    model_name = args.model
+    sample_size = args.sample_size
     safe_model_name = model_name.replace("/", "_")
 
     parsed_path = os.path.join(config.PARSED_DIR, f"all_generations_parsed__{safe_model_name}.csv")
@@ -95,7 +109,7 @@ def main():
     print(f"Loaded {len(df)} generations for {model_name}")
 
     df["is_correct"] = df["is_correct"].fillna(False)
-    df = attach_true_labels(df)
+    df = attach_true_labels(df, sample_size)
 
     # Persist true_label back into the parsed CSV so downstream scripts
     # (analysis.py, visualize_metrics.py) can read it directly without
