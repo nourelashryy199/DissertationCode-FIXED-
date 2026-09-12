@@ -1,5 +1,3 @@
-
-
 import os
 import sys
 
@@ -32,7 +30,7 @@ def check(condition, description):
 
 
 def make_runs(category, strategy, values):
-    return [{"category": category, "strategy": strategy, "run_id": i, "run_accuracy": v}
+    return [{"category": category, "strategy": strategy, "run_id": i, "level_accuracy": v}
             for i, v in enumerate(values)]
 
 
