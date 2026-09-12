@@ -1,21 +1,21 @@
 === Scenario 1: Does Fit Score reward CONSISTENCY, not just raw accuracy? ===
 
-  volatile: mean_accuracy=0.620, std=0.356, fit_score=0.617
-  stable:   mean_accuracy=0.550, std=0.016, fit_score=9.487
+  volatile: mean_accuracy=0.600, std=0.361, fit_score=0.555
+  stable:   mean_accuracy=0.543, std=0.015, fit_score=9.383
 
 [PASS] Sanity: 'volatile' genuinely has higher RAW accuracy than 'stable' (by construction)
 [PASS] Fit Score REVERSES the raw-accuracy ranking: 'stable' scores higher despite lower mean accuracy
 
 === Scenario 2: Does a genuinely WORSE strategy get a negative Fit Score? ===
 
-  bad_strategy: mean_accuracy=0.300, accuracy_gain=-0.200, fit_score=-12.649
+  bad_strategy: mean_accuracy=0.300, accuracy_gain=-0.200, fit_score=-10.000
 
 [PASS] bad_strategy genuinely underperforms zero_shot (negative gain, by construction)
 [PASS] Fit Score is correctly negative for a genuinely worse strategy
 
 === Scenario 3: Deterministic tie-breaking when two strategies are equal ===
 
-  strategy_a fit_score=28.2843, strategy_b fit_score=28.2843
+  strategy_a fit_score=20.0000, strategy_b fit_score=20.0000
   champion selected: strategy_a
 
 [PASS] Tied strategies genuinely produce equal Fit Scores
@@ -25,12 +25,12 @@
 
   Champions: {'Cat1': 'strat_X', 'Cat2': 'strat_Y'}
 
-         Cat1     Cat2
-Cat1   0.0000  34.9631
-Cat2  51.3163   0.0000
+      Cat1     Cat2
+Cat1   0.0  24.6667
+Cat2  36.0   0.0000
 
-  Hand-calculated Penalty(Cat1 -> Cat2) = 34.9631
-  Matrix's Penalty(Cat1 -> Cat2)        = 34.9631
+  Hand-calculated Penalty(Cat1 -> Cat2) = 24.6667
+  Matrix's Penalty(Cat1 -> Cat2)        = 24.6667
 
 [PASS] strat_X correctly identified as Cat1's champion (by construction)
 [PASS] strat_Y correctly identified as Cat2's champion (by construction)
