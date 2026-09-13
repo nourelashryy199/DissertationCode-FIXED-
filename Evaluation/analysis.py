@@ -496,7 +496,7 @@ def main():
     print("\n=== Joint Fit Score: Category Champions ===")
     print(joint_champions)
     print("\n=== Joint Transfer Penalty Matrix ===")
-    print(joint_penalty.round(3))
+    print(joint_penalty.round(3))    
     joint_fit_scores.to_csv(os.path.join(config.RESULTS_DIR, f"joint_fit_scores__{safe_model_name}.csv"), index=False)
     joint_champions.to_csv(os.path.join(config.RESULTS_DIR, f"joint_champions__{safe_model_name}.csv"))
     joint_penalty.to_csv(os.path.join(config.RESULTS_DIR, f"joint_transfer_penalty__{safe_model_name}.csv"))
@@ -505,11 +505,38 @@ def main():
 
     # ---------- TWO-WAY ANOVA (decomposes Joint Fit Score's variance source) ----------
     anova_table = compute_anova_table(df)
+
+    def compute_pooled_variance_decomposition(anova_table: pd.DataFrame) -> dict:
+        """
+        Pools SS_rephrasing, SS_run, SS_interaction, SS_residual, SS_total
+        across every (category, strategy) cell in this model, then reports
+        what fraction of TOTAL variance each source accounts for once
+        category and strategy identity are both collapsed out.
+        """
+        ss_total = anova_table["ss_total"].sum()
+        if ss_total <= 0:
+            return {"pct_variance_rephrasing": np.nan, "pct_variance_run": np.nan,
+                    "pct_variance_interaction": np.nan, "pct_variance_residual": np.nan,
+                    "n_cells": len(anova_table)}
+        return {
+            "pct_variance_rephrasing": 100 * anova_table["ss_rephrasing"].sum() / ss_total,
+            "pct_variance_run": 100 * anova_table["ss_run"].sum() / ss_total,
+            "pct_variance_interaction": 100 * anova_table["ss_interaction"].sum() / ss_total,
+            "pct_variance_residual": 100 * anova_table["ss_residual"].sum() / ss_total,
+            "n_cells": len(anova_table),
+        }
     print("\n=== Two-Way ANOVA: Rephrasing vs Run vs Interaction (per category, strategy) ===")
     print(anova_table[["category", "strategy", "pct_variance_rephrasing", "pct_variance_run",
                         "pct_variance_interaction", "p_rephrasing", "p_run", "p_interaction"]]
           .to_string(index=False))
     anova_table.to_csv(os.path.join(config.RESULTS_DIR, f"anova_decomposition__{safe_model_name}.csv"), index=False)
+
+    pooled_variance = compute_pooled_variance_decomposition(anova_table)
+    print("\n=== Pooled Variance Decomposition (all categories, all strategies, this model) ===")
+    print(pooled_variance)
+    pd.DataFrame([pooled_variance]).to_csv(
+        os.path.join(config.RESULTS_DIR, f"pooled_variance_decomposition__{safe_model_name}.csv"), index=False
+    )
 
     # ---------- CHAMPION DETAIL TABLE (RQ1) ----------
     champion_detail = build_champion_detail_table(
