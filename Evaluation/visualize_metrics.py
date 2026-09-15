@@ -45,12 +45,29 @@ def plot_penalty_matrix(path, title, fig_name, safe_model_name, vmin=None, vmax=
     savefig(fig, fig_name, safe_model_name)
 
 
+# def plot_fit_score_heatmap(path, title, fig_name, safe_model_name, category_order, strategy_order):
+#     fit_scores = try_read_csv(path)
+#     if fit_scores is None:
+#         return
+#     pivot = fit_scores.pivot(index="category", columns="strategy", values="fit_score_normalized")
+#     pivot = pivot.reindex(index=category_order, columns=strategy_order)
+#     fig, ax = plt.subplots(figsize=(14, 6))
+#     sns.heatmap(pivot, annot=True, fmt=".2f", cmap="RdYlGn", vmin=0, vmax=1,
+#                 cbar_kws={"label": "Fit Score (normalized 0-1)"}, ax=ax)
+#     ax.set_title(title)
+#     plt.xticks(rotation=45, ha="right")
+#     savefig(fig, fig_name, safe_model_name)
+
 def plot_fit_score_heatmap(path, title, fig_name, safe_model_name, category_order, strategy_order):
     fit_scores = try_read_csv(path)
     if fit_scores is None:
         return
+
+    candidate_order = [s for s in strategy_order if s != "zero_shot"]
+
     pivot = fit_scores.pivot(index="category", columns="strategy", values="fit_score_normalized")
-    pivot = pivot.reindex(index=category_order, columns=strategy_order)
+    pivot = pivot.reindex(index=category_order, columns=candidate_order)
+
     fig, ax = plt.subplots(figsize=(14, 6))
     sns.heatmap(pivot, annot=True, fmt=".2f", cmap="RdYlGn", vmin=0, vmax=1,
                 cbar_kws={"label": "Fit Score (normalized 0-1)"}, ax=ax)
@@ -281,7 +298,7 @@ def main():
         fig, ax = plt.subplots(figsize=(10, 5))
         sns.barplot(data=dispersion, x="category", y="strategy_dispersion", ax=ax, palette="mako")
         ax.set_title(f"Strategy Dispersion per Category ({model_name})\n"
-                     f"(How much accuracy varies across the 13 strategies)")
+                f"(How much accuracy varies across the 12 non-zero-shot candidate strategies)")
         ax.set_ylabel("Strategy Dispersion (std of accuracy across strategies)")
         plt.xticks(rotation=30, ha="right")
         savefig(fig, "bar_strategy_dispersion", safe_model_name)
@@ -335,11 +352,16 @@ def main():
         margin = margin.set_index("category").reindex(category_order).reset_index()
         margin = margin.dropna(subset=["p_value"])
         fig, ax = plt.subplots(figsize=(10, 5))
-        colors = ["#55A868" if tied else "#C44E52" for tied in margin["effectively_tied"]]
+        # colors = ["#55A868" if tied else "#C44E52" for tied in margin["effectively_tied"]]
+        # bars = ax.bar(margin["category"], margin["p_value"], color=colors)
+        # ax.axhline(0.05, color="black", linewidth=0.8, linestyle="--", label="p = 0.05 threshold")
+        # ax.set_title(f"Champion vs. Runner-Up: McNemar's Test p-value, per Category ({model_name})\n"
+        #              f"(Green = effectively tied with runner-up; Red = champion wins decisively)")
+        colors = ["#C44E52" if significant else "#55A868" for significant in margin["significant_accuracy_difference"]]
         bars = ax.bar(margin["category"], margin["p_value"], color=colors)
         ax.axhline(0.05, color="black", linewidth=0.8, linestyle="--", label="p = 0.05 threshold")
         ax.set_title(f"Champion vs. Runner-Up: McNemar's Test p-value, per Category ({model_name})\n"
-                     f"(Green = effectively tied with runner-up; Red = champion wins decisively)")
+                    f"(Red = significant paired-accuracy difference at p < 0.05)")
         ax.set_ylabel("p-value")
         ax.legend()
         plt.xticks(rotation=30, ha="right")

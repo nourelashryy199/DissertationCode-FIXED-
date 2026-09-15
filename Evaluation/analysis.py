@@ -69,8 +69,32 @@ def compute_fit_scores(level_df: pd.DataFrame) -> pd.DataFrame:
     return summary
 
 
+# def add_normalized_fit_scores(fit_scores: pd.DataFrame) -> pd.DataFrame:
+#     """Min-max scales fit_score to 0-1 WITHIN each category."""
+#     def minmax_normalize(s):
+#         lo, hi = s.min(), s.max()
+#         span = hi - lo
+#         if span > 1e-9:
+#             return (s - lo) / span
+#         return pd.Series(0.5, index=s.index)
+
+#     fit_scores = fit_scores.copy()
+#     fit_scores["fit_score_normalized"] = (
+#         fit_scores.groupby("category")["fit_score"].transform(minmax_normalize)
+#     )
+#     return fit_scores
+
 def add_normalized_fit_scores(fit_scores: pd.DataFrame) -> pd.DataFrame:
-    """Min-max scales fit_score to 0-1 WITHIN each category."""
+    """
+    Min-max scales Fit Score to 0-1 within each category using the
+    12 non-zero-shot candidate strategies. Zero-shot remains the
+    reference baseline and is excluded from candidate normalization.
+    """
+    fit_scores = fit_scores.copy()
+    fit_scores["fit_score_normalized"] = np.nan
+
+    candidate_mask = fit_scores["strategy"] != "zero_shot"
+
     def minmax_normalize(s):
         lo, hi = s.min(), s.max()
         span = hi - lo
@@ -78,17 +102,29 @@ def add_normalized_fit_scores(fit_scores: pd.DataFrame) -> pd.DataFrame:
             return (s - lo) / span
         return pd.Series(0.5, index=s.index)
 
-    fit_scores = fit_scores.copy()
-    fit_scores["fit_score_normalized"] = (
-        fit_scores.groupby("category")["fit_score"].transform(minmax_normalize)
+    fit_scores.loc[candidate_mask, "fit_score_normalized"] = (
+        fit_scores.loc[candidate_mask]
+        .groupby("category")["fit_score"]
+        .transform(minmax_normalize)
     )
+
     return fit_scores
 
 
+# def identify_champions(fit_scores: pd.DataFrame) -> pd.Series:
+#     """For each category, the strategy with the highest Fit Score."""
+#     idx = fit_scores.groupby("category")["fit_score"].idxmax()
+#     return fit_scores.loc[idx].set_index("category")["strategy"]
+
 def identify_champions(fit_scores: pd.DataFrame) -> pd.Series:
-    """For each category, the strategy with the highest Fit Score."""
-    idx = fit_scores.groupby("category")["fit_score"].idxmax()
-    return fit_scores.loc[idx].set_index("category")["strategy"]
+    """
+    For each category, identify the non-zero-shot strategy with the
+    highest Fit Score. Zero-shot is the reference baseline and is
+    therefore not eligible to be a champion.
+    """
+    candidates = fit_scores[fit_scores["strategy"] != "zero_shot"]
+    idx = candidates.groupby("category")["fit_score"].idxmax()
+    return candidates.loc[idx].set_index("category")["strategy"]
 
 
 # ============================================================
@@ -125,20 +161,48 @@ def compute_risk_summary(penalty_matrix: pd.DataFrame) -> pd.DataFrame:
     })
 
 
+# # ============================================================
+# # STRATEGY DISPERSION (fundamentally different: one number per
+# # CATEGORY only, computed across the 13 strategies, not per
+# # category-strategy pair, and no baseline subtraction)
+# # ============================================================
+
+# def compute_strategy_dispersion(df: pd.DataFrame) -> pd.DataFrame:
+#     """
+#     For each category, the standard deviation of pooled raw accuracy
+#     ACROSS all 13 strategies. High dispersion = category is sensitive
+#     to which strategy is used; low dispersion = category is forgiving.
+#     """
+#     per_strategy_acc = (
+#         df.groupby(["category", "strategy"])["is_correct"]
+#         .mean()
+#         .reset_index()
+#         .rename(columns={"is_correct": "accuracy"})
+#     )
+#     dispersion = (
+#         per_strategy_acc.groupby("category")["accuracy"]
+#         .agg(strategy_dispersion="std", mean_accuracy_across_strategies="mean")
+#         .reset_index()
+#     )
+#     return dispersion, per_strategy_acc
+
 # ============================================================
-# STRATEGY DISPERSION (fundamentally different: one number per
-# CATEGORY only, computed across the 13 strategies, not per
-# category-strategy pair, and no baseline subtraction)
+# STRATEGY DISPERSION (one number per category, computed across
+# the 12 non-zero-shot candidate strategies; zero-shot is the
+# reference baseline and is excluded)
 # ============================================================
 
 def compute_strategy_dispersion(df: pd.DataFrame) -> pd.DataFrame:
     """
-    For each category, the standard deviation of pooled raw accuracy
-    ACROSS all 13 strategies. High dispersion = category is sensitive
-    to which strategy is used; low dispersion = category is forgiving.
+    For each category, compute the standard deviation of pooled raw
+    accuracy across the 12 non-zero-shot candidate strategies.
+    High dispersion = category is sensitive to which candidate
+    strategy is used; low dispersion = category is forgiving.
     """
+    candidate_df = df[df["strategy"] != "zero_shot"]
+
     per_strategy_acc = (
-        df.groupby(["category", "strategy"])["is_correct"]
+        candidate_df.groupby(["category", "strategy"])["is_correct"]
         .mean()
         .reset_index()
         .rename(columns={"is_correct": "accuracy"})
@@ -236,9 +300,29 @@ def compute_anova_table(df: pd.DataFrame) -> pd.DataFrame:
 # which strategy ranks highest, per category)
 # ============================================================
 
+# def compute_spearman_gain_vs_fitscore(fit_scores: pd.DataFrame) -> pd.DataFrame:
+#     rows = []
+#     for cat, group in fit_scores.groupby("category"):
+#         rho, p_val = scipy_stats.spearmanr(group["accuracy_gain"], group["fit_score"])
+#         gain_champion = group.loc[group["accuracy_gain"].idxmax(), "strategy"]
+#         fit_champion = group.loc[group["fit_score"].idxmax(), "strategy"]
+#         rows.append({
+#             "category": cat, "spearman_rho": rho, "p_value": p_val,
+#             "gain_champion": gain_champion, "fit_score_champion": fit_champion,
+#             "champion_changed": gain_champion != fit_champion,
+#         })
+#     return pd.DataFrame(rows)
+
 def compute_spearman_gain_vs_fitscore(fit_scores: pd.DataFrame) -> pd.DataFrame:
+    """
+    Compare raw-gain and Fit Score rankings across the 12 candidate
+    strategies. Zero-shot is excluded because it is the reference
+    baseline rather than a candidate strategy.
+    """
     rows = []
-    for cat, group in fit_scores.groupby("category"):
+    candidates = fit_scores[fit_scores["strategy"] != "zero_shot"]
+
+    for cat, group in candidates.groupby("category"):
         rho, p_val = scipy_stats.spearmanr(group["accuracy_gain"], group["fit_score"])
         gain_champion = group.loc[group["accuracy_gain"].idxmax(), "strategy"]
         fit_champion = group.loc[group["fit_score"].idxmax(), "strategy"]
@@ -306,7 +390,9 @@ def mcnemar_test(n_a_correct_b_wrong: int, n_a_wrong_b_correct: int):
 
 def compute_champion_margin(joint_fit_scores: pd.DataFrame, df: pd.DataFrame) -> pd.DataFrame:
     rows = []
-    for category, group in joint_fit_scores.groupby("category"):
+    candidates = joint_fit_scores[joint_fit_scores["strategy"] != "zero_shot"]
+
+    for category, group in candidates.groupby("category"):
         ranked = group.sort_values("fit_score_normalized", ascending=False).reset_index(drop=True)
         champion = ranked.loc[0, "strategy"]
         runner_up = ranked.loc[1, "strategy"] if len(ranked) > 1 else None
@@ -548,7 +634,8 @@ def main():
 
     # ---------- STRATEGY DISPERSION ----------
     dispersion, per_strategy_acc_for_dispersion = compute_strategy_dispersion(df)
-    print("\n=== Strategy Dispersion (per category, across all 13 strategies) ===")
+    # print("\n=== Strategy Dispersion (per category, across all 13 strategies) ===")
+    print("\n=== Strategy Dispersion (per category, across 12 non-zero-shot candidate strategies) ===")
     print(dispersion.to_string(index=False))
     dispersion.to_csv(os.path.join(config.RESULTS_DIR, f"strategy_dispersion__{safe_model_name}.csv"), index=False)
 
