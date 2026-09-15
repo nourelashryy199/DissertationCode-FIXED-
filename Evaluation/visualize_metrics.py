@@ -239,7 +239,7 @@ def main():
         sns.heatmap(pivot_worst, annot=True, fmt=".2f", cmap="RdYlGn", vmin=0, vmax=1,
                     cbar_kws={"label": "Worst-Class F1"}, ax=ax)
         ax.set_title(f"Worst-Performing Class F1: Category x Strategy ({model_name})\n"
-                     f"(Low values indicate a strategy may be defaulting to a majority label)")
+                     f"(Low values indicate poor performance on at least one class)")
         plt.xticks(rotation=45, ha="right")
         savefig(fig, "heatmap_worst_class_f1", safe_model_name)
 

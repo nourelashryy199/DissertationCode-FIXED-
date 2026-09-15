@@ -400,7 +400,7 @@ def compute_champion_margin(joint_fit_scores: pd.DataFrame, df: pd.DataFrame) ->
         if runner_up is None:
             rows.append({"category": category, "champion_strategy": champion,
                          "runner_up_strategy": None, "p_value": np.nan,
-                         "effectively_tied": None})
+                         "significant_accuracy_difference": None})
             continue
 
         champ_data = df[(df["category"] == category) & (df["strategy"] == champion)]
@@ -423,7 +423,7 @@ def compute_champion_margin(joint_fit_scores: pd.DataFrame, df: pd.DataFrame) ->
             "champion_wrong_runner_correct": c_count,
             "p_value": p_val,
             "method": method,
-            "effectively_tied": p_val >= 0.05,
+            "significant_accuracy_difference": p_val < 0.05,
         })
     return pd.DataFrame(rows)
 
