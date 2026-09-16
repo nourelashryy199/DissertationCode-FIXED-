@@ -295,9 +295,8 @@ def compute_anova_table(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # ============================================================
-# SPEARMAN CHECK (RQ1: does dividing gain by variance -- i.e.
-# ranking by Run Fit Score instead of by raw gain alone -- change
-# which strategy ranks highest, per category)
+# SPEARMAN CHECK (RQ1: does ranking by Joint Fit Score instead
+# of raw accuracy gain change the strategy ranking or champion?)
 # ============================================================
 
 # def compute_spearman_gain_vs_fitscore(fit_scores: pd.DataFrame) -> pd.DataFrame:
@@ -660,8 +659,13 @@ def main():
     )
 
     # ---------- SPEARMAN: does dividing by variance change the champion? (RQ1) ----------
-    spearman_results = compute_spearman_gain_vs_fitscore(run_fit_scores)
-    print("\n=== Spearman: Raw Gain Ranking vs Run Fit Score Ranking (per category) ===")
+    # spearman_results = compute_spearman_gain_vs_fitscore(run_fit_scores)
+    # print("\n=== Spearman: Raw Gain Ranking vs Run Fit Score Ranking (per category) ===")
+    # print(spearman_results.to_string(index=False))
+    # spearman_results.to_csv(os.path.join(config.RESULTS_DIR, f"spearman_gain_vs_fitscore__{safe_model_name}.csv"), index=False)
+    # ---------- SPEARMAN: does Joint Fit risk-adjustment change the champion? (RQ1) ----------
+    spearman_results = compute_spearman_gain_vs_fitscore(joint_fit_scores)
+    print("\n=== Spearman: Raw Gain Ranking vs Joint Fit Score Ranking (per category) ===")
     print(spearman_results.to_string(index=False))
     spearman_results.to_csv(os.path.join(config.RESULTS_DIR, f"spearman_gain_vs_fitscore__{safe_model_name}.csv"), index=False)
 
@@ -672,8 +676,14 @@ def main():
     champion_margin.to_csv(os.path.join(config.RESULTS_DIR, f"champion_margin__{safe_model_name}.csv"), index=False)
 
     # ---------- CONSISTENCY VALUE: does accounting for consistency change anything meaningfully? (RQ1) ----------
-    consistency_value = compute_consistency_value(run_fit_scores, spearman_results)
-    print("\n=== Consistency Value: Fit Score gap when champion changes (Run Fit Score) ===")
+    # consistency_value = compute_consistency_value(run_fit_scores, spearman_results)
+    # print("\n=== Consistency Value: Fit Score gap when champion changes (Run Fit Score) ===")
+    # print(consistency_value.to_string(index=False))
+    # consistency_value.to_csv(os.path.join(config.RESULTS_DIR, f"consistency_value__{safe_model_name}.csv"), index=False)
+
+    # ---------- CONSISTENCY VALUE: does Joint Fit risk-adjustment change anything meaningfully? (RQ1) ----------
+    consistency_value = compute_consistency_value(joint_fit_scores, spearman_results)
+    print("\n=== Consistency Value: Fit Score gap when champion changes (Joint Fit Score) ===")
     print(consistency_value.to_string(index=False))
     consistency_value.to_csv(os.path.join(config.RESULTS_DIR, f"consistency_value__{safe_model_name}.csv"), index=False)
 
