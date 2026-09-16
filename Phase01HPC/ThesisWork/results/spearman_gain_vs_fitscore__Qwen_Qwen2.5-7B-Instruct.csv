@@ -1,6 +1,6 @@
 category,spearman_rho,p_value,gain_champion,fit_score_champion,champion_changed
-interpretation,0.9228070175438597,1.894217302851187e-05,role_based,role_based,False
-issue-spotting,0.9052687305110301,5.115463807565403e-05,structured,creac,True
+interpretation,0.9562186292818428,1.1769024781866441e-06,role_based,few_shot_2,True
+issue-spotting,0.9579006334477179,9.70307053250736e-07,structured,structured,False
 rhetorical-understanding,0.9849624060150375,5.9050894692450106e-09,few_shot_2,one_shot,True
-rule-application_conclusion,0.7272727272727274,0.007355028857805126,cot,structured,True
-rule-recall,0.8161133356141735,0.001205154365632128,few_shot_2,few_shot_2,False
+rule-application_conclusion,0.8111888111888113,0.0013633152527271922,cot,structured,True
+rule-recall,0.9562186292818428,1.1769024781866441e-06,few_shot_2,few_shot_2,False

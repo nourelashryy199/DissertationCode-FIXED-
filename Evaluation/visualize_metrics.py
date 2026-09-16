@@ -337,8 +337,8 @@ def main():
         colors = ["#C44E52" if c else "#55A868" for c in spearman["champion_changed"]]
         sns.barplot(data=spearman, x="category", y="spearman_rho", ax=ax, palette=colors)
         ax.axhline(0, color="black", linewidth=0.8)
-        ax.set_title(f"Spearman Correlation: Raw Gain Ranking vs Run Fit Score Ranking ({model_name})\n"
-                     f"(Red bar = the top-ranked strategy differs between the two rankings)")
+        ax.set_title(f"Spearman Correlation: Raw Gain Ranking vs Joint Fit Score Ranking ({model_name})\n"
+             f"(Red bar = the top-ranked strategy differs between the two rankings)")
         ax.set_ylabel("Spearman's rho")
         plt.xticks(rotation=30, ha="right")
         savefig(fig, "bar_spearman_gain_vs_fitscore", safe_model_name)

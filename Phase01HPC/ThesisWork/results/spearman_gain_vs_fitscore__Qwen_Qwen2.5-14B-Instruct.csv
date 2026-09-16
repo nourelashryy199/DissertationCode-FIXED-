@@ -1,6 +1,6 @@
 category,spearman_rho,p_value,gain_champion,fit_score_champion,champion_changed
-interpretation,0.8796992481203008,0.00016160927125744715,few_shot_3,few_shot_2,True
-issue-spotting,0.7412587412587414,0.005801150474478243,role_based,role_based,False
-rhetorical-understanding,0.9860299083089119,4.093624141983093e-09,few_shot_3,few_shot_3,False
-rule-application_conclusion,0.9440559440559443,3.9272610809659444e-06,role_based,role_based,False
-rule-recall,0.8791607177646247,0.00016510370069031173,few_shot_3,few_shot_3,False
+interpretation,0.9999999999999999,1.3283169408470852e-79,few_shot_3,few_shot_3,False
+issue-spotting,0.6503496503496504,0.022034190932365288,role_based,role_based,False
+rhetorical-understanding,0.9900219322291909,7.660316009378057e-10,few_shot_3,few_shot_3,False
+rule-application_conclusion,0.9930069930069931,1.3016730560634403e-10,role_based,role_based,False
+rule-recall,0.99124495269876,3.9920442220119205e-10,few_shot_3,few_shot_3,False
