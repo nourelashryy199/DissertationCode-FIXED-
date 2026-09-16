@@ -11,11 +11,7 @@ import numpy as np
 from scipy import stats as scipy_stats
 
 
-# ============================================================
-# LEVEL-ACCURACY COMPUTATION (generic — used for Run, Rephrasing,
-# and Joint Fit Score alike, by varying which columns are grouped)
-# ============================================================
-
+#level accuracy calculation. group_cols changes depending on whether I am calculating Run, Rephrasing, or Joint Fit
 def compute_level_accuracy(df: pd.DataFrame, group_cols: list) -> pd.DataFrame:
     """
     Generic replacement for the old compute_run_level_accuracy().
@@ -32,10 +28,7 @@ def compute_level_accuracy(df: pd.DataFrame, group_cols: list) -> pd.DataFrame:
     )
 
 
-# ============================================================
-# FIT SCORE (generic construction, reused for Run/Rephrasing/Joint)
-# ============================================================
-
+#Fit Score calculation
 def compute_fit_scores(level_df: pd.DataFrame) -> pd.DataFrame:
     """
     FitScore(category, strategy) = mean(level_accuracy gain over zero-shot)
@@ -58,8 +51,7 @@ def compute_fit_scores(level_df: pd.DataFrame) -> pd.DataFrame:
 
     summary["accuracy_gain"] = summary["mean_accuracy"] - summary["zero_shot_baseline"]
 
-    # Divide-by-zero guard: a strategy with zero variance across its
-    # observations gets capped at +-100, sign determined by gain direction.
+    #avoids dividing by zero. if there is no variance, Fit Score is capped at +100 or -100 depending on the direction of the gain
     summary["fit_score"] = np.where(
         summary["std_accuracy"] > 1e-9,
         summary["accuracy_gain"] / summary["std_accuracy"],
@@ -69,21 +61,7 @@ def compute_fit_scores(level_df: pd.DataFrame) -> pd.DataFrame:
     return summary
 
 
-# def add_normalized_fit_scores(fit_scores: pd.DataFrame) -> pd.DataFrame:
-#     """Min-max scales fit_score to 0-1 WITHIN each category."""
-#     def minmax_normalize(s):
-#         lo, hi = s.min(), s.max()
-#         span = hi - lo
-#         if span > 1e-9:
-#             return (s - lo) / span
-#         return pd.Series(0.5, index=s.index)
-
-#     fit_scores = fit_scores.copy()
-#     fit_scores["fit_score_normalized"] = (
-#         fit_scores.groupby("category")["fit_score"].transform(minmax_normalize)
-#     )
-#     return fit_scores
-
+#normalizes Fit Score within each category. zero-shot is only the baseline so normalization is across the 12 candidate strategies
 def add_normalized_fit_scores(fit_scores: pd.DataFrame) -> pd.DataFrame:
     """
     Min-max scales Fit Score to 0-1 within each category using the
@@ -111,11 +89,7 @@ def add_normalized_fit_scores(fit_scores: pd.DataFrame) -> pd.DataFrame:
     return fit_scores
 
 
-# def identify_champions(fit_scores: pd.DataFrame) -> pd.Series:
-#     """For each category, the strategy with the highest Fit Score."""
-#     idx = fit_scores.groupby("category")["fit_score"].idxmax()
-#     return fit_scores.loc[idx].set_index("category")["strategy"]
-
+#selects the highest Fit Score from the 12 candidate strategies in each category. zero-shot cannot be a champion because it is the baseline
 def identify_champions(fit_scores: pd.DataFrame) -> pd.Series:
     """
     For each category, identify the non-zero-shot strategy with the
@@ -127,10 +101,7 @@ def identify_champions(fit_scores: pd.DataFrame) -> pd.Series:
     return candidates.loc[idx].set_index("category")["strategy"]
 
 
-# ============================================================
-# TRANSFER PENALTY (generic — reused for Run/Rephrasing/Joint)
-# ============================================================
-
+#Transfer Penalty calculation
 def compute_transfer_penalty(fit_scores: pd.DataFrame, champions: pd.Series, score_col: str = "fit_score") -> pd.DataFrame:
     """Penalty(i -> j) = FitScore(j, champion_j) - FitScore(j, champion_i)"""
     categories = list(champions.index)
@@ -161,37 +132,7 @@ def compute_risk_summary(penalty_matrix: pd.DataFrame) -> pd.DataFrame:
     })
 
 
-# # ============================================================
-# # STRATEGY DISPERSION (fundamentally different: one number per
-# # CATEGORY only, computed across the 13 strategies, not per
-# # category-strategy pair, and no baseline subtraction)
-# # ============================================================
-
-# def compute_strategy_dispersion(df: pd.DataFrame) -> pd.DataFrame:
-#     """
-#     For each category, the standard deviation of pooled raw accuracy
-#     ACROSS all 13 strategies. High dispersion = category is sensitive
-#     to which strategy is used; low dispersion = category is forgiving.
-#     """
-#     per_strategy_acc = (
-#         df.groupby(["category", "strategy"])["is_correct"]
-#         .mean()
-#         .reset_index()
-#         .rename(columns={"is_correct": "accuracy"})
-#     )
-#     dispersion = (
-#         per_strategy_acc.groupby("category")["accuracy"]
-#         .agg(strategy_dispersion="std", mean_accuracy_across_strategies="mean")
-#         .reset_index()
-#     )
-#     return dispersion, per_strategy_acc
-
-# ============================================================
-# STRATEGY DISPERSION (one number per category, computed across
-# the 12 non-zero-shot candidate strategies; zero-shot is the
-# reference baseline and is excluded)
-# ============================================================
-
+#Strategy Dispersion calculation. zero-shot is excluded because it is the reference baseline rather than one of the 12 candidate strategies
 def compute_strategy_dispersion(df: pd.DataFrame) -> pd.DataFrame:
     """
     For each category, compute the standard deviation of pooled raw
@@ -215,12 +156,7 @@ def compute_strategy_dispersion(df: pd.DataFrame) -> pd.DataFrame:
     return dispersion, per_strategy_acc
 
 
-# ============================================================
-# TWO-WAY ANOVA DECOMPOSITION (for Joint Fit Score's denominator:
-# how much of a strategy's instability is attributable to rephrasing,
-# how much to run, how much to their interaction)
-# ============================================================
-
+#two-way ANOVA to separate the variance associated with rephrasing, run, their interaction, and the residual
 def two_way_anova(df: pd.DataFrame, category: str, strategy: str) -> dict:
     """
     Decomposes total variance in this (category, strategy)'s 405
@@ -294,24 +230,7 @@ def compute_anova_table(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-# ============================================================
-# SPEARMAN CHECK (RQ1: does ranking by Joint Fit Score instead
-# of raw accuracy gain change the strategy ranking or champion?)
-# ============================================================
-
-# def compute_spearman_gain_vs_fitscore(fit_scores: pd.DataFrame) -> pd.DataFrame:
-#     rows = []
-#     for cat, group in fit_scores.groupby("category"):
-#         rho, p_val = scipy_stats.spearmanr(group["accuracy_gain"], group["fit_score"])
-#         gain_champion = group.loc[group["accuracy_gain"].idxmax(), "strategy"]
-#         fit_champion = group.loc[group["fit_score"].idxmax(), "strategy"]
-#         rows.append({
-#             "category": cat, "spearman_rho": rho, "p_value": p_val,
-#             "gain_champion": gain_champion, "fit_score_champion": fit_champion,
-#             "champion_changed": gain_champion != fit_champion,
-#         })
-#     return pd.DataFrame(rows)
-
+#compares the raw accuracy gain ranking with the Joint Fit Score ranking
 def compute_spearman_gain_vs_fitscore(fit_scores: pd.DataFrame) -> pd.DataFrame:
     """
     Compare raw-gain and Fit Score rankings across the 12 candidate
@@ -332,13 +251,8 @@ def compute_spearman_gain_vs_fitscore(fit_scores: pd.DataFrame) -> pd.DataFrame:
         })
     return pd.DataFrame(rows)
 
-# ============================================================
-# CHAMPION DETAIL TABLE (RQ1: for each category's Joint Fit Score
-# champion, show its Run/Rephrasing/Joint scores side by side with
-# its ANOVA variance-source breakdown, so this doesn't need to be
-# manually assembled from four separate CSVs every time)
-# ============================================================
 
+#puts the Run, Rephrasing and Joint Fit results for each Joint champion together with its ANOVA results
 def build_champion_detail_table(joint_champions, run_fit_scores, rephrasing_fit_scores,
                                   joint_fit_scores, anova_table) -> pd.DataFrame:
     rows = []
@@ -363,15 +277,9 @@ def build_champion_detail_table(joint_champions, run_fit_scores, rephrasing_fit_
             "pct_variance_interaction": anova_row["pct_variance_interaction"].iloc[0] if len(anova_row) else np.nan,
         })
     return pd.DataFrame(rows)
-# ============================================================
-# MAIN
-# ============================================================
-# ============================================================
-# CHAMPION MARGIN (quantifies "basically tied" — the gap between
-# the winning strategy and the runner-up, per category, at the
-# Joint Fit Score level)
-# ============================================================
 
+
+#McNemar test for comparing the champion and runner-up within the same model
 def mcnemar_test(n_a_correct_b_wrong: int, n_a_wrong_b_correct: int):
     """Same adaptive McNemar's test as cross_model_significance.py, reused
     here to compare a champion against its runner-up WITHIN one model."""
@@ -387,6 +295,7 @@ def mcnemar_test(n_a_correct_b_wrong: int, n_a_wrong_b_correct: int):
     return chi2, p_val, "chi_square_corrected"
 
 
+#compares the Joint Fit champion and runner-up for each category
 def compute_champion_margin(joint_fit_scores: pd.DataFrame, df: pd.DataFrame) -> pd.DataFrame:
     rows = []
     candidates = joint_fit_scores[joint_fit_scores["strategy"] != "zero_shot"]
@@ -427,13 +336,7 @@ def compute_champion_margin(joint_fit_scores: pd.DataFrame, df: pd.DataFrame) ->
     return pd.DataFrame(rows)
 
 
-# ============================================================
-# COST OF NOT SWITCHING (quantifies whether accounting for
-# consistency, i.e. using Fit Score instead of raw gain, actually
-# matters in practice — the size of the reliability gap between
-# the two candidate champions when they differ)
-# ============================================================
-
+#measures the Joint Fit Score difference when the raw accuracy gain champion and Joint Fit champion are different
 def compute_consistency_value(fit_scores: pd.DataFrame, spearman_results: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for _, row in spearman_results.iterrows():
@@ -456,13 +359,8 @@ def compute_consistency_value(fit_scores: pd.DataFrame, spearman_results: pd.Dat
         })
     return pd.DataFrame(rows)
 
-# ============================================================
-# EXPORTER RISK (RQ2: which category's champion strategy, when
-# exported elsewhere, tends to cause the most damage? Row-wise
-# mean of the off-diagonal penalty matrix — the mirror image of
-# compute_risk_summary's column-wise, importer-focused version)
-# ============================================================
 
+#Exporter Risk, meaning the average penalty caused when a category's champion is used in the other categories
 def compute_exporter_risk(penalty_matrix: pd.DataFrame) -> pd.DataFrame:
     off_diagonal = penalty_matrix.copy()
     np.fill_diagonal(off_diagonal.values, np.nan)
@@ -472,11 +370,7 @@ def compute_exporter_risk(penalty_matrix: pd.DataFrame) -> pd.DataFrame:
     })
 
 
-# ============================================================
-# TRANSFER ASYMMETRY (RQ2: is Penalty(i->j) the same as
-# Penalty(j->i)? Paired comparison for every category pair.)
-# ============================================================
-
+#compares the transfer penalty in both directions for each pair of categories
 def compute_transfer_asymmetry(penalty_matrix: pd.DataFrame) -> pd.DataFrame:
     categories = list(penalty_matrix.index)
     rows = []
@@ -495,13 +389,7 @@ def compute_transfer_asymmetry(penalty_matrix: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-# ============================================================
-# DISPERSION VS PENALTY CORRELATION (RQ2: does Strategy Dispersion
-# predict how costly a wrong strategy import is for that category?
-# n=5 per model; a pooled, higher-power version across all three
-# models lives in cross_model_significance.py.)
-# ============================================================
-
+#checks whether Strategy Dispersion is related to mean Joint Transfer Penalty
 def compute_dispersion_penalty_correlation(dispersion: pd.DataFrame, risk_summary: pd.DataFrame) -> dict:
     merged = dispersion.set_index("category").join(risk_summary, how="inner")
     if len(merged) < 3:
@@ -530,7 +418,7 @@ def main():
 
     os.makedirs(config.RESULTS_DIR, exist_ok=True)
 
-    # ---------- RUN FIT SCORE ----------
+    #Run Fit Score
     run_level = compute_level_accuracy(df, ["category", "strategy", "run_id"])
     run_fit_scores = add_normalized_fit_scores(compute_fit_scores(run_level))
     run_champions = identify_champions(run_fit_scores)
@@ -551,7 +439,7 @@ def main():
     run_penalty_norm.to_csv(os.path.join(config.RESULTS_DIR, f"run_transfer_penalty_normalized__{safe_model_name}.csv"))
     run_risk.to_csv(os.path.join(config.RESULTS_DIR, f"run_risk_summary__{safe_model_name}.csv"))
 
-    # ---------- REPHRASING FIT SCORE ----------
+    #Rephrasing Fit Score
     rephrasing_level = compute_level_accuracy(df, ["category", "strategy", "rephrasing_id"])
     rephrasing_fit_scores = add_normalized_fit_scores(compute_fit_scores(rephrasing_level))
     rephrasing_champions = identify_champions(rephrasing_fit_scores)
@@ -570,7 +458,7 @@ def main():
     rephrasing_penalty_norm.to_csv(os.path.join(config.RESULTS_DIR, f"rephrasing_transfer_penalty_normalized__{safe_model_name}.csv"))
     rephrasing_risk.to_csv(os.path.join(config.RESULTS_DIR, f"rephrasing_risk_summary__{safe_model_name}.csv"))
 
-    # ---------- JOINT FIT SCORE (variance over full 9-cell rephrasing x run grid) ----------
+    #Joint Fit Score, using the 9 rephrasing and run combinations
     joint_level = compute_level_accuracy(df, ["category", "strategy", "rephrasing_id", "run_id"])
     joint_fit_scores = add_normalized_fit_scores(compute_fit_scores(joint_level))
     joint_champions = identify_champions(joint_fit_scores)
@@ -588,7 +476,7 @@ def main():
     joint_penalty_norm.to_csv(os.path.join(config.RESULTS_DIR, f"joint_transfer_penalty_normalized__{safe_model_name}.csv"))
     joint_risk.to_csv(os.path.join(config.RESULTS_DIR, f"joint_risk_summary__{safe_model_name}.csv"))
 
-    # ---------- TWO-WAY ANOVA (decomposes Joint Fit Score's variance source) ----------
+    #two-way ANOVA to calculate the variance associated with rephrasing, run, their interaction, and the residual
     anova_table = compute_anova_table(df)
 
     def compute_pooled_variance_decomposition(anova_table: pd.DataFrame) -> dict:
@@ -623,7 +511,7 @@ def main():
         os.path.join(config.RESULTS_DIR, f"pooled_variance_decomposition__{safe_model_name}.csv"), index=False
     )
 
-    # ---------- CHAMPION DETAIL TABLE (RQ1) ----------
+    #RQ1 champion details, including the three Fit Scores and the ANOVA results
     champion_detail = build_champion_detail_table(
         joint_champions, run_fit_scores, rephrasing_fit_scores, joint_fit_scores, anova_table
     )
@@ -631,26 +519,25 @@ def main():
     print(champion_detail.to_string(index=False))
     champion_detail.to_csv(os.path.join(config.RESULTS_DIR, f"champion_detail__{safe_model_name}.csv"), index=False)
 
-    # ---------- STRATEGY DISPERSION ----------
+    #Strategy Dispersion
     dispersion, per_strategy_acc_for_dispersion = compute_strategy_dispersion(df)
-    # print("\n=== Strategy Dispersion (per category, across all 13 strategies) ===")
     print("\n=== Strategy Dispersion (per category, across 12 non-zero-shot candidate strategies) ===")
     print(dispersion.to_string(index=False))
     dispersion.to_csv(os.path.join(config.RESULTS_DIR, f"strategy_dispersion__{safe_model_name}.csv"), index=False)
 
-    # ---------- EXPORTER RISK (RQ2) ----------
+    #Exporter Risk
     joint_exporter_risk = compute_exporter_risk(joint_penalty)
     print("\n=== Joint Exporter Risk (mean penalty caused when this category's champion is exported) ===")
     print(joint_exporter_risk.round(3))
     joint_exporter_risk.to_csv(os.path.join(config.RESULTS_DIR, f"joint_exporter_risk__{safe_model_name}.csv"))
 
-    # ---------- TRANSFER ASYMMETRY (RQ2) ----------
+    #Transfer Asymmetry
     joint_asymmetry = compute_transfer_asymmetry(joint_penalty)
     print("\n=== Joint Transfer Asymmetry: Penalty(i->j) vs Penalty(j->i) ===")
     print(joint_asymmetry.to_string(index=False))
-    joint_asymmetry.to_csv(os.path.join(config.RESULTS_DIR, f"joint_transfer_asymmetry__{safe_model_name}.csv"), index=False)
+    joint_asymmetry.to_csv(os.path.join(config.RESULTS_DIR, f"joint_transfer_asymmetry__{safe_model_name}.csv"))
 
-    # ---------- DISPERSION VS PENALTY CORRELATION (RQ2) ----------
+    #checking the correlation between Strategy Dispersion and Joint Transfer Penalty
     dispersion_penalty_corr = compute_dispersion_penalty_correlation(dispersion, joint_risk)
     print("\n=== Dispersion vs Joint Transfer Penalty Correlation ===")
     print(dispersion_penalty_corr)
@@ -658,30 +545,19 @@ def main():
         os.path.join(config.RESULTS_DIR, f"dispersion_penalty_correlation__{safe_model_name}.csv"), index=False
     )
 
-    # ---------- SPEARMAN: does dividing by variance change the champion? (RQ1) ----------
-    # spearman_results = compute_spearman_gain_vs_fitscore(run_fit_scores)
-    # print("\n=== Spearman: Raw Gain Ranking vs Run Fit Score Ranking (per category) ===")
-    # print(spearman_results.to_string(index=False))
-    # spearman_results.to_csv(os.path.join(config.RESULTS_DIR, f"spearman_gain_vs_fitscore__{safe_model_name}.csv"), index=False)
-    # ---------- SPEARMAN: does Joint Fit risk-adjustment change the champion? (RQ1) ----------
+    #Spearman correlation to compare the raw accuracy gain ranking with the Joint Fit Score ranking
     spearman_results = compute_spearman_gain_vs_fitscore(joint_fit_scores)
     print("\n=== Spearman: Raw Gain Ranking vs Joint Fit Score Ranking (per category) ===")
     print(spearman_results.to_string(index=False))
     spearman_results.to_csv(os.path.join(config.RESULTS_DIR, f"spearman_gain_vs_fitscore__{safe_model_name}.csv"), index=False)
 
-    # ---------- CHAMPION MARGIN: is the win decisive or "basically tied"? (RQ1) ----------
+    #comparing the Joint Fit champion with the runner-up
     champion_margin = compute_champion_margin(joint_fit_scores, df)
     print("\n=== Champion Margin: gap over runner-up, per category (Joint Fit Score, normalized) ===")
     print(champion_margin.to_string(index=False))
     champion_margin.to_csv(os.path.join(config.RESULTS_DIR, f"champion_margin__{safe_model_name}.csv"), index=False)
 
-    # ---------- CONSISTENCY VALUE: does accounting for consistency change anything meaningfully? (RQ1) ----------
-    # consistency_value = compute_consistency_value(run_fit_scores, spearman_results)
-    # print("\n=== Consistency Value: Fit Score gap when champion changes (Run Fit Score) ===")
-    # print(consistency_value.to_string(index=False))
-    # consistency_value.to_csv(os.path.join(config.RESULTS_DIR, f"consistency_value__{safe_model_name}.csv"), index=False)
-
-    # ---------- CONSISTENCY VALUE: does Joint Fit risk-adjustment change anything meaningfully? (RQ1) ----------
+    #Consistency Value, measuring the Fit Score difference when the raw accuracy gain champion and Joint Fit champion are not the same
     consistency_value = compute_consistency_value(joint_fit_scores, spearman_results)
     print("\n=== Consistency Value: Fit Score gap when champion changes (Joint Fit Score) ===")
     print(consistency_value.to_string(index=False))

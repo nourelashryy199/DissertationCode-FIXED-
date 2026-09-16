@@ -16,7 +16,7 @@ TOP_P = 0.95
 N_REPHRASINGS = 3
 #each strategy gets 3 differently-worded but equivalent instructions.
 N_RUNS = 3
-#each strategy is run 5 times per task, to account for randomness in the model's output (capture sampling variance).
+#each strategy is run 3 times per task, to account for randomness in the model's output (capture sampling variance).
 
 # #evaluation subsampling
 # EVAL_SAMPLE_SIZE = 45 

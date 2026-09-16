@@ -1,6 +1,8 @@
 import config
+#imports the shared experiment settings from config.py, including the framework steps, strategy list, demonstration requirements, and final-answer instruction.
 
 
+#maps each LegalBench reasoning category to the legal domain used in the role-based and structured prompts.
 CATEGORY_DOMAIN = {
     "issue-spotting": "general civil litigation",
     "rule-recall": "consumer protection and regulatory law",
@@ -9,6 +11,8 @@ CATEGORY_DOMAIN = {
     "rhetorical-understanding": "legal reasoning and argumentation",
 }
 
+#the 3 differently-worded but equivalent instruction versions used for each applicable prompting strategy.
+#rephrasing_id determines which version is used for a particular generation.
 INSTRUCTION_REPHRASINGS = {
     "zero_shot": [
         "Classify the following based on the labels provided.",
@@ -34,28 +38,34 @@ INSTRUCTION_REPHRASINGS = {
 
 
 def build_label_line(task):
+    #turns the possible labels for the task into the label line included in the prompt.
     return f"Labels: {', '.join(task.label_options)}"
 
 
 def build_context_question_block(task):
+    #puts the task context and question into the common format used by the prompts.
     return f"Context: {task.context}\nQuestion: {task.question}"
 
 
 def build_final_answer_instruction():
+    #adds the shared instruction telling the model exactly how its final answer should be formatted.
     return config.FINAL_ANSWER_INSTRUCTION
 
 
 def build_demo_block(demos):
-    """demos is already exactly the right length for this strategy — no slicing needed."""
+    """Combines the already-selected demonstrations into one block; the correct number of demonstrations has already been selected before this point, so nothing needs to be sliced here."""
     return "\n\n".join(d.render() for d in demos)
 
 
 def prompt_zero_shot(task, rephrasing_id, demos=None):
+    #zero-shot gives the model the instruction, possible labels and task itself, without any demonstrations.
     instruction = INSTRUCTION_REPHRASINGS["zero_shot"][rephrasing_id]
     return f"{instruction}\n{build_label_line(task)}\n{build_context_question_block(task)}\n{build_final_answer_instruction()}"
 
 
 def prompt_n_shot(task, rephrasing_id, demos):
+    #common prompt construction used by the one-shot, two-shot and three-shot strategies.
+    #the demonstrations passed here have already been independently selected for the required value of k.
     instruction = INSTRUCTION_REPHRASINGS["zero_shot"][rephrasing_id]
     demo_block = build_demo_block(demos)
     return f"{instruction}\n{build_label_line(task)}\n\n{demo_block}\n\n{build_context_question_block(task)}\n{build_final_answer_instruction()}"
@@ -74,12 +84,14 @@ def prompt_few_shot_3(task, rephrasing_id, demos):
 
 
 def prompt_role_based(task, rephrasing_id, demos=None):
+    #role-based prompting assigns the model a lawyer role matched to the legal domain of the task.
     domain = CATEGORY_DOMAIN.get(task.task_type, "law")
     instruction = INSTRUCTION_REPHRASINGS["role_based"][rephrasing_id].format(domain=domain)
     return f"{instruction}\n{build_label_line(task)}\n{build_context_question_block(task)}\n{build_final_answer_instruction()}"
 
 
 def prompt_structured(task, rephrasing_id, demos=None):
+    #structured prompting separates the task information into explicitly labelled fields before asking for the classification.
     instruction = INSTRUCTION_REPHRASINGS["structured"][rephrasing_id]
     return (f"Jurisdiction: {task.jurisdiction}\nPractice Area: {CATEGORY_DOMAIN.get(task.task_type, 'law')}\n"
             f"Relevant Facts: {task.context}\nConstraints: Choose exactly one of: {', '.join(task.label_options)}\n\n"
@@ -87,11 +99,13 @@ def prompt_structured(task, rephrasing_id, demos=None):
 
 
 def prompt_cot(task, rephrasing_id, demos=None):
+    #chain-of-thought prompting explicitly asks the model to reason step by step before giving its final classification.
     instruction = INSTRUCTION_REPHRASINGS["cot"][rephrasing_id]
     return f"{instruction}\n{build_label_line(task)}\n{build_context_question_block(task)}\n{build_final_answer_instruction()}"
 
 
 def prompt_legal_framework(task, rephrasing_id, demos, framework_name):
+    #builds the prompts for IRAC, CRAC, CREAC, CLEO, TREACC and IREAC using the framework step sequences defined in config.py.
     steps = config.FRAMEWORK_STEPS[framework_name]
     steps_text = "; ".join(f"({i+1}) {s}" for i, s in enumerate(steps))
     instruction_variants = [
@@ -99,10 +113,13 @@ def prompt_legal_framework(task, rephrasing_id, demos, framework_name):
         f"Analyze this using the {framework_name.upper()} method, addressing each part in order: {steps_text}.",
         f"Structure your reasoning according to these steps: {steps_text}.",
     ]
+    #the legal frameworks also receive 3 equivalent instruction rephrasings, while keeping the actual framework steps unchanged.
     instruction = instruction_variants[rephrasing_id]
     return f"{instruction}\n{build_label_line(task)}\n{build_context_question_block(task)}\n{build_final_answer_instruction()}"
 
 
+#maps each of the 13 strategy names to the function that constructs its prompt.
+#the framework strategies all use the same prompt-building function but pass their own framework name to select the correct sequence of steps.
 STRATEGY_FUNCTIONS = {
     "zero_shot": prompt_zero_shot,
     "one_shot": prompt_one_shot,
@@ -119,18 +136,18 @@ STRATEGY_FUNCTIONS = {
     "ireac": lambda t, r, d: prompt_legal_framework(t, r, d, "ireac"),
 }
 
+#quick check that every strategy listed in config.py has a prompt function here, and that there are no extra strategies here that are missing from config.py.
 assert set(STRATEGY_FUNCTIONS.keys()) == set(config.ALL_STRATEGIES), \
     "Mismatch between STRATEGY_FUNCTIONS and config.ALL_STRATEGIES!"
 
 
 def build_prompt(task, strategy, rephrasing_id, task_id, demonstration_sets):
     """
-    demonstration_sets[task_id] is now a dict keyed by k:
+    Builds the final prompt for the requested strategy.
+    demonstration_sets stores the independently-selected demonstration sets for each task by k:
         {1: [...], 2: [...], 3: [...]}
-    For a few-shot strategy, look up which k it needs
-    (config.DEMO_REQUIRED_STRATEGIES) and pull that exact,
-    independently-clustered set. Non-few-shot strategies ignore
-    demonstration_sets entirely, same as before.
+    If the strategy needs demonstrations, the required k is looked up in config.py and that exact demonstration set is used.
+    Strategies that do not need demonstrations are given None instead.
     """
     fn = STRATEGY_FUNCTIONS[strategy]
 

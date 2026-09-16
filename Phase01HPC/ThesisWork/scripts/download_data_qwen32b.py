@@ -1,10 +1,5 @@
-# ============================================================
-# scripts/download_data.py — Phase 1 (HPC)
-# Run this ONCE on the Stanage LOGIN node (needs internet access,
-# which compute nodes typically don't have). Pre-caches the chosen
-# model so later sbatch jobs can load it from local disk/cache
-# without needing network access.
-# ============================================================
+#this script is used to download/cache a Hugging Face model before running the generation jobs on Stanage.
+#it should be run once somewhere with internet access so that the later GPU jobs can load the model from the existing Hugging Face cache instead of downloading it during generation.
 
 import os
 import sys
@@ -13,7 +8,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-MODEL_TO_DOWNLOAD = "Qwen/Qwen2.5-32B-Instruct"  # or whichever size you decide on
+MODEL_TO_DOWNLOAD = "Qwen/Qwen2.5-32B-Instruct"  #the model that will be downloaded and stored in the Hugging Face cache
 
 
 def predownload_model(model_name: str):

@@ -1,5 +1,3 @@
-
-
 import os
 import pandas as pd
 
@@ -7,16 +5,11 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 LEGALBENCH_ALL_DIR = os.path.join(SCRIPT_DIR, "data", "legalbench_all")
 OUTPUT_PATH = os.path.join(SCRIPT_DIR, "candidate_tasks.csv")
 
-# --- Classification-style screening thresholds ---
-MAX_UNIQUE_LABEL_RATIO = 0.1     # unique answers should be <=10% of examples
-MAX_UNIQUE_LABELS_ABSOLUTE = 20  # hard cap regardless of dataset size
+#classification screening thresholds
+MAX_UNIQUE_LABEL_RATIO = 0.1     #unique answers cannot exceed 10% of examples
+MAX_UNIQUE_LABELS_ABSOLUTE = 20  #maximum number of unique labels
 
-# --- Prefix-based category assignment ---
-# Several task groups in Table 10 are listed under one umbrella name
-# (e.g. "CUAD Tasks", "MAUD Tasks") but actually expand to dozens of
-# real, differently-named sub-tasks (cuad_anti-assignment,
-# cuad_audit_rights, etc.). Rather than hardcode every sub-variant,
-# these families are matched by prefix instead of exact name.
+#assigning categories using task name prefixes
 CATEGORY_PREFIX_MAP = {
     "cuad_": "interpretation",
     "contract_nli_": "interpretation",
@@ -25,16 +18,11 @@ CATEGORY_PREFIX_MAP = {
     "supply_chain_disclosure_": "interpretation",
     "textualism_tool_": "rhetorical-understanding",
     "learned_hands_": "issue-spotting",
-    "diversity_": "rule-application",  # also applies to rule-conclusion — added below
+    "diversity_": "rule-application",  #also belongs to rule-conclusion
 }
 
-# --- Exact-name category assignment ---
-# Standalone tasks (one task = one paper entry, no sub-variants),
-# per Guha et al., LegalBench paper, Table 10.
-#
-# NOTE: rule-application and rule-conclusion share the SAME task
-# list in the paper's own table — this is intentional, not a
-# duplication error.
+
+#mapping individual tasks to their LegalBench categories
 CATEGORY_TASK_MAP = {
     "issue-spotting": [
         "corporate_lobbying",
@@ -42,7 +30,7 @@ CATEGORY_TASK_MAP = {
     "rule-recall": [
         "citation_prediction_classification",
         "international_citizenship_questions",
-        "nys_judicial_ethics",  # corrected slug (was ny_state_judicial_ethics)
+        "nys_judicial_ethics",  
         "rule_qa",
     ],
     "rule-application": [
@@ -51,7 +39,6 @@ CATEGORY_TASK_MAP = {
         "telemarketing_sales_rule", "ucc_v_common_law",
     ],
     "rule-conclusion": [
-        # Identical to rule-application per Table 10 — see note above.
         "abercrombie",
         "hearsay", "personal_jurisdiction", "successor_liability",
         "telemarketing_sales_rule", "ucc_v_common_law",
@@ -70,17 +57,14 @@ CATEGORY_TASK_MAP = {
     ],
 }
 
-# Build a reverse lookup: task_name -> list of categories it belongs to
-# (a task can appear in more than one category — see rule-application /
-# rule-conclusion note above — so this maps to a list, not a single value).
+
+#creating a lookup from each task to its categories
 TASK_TO_CATEGORIES = {}
 for category, task_names in CATEGORY_TASK_MAP.items():
     for task_name in task_names:
         TASK_TO_CATEGORIES.setdefault(task_name, []).append(category)
 
-# diversity_* belongs to BOTH rule-application and rule-conclusion,
-# same as the exact-name entries above — added here since it's
-# prefix-matched rather than individually enumerated.
+
 DIVERSITY_EXTRA_CATEGORY = "rule-conclusion"
 
 
@@ -153,9 +137,7 @@ def main():
     for task_name in task_names:
         result = screen_task(task_name)
         if result is not None:
-            # A task belonging to multiple categories (rule-application /
-            # rule-conclusion) gets one row per category, so each category
-            # can be filtered independently in the final CSV.
+            #adding a separate row for each category when a task belongs to more than one
             for category in result["category"]:
                 row = dict(result)
                 row["category"] = category
@@ -164,8 +146,7 @@ def main():
     all_df = pd.DataFrame(records)
     n_total_rows = len(all_df)
 
-    # Keep only rows that passed the classification screen — this file
-    # is meant to contain candidate (classification-style) tasks only.
+    #keeping only tasks that pass the classification screening
     candidates_df = all_df[all_df["is_classification"]].drop(columns=["is_classification"])
     candidates_df = candidates_df[
         ["category", "task_name", "test_size", "n_unique_labels", "unique_label_ratio"]

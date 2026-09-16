@@ -111,15 +111,11 @@ def main():
     df["is_correct"] = df["is_correct"].fillna(False)
     df = attach_true_labels(df, sample_size)
 
-    # Persist true_label back into the parsed CSV so downstream scripts
-    # (analysis.py, visualize_metrics.py) can read it directly without
-    # repeating this join.
+    #saving the true labels in the parsed CSV so the other evaluation scripts can use them directly
     df.to_csv(parsed_path, index=False)
     print(f"Added true_label column and re-saved: {parsed_path}")
 
-    # ============================================================
-    # Per (category, strategy, rephrasing): accuracy + macro-F1
-    # ============================================================
+    #accuracy and macro-F1 for each category, strategy and rephrasing
     per_strategy_rephrasing = (
         df.groupby(["category", "strategy", "rephrasing_id"])
         .apply(lambda g: pd.Series({
@@ -132,9 +128,7 @@ def main():
     print("\n=== Per (category, strategy, rephrasing) accuracy + macro-F1 ===")
     print(per_strategy_rephrasing.to_string(index=False))
 
-    # ============================================================
-    # Per (category, strategy): accuracy (mean, std) + macro-F1
-    # ============================================================
+    #accuracy mean, standard deviation and macro-F1 for each category and strategy
     per_strategy = (
         df.groupby(["category", "strategy"])
         .apply(lambda g: pd.Series({
@@ -148,10 +142,7 @@ def main():
     print("\n=== Per (category, strategy) accuracy (mean, std) + macro-F1 ===")
     print(per_strategy.to_string(index=False))
 
-    # ============================================================
-    # Per (category, strategy, run): accuracy + macro-F1  (NEW)
-    # Previously computed only transiently inside analysis.py and discarded.
-    # ============================================================
+    #calculating accuracy and macro-F1 separately for each run
     per_strategy_run = (
         df.groupby(["category", "strategy", "run_id"])
         .apply(lambda g: pd.Series({
@@ -164,9 +155,7 @@ def main():
     print("\n=== Per (category, strategy, run) accuracy + macro-F1 ===")
     print(per_strategy_run.to_string(index=False))
 
-    # ============================================================
-    # Per (category, strategy, label): precision, recall, F1  (NEW, own CSV)
-    # ============================================================
+    #per-class precision, recall and F1. only the labels present in the ground truth are included
     per_class_rows = []
     for (cat, strat), group in df.groupby(["category", "strategy"]):
         valid = group.dropna(subset=["true_label"])
@@ -187,9 +176,7 @@ def main():
     print("\n=== Per (category, strategy, label) precision/recall/F1 ===")
     print(per_class.to_string(index=False))
 
-    # ============================================================
-    # Zero-shot baseline per category
-    # ============================================================
+    #zero-shot accuracy for each category, used as the baseline when calculating accuracy gain
     zero_shot_baseline = (
         per_strategy[per_strategy["strategy"] == "zero_shot"]
         .set_index("category")["accuracy_mean"]

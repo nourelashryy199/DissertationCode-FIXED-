@@ -1,5 +1,3 @@
-
-
 import os
 import pandas as pd
 
@@ -9,7 +7,7 @@ OUTPUT_PATH = os.path.join(SCRIPT_DIR, "finalSelection.csv")
 
 N_PER_CATEGORY = 3
 
-# Categories that get merged into one, and the name for the merged result.
+#merging rule-application and rule-conclusion into one category
 MERGE_CATEGORIES = ["rule-application", "rule-conclusion"]
 MERGED_NAME = "rule-application_conclusion"
 
@@ -22,24 +20,22 @@ def main():
     df = pd.read_csv(INPUT_PATH)
     print(f"Loaded {len(df)} rows ({df['task_name'].nunique()} unique tasks) from candidate_tasks.csv")
 
-    # Merge rule-application and rule-conclusion into one category name.
+    #replacing both category names with the merged name
     df["category"] = df["category"].replace(MERGE_CATEGORIES, MERGED_NAME)
 
-    # A task that appeared under BOTH rule-application and rule-conclusion
-    # now has two identical rows under the merged category name — drop
-    # the duplicate so it's only counted once when ranking.
+    #removing duplicate tasks after merging the categories
     df = df.drop_duplicates(subset=["category", "task_name"])
 
     n_categories = df["category"].nunique()
     print(f"Categories after merge: {n_categories} ({sorted(df['category'].unique())})")
 
-    # Rank within each category: highest n_unique_labels first,
-    # highest unique_label_ratio as tiebreaker.
+    #ranking tasks by number of unique labels, then by unique label ratio
     df_sorted = df.sort_values(
         ["category", "n_unique_labels", "unique_label_ratio"],
         ascending=[True, False, False],
     )
 
+    #selecting three tasks per category
     selected = df_sorted.groupby("category", group_keys=False).head(N_PER_CATEGORY)
     selected = selected.sort_values(["category", "n_unique_labels", "unique_label_ratio"],
                                      ascending=[True, False, False])

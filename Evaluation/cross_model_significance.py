@@ -16,9 +16,7 @@ import pandas as pd
 import numpy as np
 from scipy import stats as scipy_stats
 
-# Hardcoded, since this script's whole purpose is comparing across all
-# three models at once — unlike every other Evaluation/ script, there is
-# no single --model to parse from the command line here.
+#the three Qwen models being compared. this script loads all three rather than taking one model as a CLI argument
 MODELS = [
     "Qwen/Qwen2.5-7B-Instruct",
     "Qwen/Qwen2.5-14B-Instruct",
@@ -42,12 +40,7 @@ def load_model_df(model_name: str) -> pd.DataFrame:
     return df
 
 
-# ============================================================
-# RQ3 — McNemar's test: does a category's champion strategy behave
-# the same way when the model changes? Paired on exact matching
-# (task_id, rephrasing_id, run_id) between two models.
-# ============================================================
-
+#McNemar's test for comparing the same category and strategy across two models, using matching instances, rephrasings and runs
 def mcnemar_test(n_a_correct_b_wrong: int, n_a_wrong_b_correct: int):
     """
     Standard adaptive McNemar's test:
@@ -98,12 +91,7 @@ def run_mcnemar_all_pairs(dfs: dict) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-# ============================================================
-# RQ4 — Two-proportion z-test: generic vs. legal-framework
-# strategies, pooled correctness, per category, per model, and
-# overall (pooled across all categories and all models).
-# ============================================================
-
+#two-proportion z-test for comparing pooled accuracy between generic strategies and legal frameworks
 def two_proportion_z_test(x1, n1, x2, n2):
     """Standard two-proportion z-test (normal approximation; valid given
     the large sample sizes here -- thousands of generations per group)."""
@@ -126,7 +114,7 @@ def run_generic_vs_framework_tests(dfs: dict) -> pd.DataFrame:
         df["strategy_type"] = df["strategy"].apply(
             lambda s: "legal_framework" if s in config.LEGAL_FRAMEWORK_STRATEGIES else "generic"
         )
-        # per category, within this model
+        #first comparing generic and framework accuracy separately for each category within this model
         for category in config.CATEGORIES:
             sub = df[df["category"] == category]
             generic = sub[sub["strategy_type"] == "generic"]
@@ -143,7 +131,7 @@ def run_generic_vs_framework_tests(dfs: dict) -> pd.DataFrame:
                 "z_statistic": z, "p_value": p_val,
                 "significant_at_0.05": (not np.isnan(p_val)) and (p_val < 0.05),
             })
-        # overall, pooled across all categories, within this model
+        #then pooling all five categories within this model
         generic = df[df["strategy_type"] == "generic"]
         framework = df[df["strategy_type"] == "legal_framework"]
         diff, z, p_val = two_proportion_z_test(
@@ -159,7 +147,7 @@ def run_generic_vs_framework_tests(dfs: dict) -> pd.DataFrame:
             "significant_at_0.05": (not np.isnan(p_val)) and (p_val < 0.05),
         })
 
-    # fully pooled across ALL models and ALL categories
+    #finally pooling all categories and all three models into one comparison
     all_df = pd.concat(dfs.values(), ignore_index=True)
     all_df["strategy_type"] = all_df["strategy"].apply(
         lambda s: "legal_framework" if s in config.LEGAL_FRAMEWORK_STRATEGIES else "generic"
@@ -181,13 +169,8 @@ def run_generic_vs_framework_tests(dfs: dict) -> pd.DataFrame:
 
     return pd.DataFrame(rows)
 
-# ============================================================
-# CHAMPION COMPARISON TABLE (RQ1/RQ3: category x model, showing
-# each model's Joint Fit Score champion side by side, so cross-model
-# champion stability can be read at a glance without manually
-# cross-referencing three separate joint_champions__*.csv files)
-# ============================================================
 
+#combines the Joint Fit champions from the three models into one table to compare whether the same strategies are selected
 def build_champion_comparison_table() -> pd.DataFrame:
     rows = {}
     for model_name in MODELS:
@@ -208,14 +191,8 @@ def build_champion_comparison_table() -> pd.DataFrame:
 
     return table
 
-# ============================================================
-# POOLED DISPERSION VS PENALTY CORRELATION (RQ2: same check as
-# analysis.py's per-model version, but pooled across all three
-# models -- n=15 category-model pairs instead of n=5, giving more
-# statistical power to the "does Dispersion predict Transfer
-# Penalty cost" question)
-# ============================================================
 
+#calculating the correlation between Strategy Dispersion and Joint Transfer Penalty across all three models
 def compute_pooled_dispersion_penalty_correlation() -> dict:
     rows = []
     for model_name in MODELS:
@@ -245,12 +222,9 @@ def compute_pooled_dispersion_penalty_correlation() -> dict:
         "pearson_r": pearson_r, "pearson_p": pearson_p,
         "spearman_rho": spearman_rho, "spearman_p": spearman_p,
     }
-# ============================================================
-# DISPERSION COMPARISON TABLE (RQ3: does a category's reliability
-# profile, not just its champion, change across model scale? One
-# row per category, one Dispersion column per model.)
-# ============================================================
 
+
+#puts Strategy Dispersion for each category side by side across the three models
 def build_dispersion_comparison_table() -> pd.DataFrame:
     rows = {}
     for model_name in MODELS:
@@ -268,28 +242,22 @@ def build_dispersion_comparison_table() -> pd.DataFrame:
     return table
 
 
-# ============================================================
-# MEAN DISPERSION PER MODEL (RQ3: is there a consistent direction
-# to reliability change with scale -- do bigger models become more
-# or less forgiving on average, across all 5 categories?)
-# ============================================================
-
+#calculates the mean and standard deviation of Strategy Dispersion across the five categories for each model
 def compute_mean_dispersion_per_model(dispersion_table: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame({
         "mean_strategy_dispersion": dispersion_table.mean(axis=0),
         "std_strategy_dispersion": dispersion_table.std(axis=0),
     })
-# ============================================================
-# GENERIC VS FRAMEWORK: PER-CATEGORY, CROSS-MODEL PIVOT (RQ4:
-# does the generic-vs-framework accuracy gap hold consistently
-# across categories and scale, or does it shrink/grow/reverse?)
-# ============================================================
 
+
+#organizes the generic minus framework accuracy differences into a table with categories as rows and models as columns
 def build_generic_vs_framework_pivot(generic_vs_framework: pd.DataFrame) -> pd.DataFrame:
     per_category = generic_vs_framework[generic_vs_framework["category"] != "__OVERALL__"]
     pivot = per_category.pivot(index="category", columns="model", values="accuracy_diff_generic_minus_framework")
     pivot = pivot.reindex(config.CATEGORIES)
     return pivot
+
+
 def main():
     dfs = {}
     for model_name in MODELS:
@@ -357,12 +325,14 @@ def main():
     fig.savefig(fig_path2, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"Saved: {fig_path2}")
+
     print("\n=== Champion Comparison: Joint Fit Score champion per category, per model (RQ1/RQ3) ===")
     champion_comparison = build_champion_comparison_table()
     print(champion_comparison.to_string())
     champion_comparison_path = os.path.join(config.RESULTS_DIR, "joint_champion_comparison_across_models.csv")
     champion_comparison.to_csv(champion_comparison_path)
     print(f"Saved: {champion_comparison_path}")
+
     print("\n=== Strategy Dispersion Comparison: per category, per model (RQ3) ===")
     dispersion_comparison = build_dispersion_comparison_table()
     print(dispersion_comparison.to_string())
@@ -389,6 +359,7 @@ def main():
         fig.savefig(fig_path, dpi=150, bbox_inches="tight")
         plt.close(fig)
         print(f"Saved: {fig_path}")
+
     print("\n=== Pooled Dispersion vs Transfer Penalty Correlation (across all 3 models, n=15) (RQ2) ===")
     pooled_corr = compute_pooled_dispersion_penalty_correlation()
     print(pooled_corr)

@@ -45,19 +45,7 @@ def plot_penalty_matrix(path, title, fig_name, safe_model_name, vmin=None, vmax=
     savefig(fig, fig_name, safe_model_name)
 
 
-# def plot_fit_score_heatmap(path, title, fig_name, safe_model_name, category_order, strategy_order):
-#     fit_scores = try_read_csv(path)
-#     if fit_scores is None:
-#         return
-#     pivot = fit_scores.pivot(index="category", columns="strategy", values="fit_score_normalized")
-#     pivot = pivot.reindex(index=category_order, columns=strategy_order)
-#     fig, ax = plt.subplots(figsize=(14, 6))
-#     sns.heatmap(pivot, annot=True, fmt=".2f", cmap="RdYlGn", vmin=0, vmax=1,
-#                 cbar_kws={"label": "Fit Score (normalized 0-1)"}, ax=ax)
-#     ax.set_title(title)
-#     plt.xticks(rotation=45, ha="right")
-#     savefig(fig, fig_name, safe_model_name)
-
+#Fit Score heatmap. zero-shot is excluded since it is the baseline and not one of the 12 candidate strategies
 def plot_fit_score_heatmap(path, title, fig_name, safe_model_name, category_order, strategy_order):
     fit_scores = try_read_csv(path)
     if fit_scores is None:
@@ -101,10 +89,7 @@ def main():
     strategy_order = config.ALL_STRATEGIES
     category_order = config.CATEGORIES
 
-    # ============================================================
-    # EXISTING FIGURES (unchanged logic, from compute_metrics.py output)
-    # ============================================================
-
+    #accuracy heatmap across categories and strategies
     pivot = df_strategy.pivot(index="category", columns="strategy", values="accuracy_mean")
     pivot = pivot.reindex(index=category_order, columns=strategy_order)
     fig, ax = plt.subplots(figsize=(14, 6))
@@ -114,6 +99,7 @@ def main():
     plt.xticks(rotation=45, ha="right")
     savefig(fig, "heatmap_category_strategy", safe_model_name)
 
+    #comparing strategy accuracy within each category
     fig, ax = plt.subplots(figsize=(16, 7))
     sns.barplot(data=df_strategy, x="category", y="accuracy_mean", hue="strategy",
                 order=category_order, hue_order=strategy_order, ax=ax)
@@ -123,6 +109,7 @@ def main():
     plt.xticks(rotation=30, ha="right")
     savefig(fig, "grouped_bar_category_strategy", safe_model_name)
 
+    #mean accuracy and standard deviation for each strategy and category
     fig, ax = plt.subplots(figsize=(16, 7))
     for i, strategy in enumerate(strategy_order):
         sub = df_strategy[df_strategy["strategy"] == strategy].set_index("category").reindex(category_order)
@@ -135,6 +122,7 @@ def main():
     ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", fontsize=7)
     savefig(fig, "errorbar_category_strategy", safe_model_name)
 
+    #accuracy distribution across the five categories for each strategy
     fig, ax = plt.subplots(figsize=(14, 6))
     sns.boxplot(data=df_strategy, x="strategy", y="accuracy_mean", order=strategy_order, ax=ax)
     ax.set_title(f"Accuracy Distribution per Strategy, Across Categories ({model_name})")
@@ -142,6 +130,7 @@ def main():
     plt.xticks(rotation=45, ha="right")
     savefig(fig, "boxplot_strategy_spread", safe_model_name)
 
+    #checking how accuracy changes across the three rephrasings
     fig, axes = plt.subplots(2, 3, figsize=(20, 10), sharey=True)
     for ax, category in zip(axes.flat, category_order):
         sub = df_rephrasing[df_rephrasing["category"] == category]
@@ -157,6 +146,7 @@ def main():
     fig.suptitle(f"Accuracy Across Rephrasings, per Category and Strategy ({model_name})")
     savefig(fig, "lineplot_rephrasing_sensitivity", safe_model_name)
 
+    #ranking strategies by their mean accuracy across categories
     overall = df_strategy.groupby("strategy")["accuracy_mean"].mean().reindex(strategy_order).sort_values(ascending=False)
     fig, ax = plt.subplots(figsize=(12, 6))
     sns.barplot(x=overall.values, y=overall.index, ax=ax, palette="viridis")
@@ -164,6 +154,7 @@ def main():
     ax.set_xlabel("Mean Accuracy")
     savefig(fig, "ranked_bar_overall_strategy", safe_model_name)
 
+    #accuracy profiles of the five highest-ranked strategies
     top5 = overall.head(5).index.tolist()
     angles = np.linspace(0, 2 * np.pi, len(category_order), endpoint=False).tolist()
     angles += angles[:1]
@@ -180,6 +171,7 @@ def main():
     ax.legend(loc="upper right", bbox_to_anchor=(1.3, 1.1), fontsize=8)
     savefig(fig, "radar_top5_strategy_profile", safe_model_name)
 
+    #parsing failure rate for each category and strategy
     df_raw["parsed_fail"] = df_raw["parsed_answer"].isna()
     fail_rate = (
         df_raw.groupby(["category", "strategy"])["parsed_fail"]
@@ -193,6 +185,7 @@ def main():
     plt.xticks(rotation=45, ha="right")
     savefig(fig, "heatmap_parsing_failures", safe_model_name)
 
+    #number of generations in each category
     counts = df_raw.groupby("category").size().reindex(category_order)
     fig, ax = plt.subplots(figsize=(10, 5))
     sns.barplot(x=counts.index, y=counts.values, ax=ax, palette="Blues_d")
@@ -201,9 +194,7 @@ def main():
     plt.xticks(rotation=30, ha="right")
     savefig(fig, "bar_generation_counts", safe_model_name)
 
-    # ============================================================
-    # NEW: macro-F1 heatmap (direct F1 equivalent of accuracy heatmap)
-    # ============================================================
+    #macro-F1 heatmap for each category and strategy
     if "macro_f1" in df_strategy.columns:
         pivot_f1 = df_strategy.pivot(index="category", columns="strategy", values="macro_f1")
         pivot_f1 = pivot_f1.reindex(index=category_order, columns=strategy_order)
@@ -214,10 +205,7 @@ def main():
         plt.xticks(rotation=45, ha="right")
         savefig(fig, "heatmap_macro_f1", safe_model_name)
 
-    # ============================================================
-    # NEW: per-run accuracy boxplot (from the previously-discarded,
-    # now-saved per-run breakdown)
-    # ============================================================
+    #accuracy distribution across runs for each strategy
     if df_run is not None:
         fig, ax = plt.subplots(figsize=(14, 6))
         sns.boxplot(data=df_run, x="strategy", y="accuracy", order=strategy_order, ax=ax)
@@ -226,11 +214,7 @@ def main():
         plt.xticks(rotation=45, ha="right")
         savefig(fig, "boxplot_per_run_accuracy", safe_model_name)
 
-    # ============================================================
-    # NEW: per-class F1 heatmap — worst-performing class per (category, strategy)
-    # Directly checks for the majority-class-guessing pattern
-    # (Trautmann2023-style finding)
-    # ============================================================
+    #minimum class F1 for each category and strategy, to check whether performance is poor on particular classes
     if df_class is not None and len(df_class) > 0:
         worst_class_f1 = df_class.groupby(["category", "strategy"])["f1"].min().reset_index()
         pivot_worst = worst_class_f1.pivot(index="category", columns="strategy", values="f1")
@@ -243,9 +227,7 @@ def main():
         plt.xticks(rotation=45, ha="right")
         savefig(fig, "heatmap_worst_class_f1", safe_model_name)
 
-    # ============================================================
-    # NEW: Run / Rephrasing / Joint Fit Score heatmaps (normalized, 0-1)
-    # ============================================================
+    #normalized Run, Rephrasing and Joint Fit Score heatmaps
     plot_fit_score_heatmap(
         os.path.join(config.RESULTS_DIR, f"run_fit_scores__{safe_model_name}.csv"),
         f"Run Fit Score (normalized): Category x Strategy ({model_name})",
@@ -261,9 +243,7 @@ def main():
         f"Joint Fit Score (normalized): Category x Strategy ({model_name})",
         "heatmap_joint_fit_score", safe_model_name, category_order, strategy_order)
 
-    # ============================================================
-    # NEW: Run / Rephrasing / Joint Transfer Penalty matrices
-    # ============================================================
+    #Transfer Penalty matrices for Run, Rephrasing and Joint Fit, both raw and normalized
     plot_penalty_matrix(
         os.path.join(config.RESULTS_DIR, f"run_transfer_penalty__{safe_model_name}.csv"),
         f"Run Transfer Penalty Matrix ({model_name})", "matrix_run_transfer_penalty", safe_model_name)
@@ -288,9 +268,7 @@ def main():
         f"Joint Transfer Penalty Matrix — Normalized ({model_name})",
         "matrix_joint_transfer_penalty_normalized", safe_model_name, vmin=0, vmax=1)
 
-    # ============================================================
-    # NEW: Strategy Dispersion bar chart (one bar per category)
-    # ============================================================
+    #Strategy Dispersion for each category
     dispersion_path = os.path.join(config.RESULTS_DIR, f"strategy_dispersion__{safe_model_name}.csv")
     dispersion = try_read_csv(dispersion_path)
     if dispersion is not None:
@@ -303,10 +281,7 @@ def main():
         plt.xticks(rotation=30, ha="right")
         savefig(fig, "bar_strategy_dispersion", safe_model_name)
 
-    # ============================================================
-    # NEW: ANOVA decomposition — % variance from rephrasing vs run vs
-    # interaction, averaged across strategies, one stacked bar per category
-    # ============================================================
+    #ANOVA variance decomposition, averaged across strategies for each category
     anova_path = os.path.join(config.RESULTS_DIR, f"anova_decomposition__{safe_model_name}.csv")
     anova = try_read_csv(anova_path)
     if anova is not None and len(anova) > 0:
@@ -326,9 +301,7 @@ def main():
         plt.xticks(rotation=30, ha="right")
         savefig(fig, "stacked_bar_anova_decomposition", safe_model_name)
 
-    # ============================================================
-    # NEW: does the champion change once you divide gain by variance? (RQ1)
-    # ============================================================
+    #Spearman correlation between raw accuracy gain and Joint Fit Score rankings
     spearman_path = os.path.join(config.RESULTS_DIR, f"spearman_gain_vs_fitscore__{safe_model_name}.csv")
     spearman = try_read_csv(spearman_path)
     if spearman is not None:
@@ -342,21 +315,14 @@ def main():
         ax.set_ylabel("Spearman's rho")
         plt.xticks(rotation=30, ha="right")
         savefig(fig, "bar_spearman_gain_vs_fitscore", safe_model_name)
-            # ============================================================
-    # NEW: Champion margin — is the win decisive or "effectively tied"
-    # with the runner-up? (RQ1, McNemar's test vs runner-up)
-    # ============================================================
+
+    #McNemar p-values for the Joint Fit champion and runner-up in each category
     margin_path = os.path.join(config.RESULTS_DIR, f"champion_margin__{safe_model_name}.csv")
     margin = try_read_csv(margin_path)
     if margin is not None:
         margin = margin.set_index("category").reindex(category_order).reset_index()
         margin = margin.dropna(subset=["p_value"])
         fig, ax = plt.subplots(figsize=(10, 5))
-        # colors = ["#55A868" if tied else "#C44E52" for tied in margin["effectively_tied"]]
-        # bars = ax.bar(margin["category"], margin["p_value"], color=colors)
-        # ax.axhline(0.05, color="black", linewidth=0.8, linestyle="--", label="p = 0.05 threshold")
-        # ax.set_title(f"Champion vs. Runner-Up: McNemar's Test p-value, per Category ({model_name})\n"
-        #              f"(Green = effectively tied with runner-up; Red = champion wins decisively)")
         colors = ["#C44E52" if significant else "#55A868" for significant in margin["significant_accuracy_difference"]]
         bars = ax.bar(margin["category"], margin["p_value"], color=colors)
         ax.axhline(0.05, color="black", linewidth=0.8, linestyle="--", label="p = 0.05 threshold")
@@ -366,11 +332,8 @@ def main():
         ax.legend()
         plt.xticks(rotation=30, ha="right")
         savefig(fig, "bar_champion_margin_significance", safe_model_name)
-            # ============================================================
-    # NEW: Importer vs Exporter risk — which categories are
-    # dangerous to import a strategy INTO, and which categories'
-    # champions cause damage when exported elsewhere? (RQ2)
-    # ============================================================
+
+    #Importer Risk and Exporter Risk for each category
     importer_path = os.path.join(config.RESULTS_DIR, f"joint_risk_summary__{safe_model_name}.csv")
     exporter_path = os.path.join(config.RESULTS_DIR, f"joint_exporter_risk__{safe_model_name}.csv")
     importer_risk = try_read_csv(importer_path, index_col=0)
@@ -389,10 +352,7 @@ def main():
         plt.xticks(rotation=30, ha="right")
         savefig(fig, "bar_importer_exporter_risk", safe_model_name)
 
-    # ============================================================
-    # NEW: Strategy Dispersion vs. Transfer Penalty scatter — does
-    # dispersion predict how costly a wrong strategy import is? (RQ2)
-    # ============================================================
+    #checking whether Strategy Dispersion is related to the mean Joint Transfer Penalty
     dispersion_check = try_read_csv(dispersion_path)
     if dispersion_check is not None and importer_risk is not None:
         merged = dispersion_check.set_index("category").join(importer_risk, how="inner")

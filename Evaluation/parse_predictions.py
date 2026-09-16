@@ -1,11 +1,8 @@
-
 import os
 import sys
 import json
 
-# Evaluation/ is a top-level sibling of Phase01HPC/, not nested
-# below config.py the way scripts/ used to be — path to
-# ThesisWork/ (where config.py lives) built explicitly.
+#path to config.py and the thesis selection file
 EVAL_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(EVAL_DIR)
 sys.path.insert(0, os.path.join(REPO_ROOT, "Phase01HPC", "ThesisWork"))
@@ -26,6 +23,7 @@ def run_task_id_key(strategy, rephrasing_id, run_id, instance_task_id):
     return f"{strategy}|{rephrasing_id}|{run_id}|{instance_task_id}"
 
 
+#removing duplicate generations using the strategy, rephrasing, run and instance ID
 def load_and_dedupe(filepath: str) -> list:
     if not os.path.exists(filepath):
         print(f"WARNING: file not found: {filepath}")
@@ -50,6 +48,7 @@ def main():
     model_name = config.get_model_name_from_args().model
     safe_model_name = model_name.replace("/", "_")
 
+    #loading the generation files for all selected tasks
     all_records = []
     for task_id in manifest_df["task_id"]:
         filename = f"{task_id}__{safe_model_name}_generations.jsonl"
@@ -66,6 +65,7 @@ def main():
         print("No records found — nothing to save.")
         return
 
+    #checking how many generations failed to produce a parsed answer
     parsing_failures = df[df["parsed_answer"].isna()]
     n_failures = len(parsing_failures)
     n_total = len(df)
@@ -78,6 +78,7 @@ def main():
 
     os.makedirs(config.PARSED_DIR, exist_ok=True)
 
+    #saving all generations in one CSV for the evaluation scripts
     output_path = os.path.join(config.PARSED_DIR, f"all_generations_parsed__{safe_model_name}.csv")
     df.to_csv(output_path, index=False)
     print(f"\nSaved consolidated dataset to {output_path}")

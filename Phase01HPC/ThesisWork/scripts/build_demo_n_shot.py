@@ -10,24 +10,22 @@ from sentence_transformers import SentenceTransformer
 from sklearn.cluster import KMeans
 import numpy as np
 
-# Repo layout is now Phase01HPC/ThesisWork/scripts/ (one level
-# deeper than before) — an extra dirname() call is needed to reach
-# the true repo root, where preparations/ lives as a sibling of
-# Phase01HPC/, not of ThesisWork/.
-SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))          # .../Phase01HPC/ThesisWork/scripts
-THESISWORK_DIR = os.path.dirname(SCRIPTS_DIR)                     # .../Phase01HPC/ThesisWork
-PHASE01HPC_DIR = os.path.dirname(THESISWORK_DIR)                  # .../Phase01HPC
-REPO_ROOT = os.path.dirname(PHASE01HPC_DIR)                       # .../DissertationCode-FIXED- (true root)
+#finding the repository root from the location of this script, so thesisSelection.csv can be loaded from the preparations folder.
+SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))          #the scripts folder
+THESISWORK_DIR = os.path.dirname(SCRIPTS_DIR)                     #the ThesisWork folder
+PHASE01HPC_DIR = os.path.dirname(THESISWORK_DIR)                  #the Phase01HPC folder
+REPO_ROOT = os.path.dirname(PHASE01HPC_DIR)                       #the main DissertationCode-FIXED- repository folder
 THESIS_SELECTION_PATH = os.path.join(REPO_ROOT, "preparations", "thesisSelection.csv")
 
 
 def load_task_field_map():
+    #loads the JSON file that tells the script which field contains the context and question for each LegalBench task.
     with open(os.path.join(config.HPC_ROOT, "data", "task_field_map.json")) as f:
         return json.load(f)
 
 
 def load_train_data(task_id: str) -> list:
-    """Reads ONLY train.csv for a task — the sole source of demonstrations."""
+    """reads only train.csv for each task because demonstrations are selected from the training split, while the test split is kept for evaluation."""
     train_path = os.path.join(config.DATA_DIR, task_id, "train.csv")
     if not os.path.exists(train_path):
         raise FileNotFoundError(
@@ -39,22 +37,12 @@ def load_train_data(task_id: str) -> list:
 
 def pick_demos_at_k(train_pool, embeddings, k):
     """
-    Runs an independent k-means clustering at exactly k clusters, and
-    returns the k demonstrations closest to their respective centroids.
-    For k=1, this is just the single instance closest to the overall
-    centroid of all embeddings (k-means with one cluster is trivial).
+    selects the demonstrations for one value of k using the embeddings of the training instances.
+    for k=1, the demonstration closest to the mean embedding of the whole training pool is selected.
+    for k=2 or k=3, KMeans is run independently with exactly k clusters, and the training instance closest to each cluster centroid is selected.
 
-    FALLBACK: if a task's training data contains near-duplicate or
-    identical instances (their embeddings end up virtually identical),
-    k-means can collapse and return FEWER than k distinct clusters —
-    leaving one or more requested clusters with zero members. Rather
-    than crash (the original behavior), any empty cluster is filled by
-    picking whichever not-yet-selected training instance is farthest
-    (most diverse) from the demonstrations already chosen — preserving
-    the goal of diverse representative examples even when the data
-    itself doesn't cleanly separate into k groups. This is a genuine,
-    disclosable data-quality limitation for a task in the Methodology,
-    not a silent fudge — it only activates when true clustering fails.
+    if KMeans produces an empty cluster, the script instead chooses an unused instance that is as far as possible from the demonstrations already selected.
+    this is a fallback for cases where the training instances do not separate cleanly into k distinct clusters.
     """
     if k == 1:
         centroid = embeddings.mean(axis=0)
@@ -72,13 +60,11 @@ def pick_demos_at_k(train_pool, embeddings, k):
         member_idxs = np.where(cluster_labels == cluster_id)[0]
 
         if len(member_idxs) == 0:
-            # Degenerate cluster (k-means found fewer than k distinct
-            # groups) — fall back to the farthest not-yet-chosen point
-            # from what's already selected, to preserve diversity intent.
+            #if this cluster is empty, the fallback selects the unused instance that is farthest from the demonstrations already chosen, so the selected examples are still as diverse as possible.
             degenerate_fallback_used = True
             remaining = [i for i in range(len(embeddings)) if i not in used]
             if not remaining:
-                break  # train pool smaller than k — can't fill further
+                break  #stops if there are no unused training instances left
             if indices:
                 chosen_embeds = embeddings[indices]
                 dists_to_chosen = np.array([
@@ -92,6 +78,7 @@ def pick_demos_at_k(train_pool, embeddings, k):
             used.add(pick)
             continue
 
+        #for a normal non-empty cluster, selects the training instance whose embedding is closest to that cluster's centroid.
         cluster_embeddings = embeddings[member_idxs]
         centroid = kmeans.cluster_centers_[cluster_id]
         dists = np.linalg.norm(cluster_embeddings - centroid, axis=1)
@@ -108,29 +95,34 @@ def pick_demos_at_k(train_pool, embeddings, k):
 
 
 def main():
+    #checks that the final task-selection file exists before trying to build demonstrations for the selected tasks.
     if not os.path.exists(THESIS_SELECTION_PATH):
         print(f"ERROR: {THESIS_SELECTION_PATH} not found. Run thesis_test.py first.")
         return
 
+    #loads the final selected LegalBench tasks and uses task_id as the common task-name column throughout this pipeline.
     manifest_df = pd.read_csv(THESIS_SELECTION_PATH)
-    manifest_df = manifest_df.rename(columns={"task_name": "task_id"})  # align with rest of pipeline
+    manifest_df = manifest_df.rename(columns={"task_name": "task_id"})  #using the same task_id column name as the rest of the pipeline
 
     task_field_map = load_task_field_map()
     embedder = SentenceTransformer(config.EMBEDDING_MODEL_NAME)
 
-    # e.g. {1, 2, 3} — every distinct demonstration count any strategy needs.
+    #gets all the different numbers of demonstrations needed by the one-shot and few-shot strategies; in this experiment these are k=1, k=2 and k=3.
     required_ks = sorted(set(config.DEMO_REQUIRED_STRATEGIES.values()))
 
     os.makedirs(config.DEMO_DIR, exist_ok=True)
 
+    #builds the fixed demonstration sets separately for every selected LegalBench task.
     for _, row in manifest_df.iterrows():
         task_id = row["task_id"]
         train_pool = load_train_data(task_id)
         field_map = task_field_map[task_id]
 
+        #embeds the context of every training instance using the sentence-transformer model specified in config.py.
         texts = [str(r.get(field_map["context"], "")) for r in train_pool]
         embeddings = embedder.encode(texts, show_progress_bar=False)
 
+        #k=1, k=2 and k=3 are clustered independently rather than building one large demonstration set and taking subsets from it.
         for k in required_ks:
             if len(train_pool) < k:
                 print(f"WARNING: {task_id} — train_pool={len(train_pool)} < k={k}, "
@@ -139,6 +131,7 @@ def main():
 
             demo_indices = pick_demos_at_k(train_pool, embeddings, k)
 
+            #uses the selected indices to save the context, question (when the task has one), and correct label for each demonstration.
             demos = []
             for idx in demo_indices:
                 r = train_pool[idx]
@@ -147,6 +140,7 @@ def main():
                 label = str(r.get("answer", ""))
                 demos.append({"context": context, "question": question, "label": label})
 
+            #each task and value of k gets its own JSON file so the same fixed demonstrations can be reused during generation.
             out_path = os.path.join(config.DEMO_DIR, f"{task_id}_demos_k{k}.json")
             with open(out_path, "w") as f:
                 json.dump(demos, f, indent=2)
